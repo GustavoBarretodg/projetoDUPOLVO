@@ -1,0 +1,26 @@
+#!/bin/sh
+# Maven Wrapper Script
+set -e
+
+MAVEN_PROJECTBASEDIR="${MAVEN_BASEDIR:-$(dirname "$(realpath "$0")")}"
+WRAPPER_JAR="$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar"
+WRAPPER_LAUNCHER="org.apache.maven.wrapper.MavenWrapperMain"
+WRAPPER_URL="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.2.0/maven-wrapper-3.2.0.jar"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+    echo "Baixando Maven Wrapper JAR..."
+    if command -v curl > /dev/null; then
+        curl -fsSL -o "$WRAPPER_JAR" "$WRAPPER_URL"
+    elif command -v wget > /dev/null; then
+        wget -q -O "$WRAPPER_JAR" "$WRAPPER_URL"
+    else
+        echo "Erro: curl ou wget necessários para baixar o Maven Wrapper."
+        exit 1
+    fi
+fi
+
+exec java \
+  -classpath "$WRAPPER_JAR" \
+  "-Dmaven.multiModuleProjectDirectory=$MAVEN_PROJECTBASEDIR" \
+  $MAVEN_OPTS \
+  "$WRAPPER_LAUNCHER" "$@"

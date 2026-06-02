@@ -1,0 +1,23 @@
+<h2 (click)="toggleAccordion()">
+   <span [ngSwitch]="id_bet"> 
+      <span *ngSwitchCase="'1020'">{{ id_bet }} - Escolhido</span>
+      <span *ngSwitchCase="'1030'">{{ id_bet }} - Aleatório</span>
+      <span *ngSwitchCase="'1040'">{{ id_bet }} - Desdobramento</span>
+   </span>
+
+   <span class="arrow" *ngIf="isMenuOpen">&#9650;</span>
+   <span class="arrow" *ngIf="!isMenuOpen">&#9660;</span>
+</h2>
+<div [ngClass]="{'active': this.isMenuOpen, 'inactive': !this.isMenuOpen, 'bg-success': status == '1', 'bg-danger': status == '0'}">
+<!-- , status ? 'success' : 'danger'  ?  : 'inactive-->
+   <strong>Números do cartão:</strong> <br /><span> {{ numbers }}</span>  <br />
+   <strong>Status de pagamento:</strong>
+   <span *ngIf="status=='1'"> Pago</span>
+   <span *ngIf="status=='0'"> Pendente</span>
+
+   <p>&nbsp;</p>
+   <ion-row justify-content-end>  
+      <ion-icon name="trash-outline" slot="end"></ion-icon>
+      <ion-button id="btnSpara" size="small" color="danger" (click)="broadcastId(id)">Apagar cartão</ion-button>
+   </ion-row>
+</div>

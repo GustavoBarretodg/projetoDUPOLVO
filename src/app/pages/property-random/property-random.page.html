@@ -1,0 +1,39 @@
+<ion-content>
+  <div class="main_content_div">
+
+
+    <div class="back_image" >
+      <img src="assets/imgs/dupolvo-logo.png">
+
+      <div class="blue_back_div" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="blue_div">
+      <ion-label class="head_lbl">Escolha a quantidade de cartões (Aleatório)</ion-label>
+
+      <ion-list>
+        <ion-item>
+          <ion-select placeholder="Selecione" #qtdCard>
+            <ion-select-option value="1">1 cartão</ion-select-option>
+            <ion-select-option value="5">5 cartões</ion-select-option>
+            <ion-select-option value="10">10 cartões</ion-select-option>
+            <ion-select-option value="15">15 cartões</ion-select-option>
+            <ion-select-option value="20">20 cartões</ion-select-option>
+            <ion-select-option value="30">30 cartões</ion-select-option>
+            <ion-select-option value="33">33 cartões</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <div class="btn_div">
+        <ion-button (click)="onSave(qtdCard)" expand="block">
+          Gerar
+        </ion-button>
+      </div>
+      <p>&nbsp;</p>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "realEstate",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

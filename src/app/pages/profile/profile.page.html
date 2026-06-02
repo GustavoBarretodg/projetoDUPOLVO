@@ -1,0 +1,28 @@
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="back_image" >
+      <img src="assets/imgs/dupolvo-logo.png">
+    </div>
+
+    <div class="blue_div">
+      <ion-label class="head_lbl">Perfil</ion-label>
+      
+      <ion-label class="small_lbl">Nome</ion-label>
+      <ion-input type="text" placeholder="Nome" [value]="user.name" [disabled]="isDisabled" #name></ion-input>
+
+      <ion-label class="small_lbl">E-mail</ion-label>
+      <ion-input type="text" placeholder="E-mail" [value]="user.email" [disabled]="true" #email></ion-input>
+
+      <ion-label class="small_lbl">Telefone</ion-label>
+      <ion-input type="text" placeholder="Telefone" [value]="user.phone" [disabled]="isDisabled" #phone></ion-input>
+
+      <ion-button (click)="onUpdate(name, phone)" expand="block" >
+        {{btnText}}
+      </ion-button>
+
+      <p>&nbsp;</p>
+
+    </div>
+  </div>
+</ion-content>

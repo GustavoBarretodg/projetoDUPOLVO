@@ -1,0 +1,37 @@
+# Node / Ionic / Angular
+node_modules/
+dist/
+www/
+.angular/
+
+# Capacitor
+platforms/android/app/build/
+platforms/ios/
+
+# Maven / Spring Boot
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env / Secrets
+.env
+*.env
+backend/src/main/resources/application-local.properties
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archives
+*.zip
+panaroma.zip

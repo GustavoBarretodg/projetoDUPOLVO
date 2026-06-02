@@ -1,0 +1,32 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+    
+    <div class="form_div">
+      <ion-label class="head_lbl">Forgot Password ?</ion-label>
+
+      <ion-label class="small_lbl">Email ID</ion-label>
+      <ion-input type="text" placeholder="Email ID"></ion-input>
+
+      <ion-label class="small_lbl" *ngIf="otp == true">Email OTP</ion-label>
+      <ion-input type="text" *ngIf="otp == true" placeholder="Email OTP"></ion-input>
+
+      <ion-button (click)="SendOtp()" *ngIf="otp == false" expand="block">
+        Send OTP
+      </ion-button>
+
+      <ion-button (click)="verify()" *ngIf="otp == true" expand="block">
+        Verify
+      </ion-button>
+
+    </div>
+  </div>
+</ion-content>

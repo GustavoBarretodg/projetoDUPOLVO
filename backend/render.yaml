@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: dupolvo-api
+    runtime: java
+    plan: free
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/dupolvo-api-1.0.0.jar"
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: dupolvo-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: dupolvo-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: dupolvo-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: dupolvo-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: dupolvo-db
+          property: password
+
+databases:
+  - name: dupolvo-db
+    plan: free
+    databaseName: dupolvo

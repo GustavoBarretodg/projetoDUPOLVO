@@ -1,0 +1,21 @@
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="back_image" >
+      <img src="assets/imgs/dupolvo-logo.png">
+    </div>
+
+    <div class="blue_div">
+      <ion-label class="head_lbl">Meus cartões</ion-label>
+
+      <app-accordion 
+        *ngFor="let card of cards" 
+        id="{{ card.id }}" 
+        id_bet="{{ card.id_bet }}" 
+        numbers="{{ card.numbers }}" 
+        status="{{ card.status }}" 
+        (change)="captureId($event)"></app-accordion>
+
+    </div>
+  </div>
+</ion-content>
