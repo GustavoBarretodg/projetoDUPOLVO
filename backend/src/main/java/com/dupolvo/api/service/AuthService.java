@@ -55,6 +55,6 @@ public class AuthService {
         userRepository.save(user);
 
         response.put("message", "user_created");
-        return response;''
+        return response;
     }
 }
