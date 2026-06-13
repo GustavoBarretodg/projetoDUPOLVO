@@ -2,6 +2,10 @@
   command = "npm install && npm run build"
   publish = "www"
 
+[build.environment]
+  NODE_VERSION = "18"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
