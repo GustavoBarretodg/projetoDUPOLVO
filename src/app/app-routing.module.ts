@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -12,18 +13,22 @@ const routes: Routes = [
   },
   {
     path: 'home',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'property-detail',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/property-detail/property-detail.module').then(m => m.PropertyDetailPageModule)
   },
   {
     path: 'property-random',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/property-random/property-random.module').then(m => m.PropertyRandomPageModule)
   },
   {
     path: 'property-unfolding',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/property-unfolding/property-unfolding.module').then(m => m.PropertyUnfoldingPageModule)
   },
   {
@@ -44,9 +49,11 @@ const routes: Routes = [
   },
   {
     path: 'profile',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
   },
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
