@@ -1,4 +1,3 @@
-
 package com.dupolvo.api.service;
 
 import com.dupolvo.api.model.User;
@@ -15,10 +14,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public Map<String, Object> login(String email, String password) {
@@ -38,7 +39,10 @@ public class AuthService {
             return response;
         }
 
+        String token = jwtService.generateToken(user.getId(), user.getEmail());
+
         response.put("message", "authenticated_user");
+        response.put("token", token);
         response.put("data", user);
         return response;
     }

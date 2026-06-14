@@ -43,6 +43,7 @@ export class LoginPage implements OnInit {
     this.authSvc.login(params).subscribe((res) => {
       if(res.message === 'authenticated_user') {
         this.storage.set('user', res.data);
+        this.storage.set('token', res.token);
 
         this.showToast('Usuário autenticado com sucesso');
 
