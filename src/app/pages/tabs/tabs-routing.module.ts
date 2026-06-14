@@ -30,6 +30,18 @@ const routes: Routes = [
         loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule)
       },
       {
+        path: 'property-detail',
+        loadChildren: () => import('../property-detail/property-detail.module').then(m => m.PropertyDetailPageModule)
+      },
+      {
+        path: 'property-random',
+        loadChildren: () => import('../property-random/property-random.module').then(m => m.PropertyRandomPageModule)
+      },
+      {
+        path: 'property-unfolding',
+        loadChildren: () => import('../property-unfolding/property-unfolding.module').then(m => m.PropertyUnfoldingPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'

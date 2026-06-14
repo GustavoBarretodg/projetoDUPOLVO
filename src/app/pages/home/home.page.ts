@@ -20,14 +20,14 @@ export class HomePage implements OnInit {
   }
 
   goToChose() {
-    this.router.navigate(['/property-detail']);
+    this.router.navigate(['/tabs/property-detail']);
   }
 
   goToRandom() {
-    this.router.navigate(['/property-random']);
+    this.router.navigate(['/tabs/property-random']);
   }
 
   goToUnfolding() {
-    this.router.navigate(['/property-unfolding']);
+    this.router.navigate(['/tabs/property-unfolding']);
   }
 }
