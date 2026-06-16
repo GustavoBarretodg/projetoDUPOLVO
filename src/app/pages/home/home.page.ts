@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DummyService } from 'src/app/services/dummy.service';
 import { Router } from '@angular/router';
+import { GAME_LIST, GameConfig } from 'src/app/shared/game-config';
 
 @Component({
   selector: 'app-home',
@@ -9,25 +9,17 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-  homes;
-  plt;
-  constructor(private dummy: DummyService, private router: Router) {
-    this.plt = localStorage.getItem('platform');
-    this.homes = this.dummy.homes;
+  games: GameConfig[] = GAME_LIST;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {}
+
+  goToCards() {
+    this.router.navigate(['/tabs/card']);
   }
 
-  ngOnInit() {
-  }
-
-  goToChose() {
-    this.router.navigate(['/tabs/property-detail']);
-  }
-
-  goToRandom() {
-    this.router.navigate(['/tabs/property-random']);
-  }
-
-  goToUnfolding() {
-    this.router.navigate(['/tabs/property-unfolding']);
+  goToGame(gameKey: string) {
+    this.router.navigate(['/tabs/game-mode'], { queryParams: { game: gameKey } });
   }
 }

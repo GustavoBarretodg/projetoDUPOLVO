@@ -25,6 +25,9 @@ public class Bet {
     @Column(nullable = false)
     private Boolean paid = false;
 
+    @Column(name = "game_type")
+    private String gameType;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -39,4 +42,7 @@ public class Bet {
 
     public Boolean getPaid() { return paid; }
     public void setPaid(Boolean paid) { this.paid = paid; }
+
+    public String getGameType() { return gameType; }
+    public void setGameType(String gameType) { this.gameType = gameType; }
 }

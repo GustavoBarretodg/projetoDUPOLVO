@@ -42,6 +42,10 @@ const routes: Routes = [
         loadChildren: () => import('../property-unfolding/property-unfolding.module').then(m => m.PropertyUnfoldingPageModule)
       },
       {
+        path: 'game-mode',
+        loadChildren: () => import('../game-mode/game-mode.module').then(m => m.GameModePageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'

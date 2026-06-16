@@ -48,10 +48,18 @@ ion-content{
         .head_lbl{
             color: #FFFFFF;
             font-family: 'semi-bold';
-            font-size: 18px;
-            margin-top: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 10px;
             text-align: center;
-            padding-bottom: 30px;
+            position: relative;
+        }
+
+        .sub_lbl {
+            color: rgba(255,255,255,0.85);
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 16px;
             position: relative;
         }
 

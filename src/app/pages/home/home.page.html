@@ -1,34 +1,44 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>search-property</ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
-  <div class="main_content_div">
+  <div class="dashboard">
 
-    <div class="back_image" >
-      <img src="assets/imgs/dupolvo-logo.png">
+    <div class="dash-header">
+      <img src="assets/imgs/dupolvo-logo.png" class="dash-logo">
+      <h1 class="dash-title">DuPolvo</h1>
+      <p class="dash-subtitle">Sua plataforma de bolões</p>
     </div>
 
-    <div class="blue_div">
+    <div class="dash-body">
 
-      <ion-label class="head_lbl">Escolha uma opção de bolão</ion-label>
+      <div class="section">
+        <h3 class="section-title">Acesso Rápido</h3>
+        <div class="quick-card" (click)="goToCards()">
+          <div class="quick-icon">
+            <ion-icon name="albums-outline"></ion-icon>
+          </div>
+          <div class="quick-text">
+            <span class="quick-name">Meus Cartões</span>
+            <span class="quick-desc">Visualize seus jogos salvos</span>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="quick-arrow"></ion-icon>
+        </div>
+      </div>
 
-      <div class="btn_div">
-        <ion-button (click)="goToChose()" expand="block">
-          Escolher números
-        </ion-button>
-      </div>
-      <div class="btn_div">
-        <ion-button (click)="goToRandom()" expand="block">
-          Aleatório
-        </ion-button>
-      </div>
-      <div class="btn_div">
-        <ion-button (click)="goToUnfolding()" expand="block">
-          Desdobramento
-        </ion-button>
+      <div class="section">
+        <h3 class="section-title">Marcar Jogo</h3>
+        <p class="section-desc">Escolha a loteria para apostar</p>
+        <ion-grid class="games-grid">
+          <ion-row>
+            <ion-col size="6" *ngFor="let game of games">
+              <div class="game-card" (click)="goToGame(game.key)" [style.border-color]="game.color">
+                <div class="game-icon-wrap" [style.background]="game.color">
+                  <ion-icon [name]="game.icon"></ion-icon>
+                </div>
+                <span class="game-name">{{ game.name }}</span>
+                <span class="game-range">{{ game.min }}-{{ game.max }} | {{ game.minPick }}<ng-container *ngIf="game.minPick !== game.maxPick">–{{ game.maxPick }}</ng-container> nºs</span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
 
     </div>

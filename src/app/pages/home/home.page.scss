@@ -1,113 +1,165 @@
-ion-content{
-    --background: #FFFFFF;
-}    
-.main_content_div{
-    width: 100%;
-    ion-label {
-        display: block;
+ion-content {
+  --background: #F0F4F8;
+}
+
+.dashboard {
+  min-height: 100%;
+  padding-bottom: 80px;
+}
+
+.dash-header {
+  background: linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%);
+  padding: 40px 20px 30px;
+  text-align: center;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  box-shadow: 0 4px 15px rgba(47, 137, 197, 0.4);
+
+  .dash-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.15);
+    padding: 8px;
+  }
+
+  .dash-title {
+    color: #FFFFFF;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 10px 0 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .dash-subtitle {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.dash-body {
+  padding: 20px 16px 0;
+}
+
+.section {
+  margin-bottom: 24px;
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1A3D5C;
+    margin: 0 0 4px 4px;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: #6B8299;
+    margin: 0 0 12px 4px;
+  }
+}
+
+.quick-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+
+  .quick-icon {
+    width: 48px;
+    height: 48px;
+    background: #2F89C5;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 24px;
+      color: #FFFFFF;
+    }
+  }
+
+  .quick-text {
+    flex: 1;
+
+    .quick-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1A3D5C;
     }
 
-    .back_image{
-        width: 100%;
-        height: 45vh;
-        position: relative;
-        top: 30px;
+    .quick-desc {
+      display: block;
+      font-size: 13px;
+      color: #6B8299;
+      margin-top: 2px;
     }
+  }
 
-    .blue_div{
-        width: 100%;
-        padding: 16px;
-        border-top-left-radius: 35px;
-        border-top-right-radius: 35px;
-        margin-top: -30px;
-        position: fixed;
-        overflow: scroll;
-        background: #2F89C5;
-        height: 60vh;
+  .quick-arrow {
+    font-size: 20px;
+    color: #2F89C5;
+  }
+}
 
-        .head_lbl{
-            color: #FFFFFF;
-            font-family: 'semi-bold';
-            font-size: 18px;
-            margin-top: 15px;
-            text-align: center;
-            padding-bottom: 50px;
-            position: relative;
-        }
+.games-grid {
+  padding: 0;
 
-        .head_lbl_bottom {
-            font-family: 'semi-bold';
-            font-size: 15px;
-            margin-top: 15px;
-            text-align: center;
-            padding-bottom: 50px;
-            position: relative;
-        }
+  ion-col {
+    padding: 6px;
+  }
+}
 
-        .detail_lbl{
-            font-size: 15px;
-        }
+.game-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 2px solid #2F89C5;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition: transform 0.15s ease;
 
-        ion-grid{
-            padding: 0;
-            ion-col{
-                
-                .col_div{
-                    background: white; 
-                    display: block;
-                    margin: auto;
-                    height: 70px;
-                    width: 80px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;   
-                    border-radius: 15px;
-                }
-                ion-icon{
-                    font-size: 25px;
-                    // color: #707070;
-                }
-                ion-label {
-                    font-size: 14px;
-                    // color: gray;
-                }
-                .active{
-                    background: var(--ion-color-primary);
-                    ion-icon{
-                        font-size: 25px;
-                        color: white;
-                    }
-                    ion-label {
-                        font-size: 14px;
-                        color: white;
-                    }
-                }
-            }
-        }
+  &:active {
+    transform: scale(0.96);
+  }
 
-        ion-input{
-            border-radius: 5px;
-            height: 45px;
-            border: 1px solid #FFFFFF;
-            --padding-start: 8px;
-            margin-bottom: 10px;
-    
-            ion-icon{
-                font-size: 20px;
-                margin-left: 10px;
-                color: gray;
-            }
-        }
+  .game-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .btn_div{
-            margin-top: 20px;
-            text-align: right;
-            ion-button{
-                --border-radius: 5px;
-                --background: #FFFFFF;
-                color: #2F89C5
-            }
-        }
+    ion-icon {
+      font-size: 26px;
+      color: #FFFFFF;
     }
+  }
+
+  .game-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A3D5C;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .game-range {
+    font-size: 11px;
+    color: #6B8299;
+    text-align: center;
+  }
 }

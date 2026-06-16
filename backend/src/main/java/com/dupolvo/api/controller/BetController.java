@@ -23,7 +23,8 @@ public class BetController {
         Long idUser = Long.valueOf(body.get("id_user").toString());
         List<Integer> numbers = (List<Integer>) body.get("bet");
         Boolean paid = Integer.valueOf(body.get("paid").toString()) == 1;
-        return ResponseEntity.ok(betService.addBet(idBet, idUser, numbers, paid));
+        String gameType = body.containsKey("game_type") ? body.get("game_type").toString() : "LOTOFACIL";
+        return ResponseEntity.ok(betService.addBet(idBet, idUser, numbers, paid, gameType));
     }
 
     @PostMapping("/add-bet-random")
@@ -32,7 +33,8 @@ public class BetController {
         Long idUser = Long.valueOf(body.get("id_user").toString());
         int qtdCard = Integer.parseInt(body.get("qtd_card").toString());
         Boolean paid = Integer.valueOf(body.get("paid").toString()) == 1;
-        return ResponseEntity.ok(betService.addBetRandom(idBet, idUser, qtdCard, paid));
+        String gameType = body.containsKey("game_type") ? body.get("game_type").toString() : "LOTOFACIL";
+        return ResponseEntity.ok(betService.addBetRandom(idBet, idUser, qtdCard, paid, gameType));
     }
 
     @GetMapping("/get-bet")

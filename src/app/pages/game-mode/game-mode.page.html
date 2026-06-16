@@ -1,0 +1,61 @@
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="back_image">
+      <img src="assets/imgs/dupolvo-logo.png">
+      <div class="blue_back_div" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="blue_div">
+
+      <div class="game-badge" [style.background]="game?.color">
+        <ion-icon [name]="game?.icon"></ion-icon>
+      </div>
+
+      <ion-label class="head_lbl">{{ game?.name }}</ion-label>
+      <ion-label class="sub_lbl">Escolha como deseja apostar</ion-label>
+
+      <div class="game-info-chip">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <span>Marque {{ game?.minPick }}<ng-container *ngIf="game?.minPick !== game?.maxPick"> a {{ game?.maxPick }}</ng-container>
+          números de {{ game?.min }} a {{ game?.max }}</span>
+      </div>
+
+      <div class="mode-card" (click)="goToManual()">
+        <div class="mode-icon">
+          <ion-icon name="hand-left-outline"></ion-icon>
+        </div>
+        <div class="mode-text">
+          <h3>Escolher Números</h3>
+          <p>Selecione seus números manualmente</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="mode-arrow"></ion-icon>
+      </div>
+
+      <div class="mode-card" (click)="goToRandom()">
+        <div class="mode-icon">
+          <ion-icon name="shuffle-outline"></ion-icon>
+        </div>
+        <div class="mode-text">
+          <h3>Aleatório</h3>
+          <p>Gere cartões com números aleatórios</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="mode-arrow"></ion-icon>
+      </div>
+
+      <div class="mode-card" (click)="goToUnfolding()">
+        <div class="mode-icon">
+          <ion-icon name="git-branch-outline"></ion-icon>
+        </div>
+        <div class="mode-text">
+          <h3>Desdobramento</h3>
+          <p>Desdobre seus números em múltiplos cartões</p>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="mode-arrow"></ion-icon>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

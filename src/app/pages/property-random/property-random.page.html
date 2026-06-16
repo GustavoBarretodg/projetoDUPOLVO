@@ -1,17 +1,16 @@
 <ion-content>
   <div class="main_content_div">
 
-
-    <div class="back_image" >
+    <div class="back_image">
       <img src="assets/imgs/dupolvo-logo.png">
-
       <div class="blue_back_div" (click)="goBack()">
         <ion-icon name="chevron-back-outline"></ion-icon>
       </div>
     </div>
 
     <div class="blue_div">
-      <ion-label class="head_lbl">Escolha a quantidade de cartões (Aleatório)</ion-label>
+      <ion-label class="head_lbl">{{ gameConfig.name }}</ion-label>
+      <ion-label class="sub_lbl">Aleatório — escolha a quantidade de cartões</ion-label>
 
       <ion-list>
         <ion-item>
