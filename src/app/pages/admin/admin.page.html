@@ -1,0 +1,80 @@
+<ion-content>
+  <div class="admin-wrap">
+
+    <div class="admin-header">
+      <div class="admin-header-left">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <div>
+          <h1>Painel Admin</h1>
+          <p>{{ bets.length }} cartões no total</p>
+        </div>
+      </div>
+      <ion-button fill="clear" color="light" (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn" [class.active]="filter === 'all'" (click)="filter = 'all'">Todos</button>
+      <button class="filter-btn" [class.active]="filter === 'pending'" (click)="filter = 'pending'">Pendentes</button>
+      <button class="filter-btn" [class.active]="filter === 'paid'" (click)="filter = 'paid'">Pagos</button>
+      <button class="filter-btn" [class.active]="filter === 'processed'" (click)="filter = 'processed'">Processados</button>
+    </div>
+
+    <div class="loading-wrap" *ngIf="loading">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Carregando cartões...</p>
+    </div>
+
+    <div class="empty-wrap" *ngIf="!loading && filteredBets.length === 0">
+      <ion-icon name="albums-outline"></ion-icon>
+      <p>Nenhum cartão encontrado</p>
+    </div>
+
+    <div class="bet-list" *ngIf="!loading">
+      <div class="bet-card" *ngFor="let bet of filteredBets">
+
+        <div class="bet-card-header">
+          <div class="game-badge" [style.background]="getGameConfig(bet.game_type).color">
+            <ion-icon [name]="getGameConfig(bet.game_type).icon"></ion-icon>
+            <span>{{ getGameConfig(bet.game_type).name }}</span>
+          </div>
+          <div class="status-badge" [style.background]="getStatusColor(bet)">
+            {{ getStatusLabel(bet) }}
+          </div>
+        </div>
+
+        <div class="user-info">
+          <ion-icon name="person-outline"></ion-icon>
+          <div>
+            <span class="user-name">{{ bet.user_name }}</span>
+            <span class="user-email">{{ bet.user_email }}</span>
+          </div>
+        </div>
+
+        <div class="numbers-wrap">
+          <span class="ball" *ngFor="let n of bet.bet">{{ n }}</span>
+        </div>
+
+        <div class="bet-actions">
+          <button class="action-btn" [class.active]="bet.paid" (click)="togglePaid(bet)">
+            <ion-icon [name]="bet.paid ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
+            {{ bet.paid ? 'Pago' : 'Marcar Pago' }}
+          </button>
+          <button class="action-btn success" [class.active]="bet.processed" [disabled]="!bet.paid" (click)="toggleProcessed(bet)">
+            <ion-icon [name]="bet.processed ? 'trophy' : 'trophy-outline'"></ion-icon>
+            {{ bet.processed ? 'Processado' : 'Processar' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="loadBets()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
+</ion-content>

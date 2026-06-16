@@ -1,0 +1,227 @@
+ion-content {
+  --background: #F0F4F8;
+}
+
+.admin-wrap {
+  min-height: 100%;
+  padding-bottom: 90px;
+}
+
+.admin-header {
+  background: linear-gradient(135deg, #1A3D5C 0%, #2F89C5 100%);
+  padding: 50px 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    > ion-icon {
+      font-size: 36px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    h1 {
+      color: #FFFFFF;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 2px;
+    }
+
+    p {
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      margin: 0;
+    }
+  }
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+
+  .filter-btn {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #D0DDE8;
+    background: transparent;
+    color: #6B8299;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &.active {
+      background: #2F89C5;
+      border-color: #2F89C5;
+      color: #FFFFFF;
+    }
+  }
+}
+
+.loading-wrap, .empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 12px;
+  color: #6B8299;
+
+  ion-icon {
+    font-size: 48px;
+    color: #C4D3E0;
+  }
+
+  p {
+    font-size: 15px;
+    margin: 0;
+  }
+}
+
+.bet-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bet-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  overflow: hidden;
+
+  .bet-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid #F0F4F8;
+
+    .game-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 10px;
+      padding: 5px 10px;
+
+      ion-icon {
+        font-size: 16px;
+        color: #FFFFFF;
+      }
+
+      span {
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+
+    .status-badge {
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #F8FAFB;
+
+    ion-icon {
+      font-size: 20px;
+      color: #6B8299;
+    }
+
+    .user-name {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1A3D5C;
+    }
+
+    .user-email {
+      display: block;
+      font-size: 12px;
+      color: #6B8299;
+    }
+  }
+
+  .numbers-wrap {
+    padding: 12px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    .ball {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #2F89C5;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .bet-actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px 14px;
+
+    .action-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 9px;
+      border-radius: 10px;
+      border: 1.5px solid #D0DDE8;
+      background: transparent;
+      color: #6B8299;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+
+      ion-icon {
+        font-size: 16px;
+      }
+
+      &.active {
+        background: #2F89C5;
+        border-color: #2F89C5;
+        color: #FFFFFF;
+      }
+
+      &.success.active {
+        background: #209869;
+        border-color: #209869;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

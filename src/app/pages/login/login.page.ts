@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/forgot']);
   }
 
-  onLogin(email, password) {
+  onLogin(email: any, password: any) {
     if(!email.value.trim() || !password.value.trim()) {
       this.showToast('Favor informar login e senha!');
       return false;
@@ -47,8 +47,12 @@ export class LoginPage implements OnInit {
 
         this.showToast('Usuário autenticado com sucesso');
 
-        this.router.navigate(['/tabs/home']);
-      } 
+        if (res.data && res.data.role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/tabs/home']);
+        }
+      }
       else if(res.message === 'not_found_user') {
         this.showToast('Usuário não encontrado.');
       }
@@ -56,12 +60,12 @@ export class LoginPage implements OnInit {
         this.showToast('Falha ao autenticar o usuário, verifique os dados e tente novamente.');
       }
 
-    }, (error) => {
+    }, () => {
       this.showToast('Falha ao autenticar o usuário.');
     });
   }
 
-  showToast(msg) {
+  showToast(msg: string) {
     this.toastCtrl.create({
       message: msg,
       duration: 2000

@@ -28,6 +28,9 @@ public class Bet {
     @Column(name = "game_type")
     private String gameType;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean processed = false;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -45,4 +48,7 @@ public class Bet {
 
     public String getGameType() { return gameType; }
     public void setGameType(String gameType) { this.gameType = gameType; }
+
+    public Boolean getProcessed() { return processed; }
+    public void setProcessed(Boolean processed) { this.processed = processed; }
 }
