@@ -29,6 +29,7 @@ public class AuthController {
         String email = body.get("email");
         String phone = body.get("phone");
         String password = body.get("password");
-        return ResponseEntity.ok(authService.register(name, email, phone, password));
+        String role = body.get("role");
+        return ResponseEntity.ok(authService.register(name, email, phone, password, role));
     }
 }

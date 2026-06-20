@@ -6,6 +6,7 @@ import com.dupolvo.api.repository.BetRepository;
 import com.dupolvo.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -31,6 +32,8 @@ public class AdminService {
             item.put("bet", bet.getBet());
             item.put("paid", bet.getPaid());
             item.put("processed", bet.getProcessed());
+            item.put("paid_at", bet.getPaidAt());
+            item.put("processed_at", bet.getProcessedAt());
 
             Optional<User> userOpt = userRepository.findById(bet.getIdUser());
             userOpt.ifPresent(u -> {
@@ -56,8 +59,14 @@ public class AdminService {
         }
 
         Bet bet = betOpt.get();
-        if (paid != null) bet.setPaid(paid);
-        if (processed != null) bet.setProcessed(processed);
+        if (paid != null) {
+            bet.setPaid(paid);
+            bet.setPaidAt(paid ? LocalDateTime.now() : null);
+        }
+        if (processed != null) {
+            bet.setProcessed(processed);
+            bet.setProcessedAt(processed ? LocalDateTime.now() : null);
+        }
         betRepository.save(bet);
 
         response.put("message", "bet_updated");

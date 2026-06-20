@@ -102,6 +102,27 @@ ion-content{
             }
         }
 
+        .role_div {
+            margin-bottom: 14px;
+
+            .role_lbl {
+                color: #FFFFFF;
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+
+            ion-segment {
+                --background: rgba(255,255,255,0.2);
+                border-radius: 8px;
+
+                ion-segment-button {
+                    --color: rgba(255,255,255,0.7);
+                    --color-checked: #2F89C5;
+                    --indicator-color: #FFFFFF;
+                }
+            }
+        }
+
         .btn_div{
             margin-top: 30px;
             text-align: right;

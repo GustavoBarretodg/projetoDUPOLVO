@@ -1,21 +1,52 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image" >
+    <div class="back_image">
       <img src="assets/imgs/dupolvo-logo.png">
     </div>
 
     <div class="blue_div">
       <ion-label class="head_lbl">Meus cartões</ion-label>
 
-      <app-accordion 
-        *ngFor="let card of cards" 
-        id="{{ card.id }}" 
-        id_bet="{{ card.id_bet }}" 
-        numbers="{{ card.numbers }}" 
-        status="{{ card.status }}" 
-        (change)="captureId($event)"></app-accordion>
+      <div *ngIf="cards.length === 0" class="empty_msg">
+        <ion-label>Você ainda não possui cartões.</ion-label>
+      </div>
 
+      <div class="card_item" *ngFor="let card of cards">
+
+        <div class="card_header">
+          <span class="game_name">{{ getGameName(card.gameType) }}</span>
+          <span class="card_id">#{{ card.id }}</span>
+        </div>
+
+        <div class="numbers_row">
+          <span class="number_bubble" *ngFor="let n of card.bet">{{ n }}</span>
+        </div>
+
+        <div class="status_row">
+          <ion-badge [color]="card.paid ? 'success' : 'warning'">
+            {{ card.paid ? 'Pago' : 'Pendente' }}
+          </ion-badge>
+          <ion-badge *ngIf="card.processed" color="primary">Processado</ion-badge>
+        </div>
+
+        <div class="record_row" *ngIf="card.paidAt || card.processedAt">
+          <ion-label *ngIf="card.paidAt" class="record_lbl">
+            Pago em: {{ card.paidAt | date:'dd/MM/yyyy HH:mm' }}
+          </ion-label>
+          <ion-label *ngIf="card.processedAt" class="record_lbl">
+            Processado em: {{ card.processedAt | date:'dd/MM/yyyy HH:mm' }}
+          </ion-label>
+        </div>
+
+        <div class="remove_row">
+          <ion-button fill="clear" color="danger" size="small" (click)="removeCard(card.id)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Remover
+          </ion-button>
+        </div>
+
+      </div>
     </div>
   </div>
 </ion-content>

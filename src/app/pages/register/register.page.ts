@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterPage implements OnInit {
 
+  selectedRole: string = 'USER';
+
   constructor(
     private router: Router,
     private toastCtrl: ToastController,
@@ -23,29 +25,29 @@ export class RegisterPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  async onRegister(name, email, phone, password) {
+  async onRegister(name: any, email: any, phone: any, password: any) {
     if(!name.value.trim() || !email.value.trim() || !phone.value.trim() || !password.value.trim()) {
       this.showToast('Favor preencher todos os campos!');
       return false;
     }
 
     let params: any = {
-      name: name.value.trim(), 
-      email: email.value.trim(), 
-      phone: phone.value.trim(), 
-      password: password.value.trim()
+      name: name.value.trim(),
+      email: email.value.trim(),
+      phone: phone.value.trim(),
+      password: password.value.trim(),
+      role: this.selectedRole
     };
 
-    this.authSvc.register(params).subscribe((res) => {
-      //console.log('res=', res);
+    this.authSvc.register(params).subscribe(() => {
       this.showToast('Usuário criado com sucesso!');
       this.router.navigate(['/login']);
-    }, (error) => {
+    }, () => {
       this.showToast('Falha ao criar Usuário');
     });
   }
 
-  showToast(msg) {
+  showToast(msg: string) {
     this.toastCtrl.create({
       message: msg,
       duration: 2000

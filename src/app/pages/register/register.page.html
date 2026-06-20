@@ -20,6 +20,18 @@
       <ion-input type="text" placeholder="Telefone" #phone clearInput></ion-input>
       <ion-input type="password" placeholder="Senha" #password clearInput></ion-input>
 
+      <div class="role_div">
+        <ion-label class="role_lbl">Tipo de conta</ion-label>
+        <ion-segment [(ngModel)]="selectedRole" color="primary">
+          <ion-segment-button value="USER">
+            <ion-label>Usuário</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="ADMIN">
+            <ion-label>Admin</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
       <div class="btn_div">
         <ion-button (click)="onRegister(name, email, phone, password)" expand="block">
           Salvar

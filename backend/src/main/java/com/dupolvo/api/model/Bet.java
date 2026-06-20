@@ -2,6 +2,7 @@ package com.dupolvo.api.model;
 
 import com.dupolvo.api.converter.ListConverter;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,12 @@ public class Bet {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean processed = false;
 
+    @Column(name = "paid_at")
+    private LocalDateTime paidAt;
+
+    @Column(name = "processed_at")
+    private LocalDateTime processedAt;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -51,4 +58,10 @@ public class Bet {
 
     public Boolean getProcessed() { return processed; }
     public void setProcessed(Boolean processed) { this.processed = processed; }
+
+    public LocalDateTime getPaidAt() { return paidAt; }
+    public void setPaidAt(LocalDateTime paidAt) { this.paidAt = paidAt; }
+
+    public LocalDateTime getProcessedAt() { return processedAt; }
+    public void setProcessedAt(LocalDateTime processedAt) { this.processedAt = processedAt; }
 }

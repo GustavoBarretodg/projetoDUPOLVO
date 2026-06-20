@@ -47,7 +47,7 @@ public class AuthService {
         return response;
     }
 
-    public Map<String, Object> register(String name, String email, String phone, String password) {
+    public Map<String, Object> register(String name, String email, String phone, String password, String role) {
         Map<String, Object> response = new HashMap<>();
 
         User user = new User();
@@ -55,6 +55,9 @@ public class AuthService {
         user.setEmail(email);
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
+        if (role != null && (role.equals("ADMIN") || role.equals("USER"))) {
+            user.setRole(role);
+        }
 
         userRepository.save(user);
 
