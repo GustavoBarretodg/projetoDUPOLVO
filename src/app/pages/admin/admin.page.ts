@@ -85,8 +85,8 @@ export class AdminPage implements OnInit {
   }
 
   async logout() {
-    await this.storage.remove('user');
-    await this.storage.remove('token');
+    await this.storage.removeItem('user');
+    await this.storage.removeItem('token');
     this.router.navigate(['/login']);
   }
 
