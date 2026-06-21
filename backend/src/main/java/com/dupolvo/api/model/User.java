@@ -30,6 +30,9 @@ public class User {
     @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'USER'")
     private String role = "USER";
 
+    @Column(nullable = false)
+    private String city = "";
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -50,4 +53,7 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
 }

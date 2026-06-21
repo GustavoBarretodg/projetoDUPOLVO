@@ -25,8 +25,8 @@ export class RegisterPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  async onRegister(name: any, email: any, phone: any, password: any) {
-    if(!name.value.trim() || !email.value.trim() || !phone.value.trim() || !password.value.trim()) {
+  async onRegister(name: any, email: any, phone: any, password: any, city: any) {
+    if (!name.value.trim() || !email.value.trim() || !phone.value.trim() || !password.value.trim() || !city.value.trim()) {
       this.showToast('Favor preencher todos os campos!');
       return false;
     }
@@ -36,12 +36,21 @@ export class RegisterPage implements OnInit {
       email: email.value.trim(),
       phone: phone.value.trim(),
       password: password.value.trim(),
-      role: this.selectedRole
+      role: this.selectedRole,
+      city: city.value.trim()
     };
 
     this.authSvc.register(params).subscribe((res) => {
       if (res.message === 'email_already_exists') {
         this.showToast('Este e-mail já está cadastrado.');
+        return;
+      }
+      if (res.message === 'city_admin_exists') {
+        this.showToast(`Já existe um administrador em ${params.city}.`);
+        return;
+      }
+      if (res.message === 'city_required') {
+        this.showToast('Informe a cidade.');
         return;
       }
       this.showToast('Usuário criado com sucesso!');

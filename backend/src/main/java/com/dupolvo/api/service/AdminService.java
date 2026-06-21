@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -20,11 +21,19 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-    public Map<String, Object> getAllBets() {
+    public Map<String, Object> getAllBets(String adminCity) {
         Map<String, Object> response = new HashMap<>();
-        List<Bet> bets = betRepository.findAll();
+
+        List<User> cityUsers = userRepository.findByCity(adminCity);
+        Set<Long> cityUserIds = cityUsers.stream().map(User::getId).collect(Collectors.toSet());
+
+        List<Bet> bets = betRepository.findAll().stream()
+                .filter(b -> cityUserIds.contains(b.getIdUser()))
+                .collect(Collectors.toList());
 
         List<Map<String, Object>> result = new ArrayList<>();
+        Map<Long, User> userCache = cityUsers.stream().collect(Collectors.toMap(User::getId, u -> u));
+
         for (Bet bet : bets) {
             Map<String, Object> item = new LinkedHashMap<>();
             item.put("id", bet.getId());
@@ -35,12 +44,13 @@ public class AdminService {
             item.put("paid_at", bet.getPaidAt());
             item.put("processed_at", bet.getProcessedAt());
 
-            Optional<User> userOpt = userRepository.findById(bet.getIdUser());
-            userOpt.ifPresent(u -> {
+            User u = userCache.get(bet.getIdUser());
+            if (u != null) {
                 item.put("user_name", u.getName());
                 item.put("user_email", u.getEmail());
                 item.put("user_phone", u.getPhone());
-            });
+                item.put("user_city", u.getCity());
+            }
 
             result.add(item);
         }

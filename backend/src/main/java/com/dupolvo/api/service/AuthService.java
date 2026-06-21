@@ -39,7 +39,7 @@ public class AuthService {
             return response;
         }
 
-        String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole());
+        String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole(), user.getCity());
 
         response.put("message", "authenticated_user");
         response.put("token", token);
@@ -47,12 +47,27 @@ public class AuthService {
         return response;
     }
 
-    public Map<String, Object> register(String name, String email, String phone, String password, String role) {
+    public Map<String, Object> register(String name, String email, String phone, String password, String role, String city) {
         Map<String, Object> response = new HashMap<>();
+
+        if (city == null || city.isBlank()) {
+            response.put("message", "city_required");
+            return response;
+        }
 
         if (userRepository.findByEmail(email).isPresent()) {
             response.put("message", "email_already_exists");
             return response;
+        }
+
+        String normalizedRole = (role != null && role.equals("ADMIN")) ? "ADMIN" : "USER";
+
+        if (normalizedRole.equals("ADMIN")) {
+            boolean adminExists = userRepository.findByCityAndRole(city, "ADMIN").isPresent();
+            if (adminExists) {
+                response.put("message", "city_admin_exists");
+                return response;
+            }
         }
 
         User user = new User();
@@ -60,9 +75,8 @@ public class AuthService {
         user.setEmail(email);
         user.setPhone(phone);
         user.setPassword(passwordEncoder.encode(password));
-        if (role != null && (role.equals("ADMIN") || role.equals("USER"))) {
-            user.setRole(role);
-        }
+        user.setRole(normalizedRole);
+        user.setCity(city.trim());
 
         userRepository.save(user);
 

@@ -30,6 +30,7 @@ public class AuthController {
         String phone = body.get("phone");
         String password = body.get("password");
         String role = body.get("role");
-        return ResponseEntity.ok(authService.register(name, email, phone, password, role));
+        String city = body.get("city");
+        return ResponseEntity.ok(authService.register(name, email, phone, password, role, city));
     }
 }

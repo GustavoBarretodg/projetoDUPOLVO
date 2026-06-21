@@ -19,6 +19,7 @@
       <ion-input type="text" placeholder="E-mail" #email clearInput></ion-input>
       <ion-input type="text" placeholder="Telefone" #phone clearInput></ion-input>
       <ion-input type="password" placeholder="Senha" #password clearInput></ion-input>
+      <ion-input type="text" placeholder="Cidade" #city clearInput></ion-input>
 
       <div class="role_div">
         <ion-label class="role_lbl">Tipo de conta</ion-label>
@@ -33,7 +34,7 @@
       </div>
 
       <div class="btn_div">
-        <ion-button (click)="onRegister(name, email, phone, password)" expand="block">
+        <ion-button (click)="onRegister(name, email, phone, password, city)" expand="block">
           Salvar
         </ion-button>
       </div>
