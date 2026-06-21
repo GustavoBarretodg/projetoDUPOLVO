@@ -50,6 +50,11 @@ public class AuthService {
     public Map<String, Object> register(String name, String email, String phone, String password, String role) {
         Map<String, Object> response = new HashMap<>();
 
+        if (userRepository.findByEmail(email).isPresent()) {
+            response.put("message", "email_already_exists");
+            return response;
+        }
+
         User user = new User();
         user.setName(name);
         user.setEmail(email);

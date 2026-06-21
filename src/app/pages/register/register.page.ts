@@ -39,11 +39,15 @@ export class RegisterPage implements OnInit {
       role: this.selectedRole
     };
 
-    this.authSvc.register(params).subscribe(() => {
+    this.authSvc.register(params).subscribe((res) => {
+      if (res.message === 'email_already_exists') {
+        this.showToast('Este e-mail já está cadastrado.');
+        return;
+      }
       this.showToast('Usuário criado com sucesso!');
       this.router.navigate(['/login']);
     }, () => {
-      this.showToast('Falha ao criar Usuário');
+      this.showToast('Falha ao criar Usuário. Tente novamente.');
     });
   }
 
