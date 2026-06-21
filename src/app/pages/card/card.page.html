@@ -7,7 +7,7 @@
 
     <div class="blue_div">
       <ion-label class="head_lbl">Carrinho de apostas</ion-label>
-      <p class="subtitle_lbl">Apostas aguardando pagamento</p>
+      <p class="subtitle_lbl">Apostas pendentes de confirmação</p>
 
       <div *ngIf="cards.length === 0" class="empty_msg">
         <ion-icon name="cart-outline" class="empty_icon"></ion-icon>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="card_footer">
-          <ion-badge color="warning">Aguardando pagamento</ion-badge>
+          <ion-badge color="warning">Pendente</ion-badge>
           <ion-button fill="clear" color="danger" size="small" (click)="removeCard(card.id)">
             <ion-icon name="trash-outline" slot="start"></ion-icon>
             Remover
