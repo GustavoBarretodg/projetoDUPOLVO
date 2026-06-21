@@ -18,13 +18,13 @@ ion-content {
     }
   }
 
-  .blue_div {
+  .green_div {
     width: 100%;
     padding: 16px 16px 100px;
     border-top-left-radius: 35px;
     border-top-right-radius: 35px;
     margin-top: -30px;
-    background: #2F89C5;
+    background: #209869;
     min-height: 60vh;
 
     .head_lbl {
@@ -75,7 +75,7 @@ ion-content {
       border-radius: 12px;
       padding: 14px;
       margin-bottom: 14px;
-      border-left: 5px solid #2F89C5;
+      border-left: 5px solid #209869;
 
       .card_header {
         display: flex;
@@ -117,8 +117,26 @@ ion-content {
 
       .card_footer {
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 6px;
         align-items: center;
+
+        ion-badge {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+        }
+
+        .dates {
+          margin-left: auto;
+          text-align: right;
+
+          .date_lbl {
+            display: block;
+            font-size: 11px;
+            color: #777;
+          }
+        }
       }
     }
 

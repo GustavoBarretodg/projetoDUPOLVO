@@ -46,6 +46,10 @@ const routes: Routes = [
         loadChildren: () => import('../game-mode/game-mode.module').then(m => m.GameModePageModule)
       },
       {
+        path: 'confirmed',
+        loadChildren: () => import('../confirmed/confirmed.module').then(m => m.ConfirmedPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'

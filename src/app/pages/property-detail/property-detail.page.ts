@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { BetService } from '../../services/bet.service';
 import { StorageService } from '../../services/storage.service';
-import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
+import { GAME_CONFIGS, GameConfig, getBetPrice, formatBRL } from 'src/app/shared/game-config';
 
 @Component({
   selector: 'app-property-detail',
@@ -24,6 +24,7 @@ export class PropertyDetailPage implements OnInit {
     private router: Router,
     private navCtrl: NavController,
     private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
     private betSvc: BetService,
     private storage: StorageService
   ) {}
@@ -52,7 +53,7 @@ export class PropertyDetailPage implements OnInit {
     this.navCtrl.back();
   }
 
-  onSave() {
+  async onSave() {
     if (this.numbers.length < this.gameConfig.minPick || this.numbers.length > this.gameConfig.maxPick) {
       const msg = this.gameConfig.minPick === this.gameConfig.maxPick
         ? `Escolha exatamente ${this.gameConfig.minPick} números`
@@ -61,6 +62,19 @@ export class PropertyDetailPage implements OnInit {
       return;
     }
 
+    const price = getBetPrice(this.gameKey, this.numbers.length);
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar aposta',
+      message: `<strong>${this.gameConfig.name}</strong> com ${this.numbers.length} dezenas custa <strong>${formatBRL(price)}</strong>.<br><br>Deseja adicionar ao carrinho? O pagamento será confirmado pelo administrador.`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Adicionar', handler: () => this.saveBet() }
+      ]
+    });
+    await alert.present();
+  }
+
+  private saveBet() {
     const params: any = {
       id_bet: 1020,
       id_user: this.user.id,
@@ -74,10 +88,10 @@ export class PropertyDetailPage implements OnInit {
         this.showToast('Esse cartão já existe, escolha outros números!');
         return;
       }
-      this.showToast('Cartão salvo com sucesso!');
-      this.router.navigate(['/tabs/home']);
+      this.showToast('Cartão adicionado ao carrinho!');
+      this.router.navigate(['/tabs/card']);
     }, () => {
-      this.showToast('Falha ao criar Cartão');
+      this.showToast('Falha ao criar cartão');
     });
   }
 

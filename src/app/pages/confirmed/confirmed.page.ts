@@ -5,11 +5,11 @@ import { StorageService } from '../../services/storage.service';
 import { GAME_CONFIGS, getBetPrice, formatBRL } from 'src/app/shared/game-config';
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.page.html',
-  styleUrls: ['./card.page.scss'],
+  selector: 'app-confirmed',
+  templateUrl: './confirmed.page.html',
+  styleUrls: ['./confirmed.page.scss'],
 })
-export class CardPage implements OnInit {
+export class ConfirmedPage implements OnInit {
 
   public user: any = {};
   public cards: any[] = [];
@@ -41,7 +41,7 @@ export class CardPage implements OnInit {
 
     this.betSvc.getBet({ id_user: this.user.id }).subscribe((res) => {
       const all = res.data || [];
-      this.cards = all.filter((b: any) => !b.paid);
+      this.cards = all.filter((b: any) => b.paid);
       this.calcTotal();
     }, () => {
       this.showToast('Falha ao buscar cartões');
@@ -55,21 +55,12 @@ export class CardPage implements OnInit {
     this.totalValue = formatBRL(total);
   }
 
-  removeCard(id: number) {
-    this.betSvc.removeBet({ id_bet: id }).subscribe(() => {
-      this.showToast('Cartão removido!');
-      this.getUserBet();
-    }, () => {
-      this.showToast('Falha ao remover cartão');
-    });
-  }
-
   getGameName(gameType: string): string {
     return GAME_CONFIGS[gameType]?.name || gameType || 'Loteria';
   }
 
   getGameColor(gameType: string): string {
-    return GAME_CONFIGS[gameType]?.color || '#2F89C5';
+    return GAME_CONFIGS[gameType]?.color || '#209869';
   }
 
   getCardPrice(card: any): string {

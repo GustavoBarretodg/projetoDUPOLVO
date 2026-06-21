@@ -6,40 +6,30 @@
     </div>
 
     <div class="blue_div">
-      <ion-label class="head_lbl">Meus cartões</ion-label>
+      <ion-label class="head_lbl">Carrinho de apostas</ion-label>
+      <p class="subtitle_lbl">Apostas aguardando pagamento</p>
 
       <div *ngIf="cards.length === 0" class="empty_msg">
-        <ion-label>Você ainda não possui cartões.</ion-label>
+        <ion-icon name="cart-outline" class="empty_icon"></ion-icon>
+        <ion-label>Nenhuma aposta no carrinho.</ion-label>
+        <p>Vá para a aba Apostar para escolher seus jogos!</p>
       </div>
 
       <div class="card_item" *ngFor="let card of cards">
 
-        <div class="card_header">
-          <span class="game_name">{{ getGameName(card.gameType) }}</span>
-          <span class="card_id">#{{ card.id }}</span>
+        <div class="card_header" [style.borderLeftColor]="getGameColor(card.gameType)">
+          <span class="game_name" [style.color]="getGameColor(card.gameType)">{{ getGameName(card.gameType) }}</span>
+          <span class="card_price">{{ getCardPrice(card) }}</span>
         </div>
 
         <div class="numbers_row">
-          <span class="number_bubble" *ngFor="let n of card.bet">{{ n }}</span>
+          <span class="number_bubble"
+                *ngFor="let n of card.bet"
+                [style.background]="getGameColor(card.gameType)">{{ n }}</span>
         </div>
 
-        <div class="status_row">
-          <ion-badge [color]="card.paid ? 'success' : 'warning'">
-            {{ card.paid ? 'Pago' : 'Pendente' }}
-          </ion-badge>
-          <ion-badge *ngIf="card.processed" color="primary">Processado</ion-badge>
-        </div>
-
-        <div class="record_row" *ngIf="card.paidAt || card.processedAt">
-          <ion-label *ngIf="card.paidAt" class="record_lbl">
-            Pago em: {{ card.paidAt | date:'dd/MM/yyyy HH:mm' }}
-          </ion-label>
-          <ion-label *ngIf="card.processedAt" class="record_lbl">
-            Processado em: {{ card.processedAt | date:'dd/MM/yyyy HH:mm' }}
-          </ion-label>
-        </div>
-
-        <div class="remove_row">
+        <div class="card_footer">
+          <ion-badge color="warning">Aguardando pagamento</ion-badge>
           <ion-button fill="clear" color="danger" size="small" (click)="removeCard(card.id)">
             <ion-icon name="trash-outline" slot="start"></ion-icon>
             Remover
@@ -47,6 +37,12 @@
         </div>
 
       </div>
+
+      <div class="total_bar" *ngIf="cards.length > 0">
+        <span class="total_label">Total do carrinho</span>
+        <span class="total_value">{{ totalValue }}</span>
+      </div>
+
     </div>
   </div>
 </ion-content>

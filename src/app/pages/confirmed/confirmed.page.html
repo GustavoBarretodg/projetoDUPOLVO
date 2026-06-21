@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="back_image">
+      <img src="assets/imgs/dupolvo-logo.png">
+    </div>
+
+    <div class="green_div">
+      <ion-label class="head_lbl">Apostas confirmadas</ion-label>
+      <p class="subtitle_lbl">Pagamentos aprovados pelo administrador</p>
+
+      <div *ngIf="cards.length === 0" class="empty_msg">
+        <ion-icon name="checkmark-circle-outline" class="empty_icon"></ion-icon>
+        <ion-label>Nenhuma aposta confirmada ainda.</ion-label>
+        <p>Suas apostas aparecerão aqui após o pagamento ser aprovado pelo administrador.</p>
+      </div>
+
+      <div class="card_item" *ngFor="let card of cards">
+
+        <div class="card_header" [style.borderLeftColor]="getGameColor(card.gameType)">
+          <span class="game_name" [style.color]="getGameColor(card.gameType)">{{ getGameName(card.gameType) }}</span>
+          <span class="card_price">{{ getCardPrice(card) }}</span>
+        </div>
+
+        <div class="numbers_row">
+          <span class="number_bubble"
+                *ngFor="let n of card.bet"
+                [style.background]="getGameColor(card.gameType)">{{ n }}</span>
+        </div>
+
+        <div class="card_footer">
+          <ion-badge color="success">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            Pago
+          </ion-badge>
+          <ion-badge *ngIf="card.processed" color="primary">
+            <ion-icon name="ribbon-outline"></ion-icon>
+            Processado
+          </ion-badge>
+          <div class="dates">
+            <span *ngIf="card.paidAt" class="date_lbl">Pago em: {{ card.paidAt | date:'dd/MM/yyyy' }}</span>
+            <span *ngIf="card.processedAt" class="date_lbl">Processado em: {{ card.processedAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="total_bar" *ngIf="cards.length > 0">
+        <span class="total_label">Total investido</span>
+        <span class="total_value">{{ totalValue }}</span>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
