@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Painel Master</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="section_header">
+    <ion-icon name="time-outline"></ion-icon>
+    <span>Administradores aguardando aprovação</span>
+    <ion-button fill="clear" size="small" (click)="loadPending()">
+      <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div *ngIf="loading" class="loading_msg">
+    <ion-spinner name="crescent"></ion-spinner>
+    <span>Carregando...</span>
+  </div>
+
+  <div *ngIf="!loading && pendingAdmins.length === 0" class="empty_msg">
+    <ion-icon name="checkmark-circle-outline"></ion-icon>
+    <p>Nenhum administrador aguardando aprovação.</p>
+  </div>
+
+  <ion-card *ngFor="let admin of pendingAdmins" class="admin_card">
+    <ion-card-content>
+      <div class="admin_info">
+        <ion-icon name="person-circle-outline" class="admin_icon"></ion-icon>
+        <div class="admin_details">
+          <strong>{{ admin.name }}</strong>
+          <span>{{ admin.email }}</span>
+          <span>{{ admin.phone }}</span>
+          <ion-badge color="primary">{{ admin.city }}</ion-badge>
+        </div>
+      </div>
+      <div class="admin_actions">
+        <ion-button color="success" size="small" (click)="approveAdmin(admin)">
+          <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+          Aprovar
+        </ion-button>
+        <ion-button color="danger" fill="outline" size="small" (click)="rejectAdmin(admin)">
+          <ion-icon name="close-outline" slot="start"></ion-icon>
+          Rejeitar
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="danger_zone">
+    <ion-item-divider>
+      <ion-label color="danger">Zona de perigo</ion-label>
+    </ion-item-divider>
+    <ion-button expand="block" color="danger" fill="outline" (click)="confirmReset()">
+      <ion-icon name="trash-outline" slot="start"></ion-icon>
+      Apagar todos os usuários e apostas
+    </ion-button>
+    <p class="danger_note">Use apenas para resetar o banco. Sua conta não será apagada.</p>
+  </div>
+
+</ion-content>

@@ -1,78 +1,54 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>search-property</ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image" >
-      <img src="assets/imgs/dupolvo-logo.png">
-    </div>
+    <!-- Tela de boas-vindas -->
+    <div class="welcome_screen" *ngIf="!showForm">
 
-    <div class="blue_div">
+      <div class="logo_area">
+        <img src="assets/imgs/dupolvo-logo.png" class="logo_img">
+      </div>
 
-      <ion-label class="head_lbl">Entre com a sua conta</ion-label>
+      <div class="text_area">
+        <h1 class="tagline">Aposte com segurança e praticidade</h1>
+        <p class="description">Faça suas apostas de forma simples e acompanhe os resultados em tempo real.</p>
+      </div>
 
-      <ion-input type="text" placeholder="E-mail" #email></ion-input>
-      <ion-input type="password" placeholder="Senha" #password></ion-input>
-
-      <div class="btn_div">
-        <ion-button (click)="onLogin(email, password)" expand="block">
+      <div class="actions_area">
+        <ion-button expand="block" class="btn_primary" (click)="showForm = true">
           Entrar
         </ion-button>
+        <ion-button expand="block" fill="outline" class="btn_outline" (click)="goToRegister()">
+          Criar conta
+        </ion-button>
       </div>
 
-      <ion-label class="head_lbl_bottom" (click)="goToRegister()">Ainda não possui cadastro, clique aqui</ion-label>
-
     </div>
-  </div>
-</ion-content>
 
-<!-- <ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-title></ion-title>
-  </ion-toolbar>
-</ion-header>
+    <!-- Formulário de login -->
+    <div class="login_screen" *ngIf="showForm">
 
-<ion-content>
-  <div class="main_content_div">
-    
-    <div class="blue_div">
+      <div class="back_image">
+        <img src="assets/imgs/dupolvo-logo.png">
+      </div>
 
-      <div class="form_div">
-        <ion-label class="head_lbl">Login</ion-label>
+      <div class="blue_div">
 
-        <ion-label class="small_lbl">Email ID</ion-label>
-        <ion-input type="text" placeholder="Email ID"></ion-input>
+        <ion-label class="head_lbl">Entre com a sua conta</ion-label>
 
-        <ion-label class="small_lbl">Passsword</ion-label>
-        <ion-input type="text" placeholder="Password"></ion-input>
+        <ion-input type="text" placeholder="E-mail" #email></ion-input>
+        <ion-input type="password" placeholder="Senha" #password></ion-input>
 
-        <ion-label class="forgot" (click)="goToForgot()">Forgot password ?</ion-label>
-
-        <ion-button (click)="goToHome()" expand="block">
-          Login
-        </ion-button>
-
-        <ion-label class="or_lbl">Or Continue with</ion-label>
-
-        <div class="flex_div">
-          <ion-button class="fb">
-            <ion-icon name="logo-facebook"></ion-icon>
-          </ion-button>
-
-          <ion-button class="gp">
-            <ion-icon name="logo-google"></ion-icon>
+        <div class="btn_div">
+          <ion-button (click)="onLogin(email, password)" expand="block">
+            Entrar
           </ion-button>
         </div>
-      </div>
 
-      <div class="bottom_div">
-        <ion-label (click)="goToRegister()">Don't have an account ? Sign Up.</ion-label>
+        <ion-label class="head_lbl_bottom" (click)="goToRegister()">Ainda não possui cadastro, clique aqui</ion-label>
+        <ion-label class="back_lbl" (click)="showForm = false">← Voltar</ion-label>
+
       </div>
     </div>
 
   </div>
-</ion-content> -->
+</ion-content>

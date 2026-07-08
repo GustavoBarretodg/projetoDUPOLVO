@@ -11,6 +11,8 @@ import { StorageService } from '../../services/storage.service';
 })
 export class LoginPage implements OnInit {
 
+  showForm = false;
+
   constructor(
     private router: Router,
     private toastCtrl: ToastController,

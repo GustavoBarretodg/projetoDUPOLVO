@@ -33,6 +33,9 @@ public class User {
     @Column(nullable = false)
     private String city = "";
 
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
+    private String status = "ACTIVE";
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -56,4 +59,7 @@ public class User {
 
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

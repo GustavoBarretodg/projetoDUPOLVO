@@ -26,7 +26,6 @@ public class AuthService {
         Map<String, Object> response = new HashMap<>();
 
         Optional<User> userOpt = userRepository.findByEmail(email);
-
         if (userOpt.isEmpty()) {
             response.put("message", "not_found_user");
             return response;
@@ -36,6 +35,11 @@ public class AuthService {
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             response.put("message", "failed_to_authenticate_user");
+            return response;
+        }
+
+        if ("PENDING".equals(user.getStatus())) {
+            response.put("message", "account_pending");
             return response;
         }
 
@@ -70,6 +74,8 @@ public class AuthService {
             }
         }
 
+        String status = normalizedRole.equals("ADMIN") ? "PENDING" : "ACTIVE";
+
         User user = new User();
         user.setName(name);
         user.setEmail(email);
@@ -77,10 +83,11 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(normalizedRole);
         user.setCity(city.trim());
+        user.setStatus(status);
 
         userRepository.save(user);
 
-        response.put("message", "user_created");
+        response.put("message", normalizedRole.equals("ADMIN") ? "admin_pending_approval" : "user_created");
         return response;
     }
 }
