@@ -24,13 +24,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "email_verified")
+    @Column(name = "email_verified", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean emailVerified = false;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'USER'")
     private String role = "USER";
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT ''")
     private String city = "";
 
     @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
