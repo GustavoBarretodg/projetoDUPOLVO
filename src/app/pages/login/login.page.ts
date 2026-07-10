@@ -61,6 +61,9 @@ export class LoginPage implements OnInit {
       else if(res.message === 'failed_to_authenticate_user') {
         this.showToast('Falha ao autenticar o usuário, verifique os dados e tente novamente.');
       }
+      else if(res.message === 'account_pending') {
+        this.showToast('Sua conta está aguardando aprovação do administrador.');
+      }
 
     }, () => {
       this.showToast('Falha ao autenticar o usuário.');
