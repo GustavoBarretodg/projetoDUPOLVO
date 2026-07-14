@@ -143,33 +143,30 @@ ion-content{
 
     ul {
         list-style-type: none;
-        position: relative;
-        bottom: 20px;
-        left: -16px;
-    }
-
-    li {
-        width: 20px;
-        height: 20px;
-        border: 1px solid #FFFFFF;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        padding: 0;
+        margin: 0 0 16px 0;
     }
 
     .ball {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         text-align: center;
-        line-height: 40px;
+        line-height: 44px;
         color: #FFFFFF;
-        border-radius: 100%;
-        float: left;
-        background-color: none;
-        margin: 10px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        margin: 0 auto;
         font-weight: 500;
+        cursor: pointer;
     }
 
     .highlighted {
-        background-color: #FFFFFF;;
+        background-color: #FFFFFF;
         color: #266E9E;
+        border-color: #FFFFFF;
     }
 }
 
