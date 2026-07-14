@@ -1,0 +1,60 @@
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="back_image">
+      <img src="assets/imgs/dupolvo-logo.png">
+      <div class="blue_back_div" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="blue_div">
+      <ion-label class="head_lbl">Bolões Disponíveis</ion-label>
+      <p class="subtitle_lbl">Escolha um bolão e entre para concorrer!</p>
+
+      <div *ngIf="loading" class="loading_wrap">
+        <ion-spinner name="crescent" color="light"></ion-spinner>
+        <p>Carregando bolões...</p>
+      </div>
+
+      <div *ngIf="!loading && bolaos.length === 0" class="empty_msg">
+        <ion-icon name="people-outline" class="empty_icon"></ion-icon>
+        <ion-label>Nenhum bolão disponível no momento.</ion-label>
+        <p>Aguarde um administrador criar um bolão.</p>
+      </div>
+
+      <div class="bolao_card" *ngFor="let bolao of bolaos">
+
+        <div class="bolao_header" [style.borderLeftColor]="getGameColor(bolao.gameType)">
+          <span class="game_name" [style.color]="getGameColor(bolao.gameType)">{{ getGameName(bolao.gameType) }}</span>
+          <span class="bolao_price">R$ {{ bolao.pricePerQuota | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="bolao_name">{{ bolao.name }}</div>
+
+        <div class="bolao_info">
+          <div class="info_item">
+            <ion-icon name="people-outline"></ion-icon>
+            <span>{{ bolao.takenQuotas }}/{{ bolao.maxQuotas }} cotas</span>
+          </div>
+          <div class="info_item">
+            <ion-icon name="ticket-outline"></ion-icon>
+            <span>{{ bolao.availableQuotas }} disponíveis</span>
+          </div>
+        </div>
+
+        <ion-button expand="block" class="join_btn"
+                    [disabled]="bolao.availableQuotas === 0 || isJoined(bolao.id)"
+                    [color]="isJoined(bolao.id) ? 'success' : 'light'"
+                    (click)="joinBolao(bolao)">
+          <ion-icon slot="start" [name]="isJoined(bolao.id) ? 'checkmark-circle-outline' : 'enter-outline'"></ion-icon>
+          {{ isJoined(bolao.id) ? 'Inscrito — aguardando pagamento' : bolao.availableQuotas === 0 ? 'Bolão Lotado' : 'Entrar no Bolão' }}
+        </ion-button>
+
+      </div>
+
+      <p>&nbsp;</p>
+    </div>
+
+  </div>
+</ion-content>

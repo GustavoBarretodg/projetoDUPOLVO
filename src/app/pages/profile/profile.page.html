@@ -17,8 +17,17 @@
       <ion-label class="small_lbl">Telefone</ion-label>
       <ion-input type="text" placeholder="Telefone" [value]="user.phone" [disabled]="isDisabled" #phone></ion-input>
 
-      <ion-button (click)="onUpdate(name, phone)" expand="block" >
+      <ion-button (click)="onUpdate(name, phone)" expand="block">
         {{btnText}}
+      </ion-button>
+
+      <div class="section_divider">
+        <span>Bolão</span>
+      </div>
+
+      <ion-button expand="block" class="bolao_btn" (click)="goToBolao()">
+        <ion-icon slot="start" name="people-outline"></ion-icon>
+        Entrar no Bolão
       </ion-button>
 
       <p>&nbsp;</p>

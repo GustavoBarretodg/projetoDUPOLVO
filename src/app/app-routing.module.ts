@@ -58,6 +58,11 @@ const routes: Routes = [
     canActivate: [AdminGuard],
     loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminPageModule)
   },
+  {
+    path: 'bolao',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/bolao/bolao.module').then(m => m.BolaoPageModule)
+  },
 ];
 
 @NgModule({

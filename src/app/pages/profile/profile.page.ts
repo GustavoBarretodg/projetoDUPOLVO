@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 
@@ -20,10 +21,9 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private toastCtrl: ToastController,
-    private storage: StorageService
-  ) { 
-
-  }
+    private storage: StorageService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.getUser();
@@ -39,7 +39,11 @@ export class ProfilePage implements OnInit {
     }); 
   }
 
-  onUpdate(name, phone) {
+  goToBolao() {
+    this.router.navigate(['/bolao']);
+  }
+
+  onUpdate(name: any, phone: any) {
     if(!name.value.trim() || !phone.value.trim()) {
       this.showToast('Favor informar o nome e telefone!');
       return false;
@@ -56,7 +60,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  showToast(msg) {
+  showToast(msg: string) {
     this.toastCtrl.create({
       message: msg,
       duration: 2000
