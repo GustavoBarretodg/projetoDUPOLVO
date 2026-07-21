@@ -4,6 +4,9 @@ dist/
 www/
 .angular/
 
+# Accidental nested clone
+dupolvov2/
+
 # Capacitor
 platforms/android/app/build/
 platforms/ios/
