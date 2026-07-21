@@ -108,6 +108,10 @@ ion-content {
     font-size: 20px;
     color: #2F89C5;
   }
+
+  & + .quick-card {
+    margin-top: 12px;
+  }
 }
 
 .games-grid {

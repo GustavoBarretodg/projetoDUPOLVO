@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 
@@ -21,8 +20,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private toastCtrl: ToastController,
-    private storage: StorageService,
-    private router: Router
+    private storage: StorageService
   ) { }
 
   ngOnInit() {
@@ -37,10 +35,6 @@ export class ProfilePage implements OnInit {
     .catch((error) => { 
         console.log(error); 
     }); 
-  }
-
-  goToBolao() {
-    this.router.navigate(['/bolao']);
   }
 
   onUpdate(name: any, phone: any) {

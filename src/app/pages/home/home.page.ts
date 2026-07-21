@@ -19,6 +19,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/tabs/card']);
   }
 
+  goToBolao() {
+    this.router.navigate(['/bolao']);
+  }
+
   goToGame(gameKey: string) {
     this.router.navigate(['/tabs/game-mode'], { queryParams: { game: gameKey } });
   }

@@ -69,7 +69,7 @@ export class BolaoPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/tabs/profile']);
+    this.router.navigate(['/tabs/home']);
   }
 
   showToast(msg: string) {
