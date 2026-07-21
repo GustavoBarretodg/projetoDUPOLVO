@@ -38,10 +38,11 @@ public class AuthService {
             return response;
         }
 
-        if ("PENDING".equals(user.getStatus())) {
-            response.put("message", "account_pending");
-            return response;
-        }
+        // TEMP: bloqueio de aprovacao de admin desativado para testes - REVERTER antes de deixar em producao
+        // if ("PENDING".equals(user.getStatus())) {
+        //     response.put("message", "account_pending");
+        //     return response;
+        // }
 
         String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole(), user.getCity());
 

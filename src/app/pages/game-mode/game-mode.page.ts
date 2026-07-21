@@ -20,10 +20,16 @@ export class GameModePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.gameKey = params['game'] || 'LOTOFACIL';
-      this.game = GAME_CONFIGS[this.gameKey] || GAME_CONFIGS['LOTOFACIL'];
-    });
+    this.loadGame();
+  }
+
+  ionViewWillEnter() {
+    this.loadGame();
+  }
+
+  loadGame() {
+    this.gameKey = this.route.snapshot.queryParams['game'] || 'LOTOFACIL';
+    this.game = GAME_CONFIGS[this.gameKey] || GAME_CONFIGS['LOTOFACIL'];
   }
 
   goBack() {

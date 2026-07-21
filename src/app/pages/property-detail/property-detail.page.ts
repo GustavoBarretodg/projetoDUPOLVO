@@ -31,16 +31,22 @@ export class PropertyDetailPage implements OnInit {
 
   ngOnInit() {
     this.getUser();
-    this.route.queryParams.subscribe(params => {
-      this.gameKey = params['game'] || 'LOTOFACIL';
-      this.gameConfig = GAME_CONFIGS[this.gameKey] || GAME_CONFIGS['LOTOFACIL'];
-      this.numberRange = Array.from(
-        { length: this.gameConfig.max - this.gameConfig.min + 1 },
-        (_, i) => i + this.gameConfig.min
-      );
-      this.numbers = [];
-      this.counter = 0;
-    });
+    this.loadGame();
+  }
+
+  ionViewWillEnter() {
+    this.loadGame();
+  }
+
+  loadGame() {
+    this.gameKey = this.route.snapshot.queryParams['game'] || 'LOTOFACIL';
+    this.gameConfig = GAME_CONFIGS[this.gameKey] || GAME_CONFIGS['LOTOFACIL'];
+    this.numberRange = Array.from(
+      { length: this.gameConfig.max - this.gameConfig.min + 1 },
+      (_, i) => i + this.gameConfig.min
+    );
+    this.numbers = [];
+    this.counter = 0;
   }
 
   getUser() {

@@ -29,10 +29,16 @@ export class PropertyUnfoldingPage implements OnInit {
 
   ngOnInit() {
     this.getUser();
-    this.route.queryParams.subscribe(params => {
-      this.gameKey = params['game'] || 'LOTOFACIL';
-      this.gameConfig = GAME_CONFIGS[this.gameKey] || GAME_CONFIGS['LOTOFACIL'];
-    });
+    this.loadGame();
+  }
+
+  ionViewWillEnter() {
+    this.loadGame();
+  }
+
+  loadGame() {
+    this.gameKey = this.route.snapshot.queryParams['game'] || 'LOTOFACIL';
+    this.gameConfig = GAME_CONFIGS[this.gameKey] || GAME_CONFIGS['LOTOFACIL'];
   }
 
   getUser() {
