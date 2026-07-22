@@ -82,6 +82,18 @@ ion-content {
         }
       }
 
+      .bolao_tag {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--dp-blue-gray, #6B8299);
+        font-size: 13px;
+        margin-bottom: 10px;
+
+        ion-icon { font-size: 16px; }
+        strong { color: var(--dp-blue-900, #1A3D5C); font-family: $dp-font-semibold; }
+      }
+
       .numbers_row {
         display: flex;
         flex-wrap: wrap;
@@ -113,10 +125,19 @@ ion-content {
       border-radius: $dp-radius-card;
       padding: 14px 16px;
       margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       @include dp-border(2px, #FFFFFF);
+
+      .total_row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & + .total_row {
+          margin-top: 8px;
+          padding-top: 8px;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+      }
 
       .total_label {
         color: #fff;
@@ -124,12 +145,26 @@ ion-content {
         font-weight: 600;
       }
 
+      .total_count,
       .total_value {
         color: #fff;
         font-size: 18px;
         font-family: $dp-font-bold;
         font-weight: 700;
       }
+    }
+
+    .checkout_btn {
+      margin-top: 16px;
+      --background: #FFFFFF;
+      --color: var(--dp-blue-500, #2F89C5);
+    }
+
+    .checkout_note {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 12px;
+      margin: 8px 0 0;
     }
   }
 }

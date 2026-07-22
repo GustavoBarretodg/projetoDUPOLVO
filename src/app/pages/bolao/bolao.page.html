@@ -25,6 +25,14 @@
 
         <div class="bolao_name">{{ bolao.name }}</div>
 
+        <div class="bolao_creator">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <span>Criado por <strong>{{ bolao.creatorName }}</strong></span>
+          <span class="dot">·</span>
+          <ion-icon name="location-outline"></ion-icon>
+          <span>{{ bolao.creatorCity }}</span>
+        </div>
+
         <div class="bolao_info">
           <div class="info_item">
             <ion-icon name="people-outline"></ion-icon>

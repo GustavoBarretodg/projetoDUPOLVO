@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { BetService } from '../../services/bet.service';
 import { StorageService } from '../../services/storage.service';
 import { GAME_CONFIGS, getBetPrice, formatBRL } from 'src/app/shared/game-config';
@@ -17,6 +17,7 @@ export class CardPage implements OnInit {
 
   constructor(
     private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
     private betSvc: BetService,
     private storage: StorageService
   ) {}
@@ -50,9 +51,23 @@ export class CardPage implements OnInit {
 
   calcTotal() {
     const total = this.cards.reduce((sum: number, card: any) => {
-      return sum + getBetPrice(card.gameType, card.bet?.length || 0);
+      return sum + this.getCardRawPrice(card);
     }, 0);
     this.totalValue = formatBRL(total);
+  }
+
+  private getCardRawPrice(card: any): number {
+    if (card.bolaoId) return card.quotaPrice || 0;
+    return getBetPrice(card.gameType, card.bet?.length || 0);
+  }
+
+  async finalizeOrder() {
+    const alert = await this.alertCtrl.create({
+      header: 'Pedido registrado',
+      message: `Seu pedido com <strong>${this.cards.length} cartão(ns)</strong> totalizando <strong>${this.totalValue}</strong> foi registrado.<br><br>O pagamento ainda é feito manualmente: aguarde o administrador confirmar para suas apostas aparecerem em "Confirmados".`,
+      buttons: ['Entendi']
+    });
+    await alert.present();
   }
 
   removeCard(id: number) {
@@ -73,8 +88,7 @@ export class CardPage implements OnInit {
   }
 
   getCardPrice(card: any): string {
-    const price = getBetPrice(card.gameType, card.bet?.length || 0);
-    return formatBRL(price);
+    return formatBRL(this.getCardRawPrice(card));
   }
 
   showToast(msg: string) {

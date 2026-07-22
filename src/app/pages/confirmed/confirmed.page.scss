@@ -82,6 +82,18 @@ ion-content {
         }
       }
 
+      .bolao_tag {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 13px;
+        margin-bottom: 10px;
+
+        ion-icon { font-size: 16px; }
+        strong { color: #209869; font-family: $dp-font-semibold; }
+      }
+
       .numbers_row {
         display: flex;
         flex-wrap: wrap;

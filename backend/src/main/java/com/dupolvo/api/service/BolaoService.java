@@ -1,8 +1,10 @@
 package com.dupolvo.api.service;
 
+import com.dupolvo.api.model.Bet;
 import com.dupolvo.api.model.Bolao;
 import com.dupolvo.api.model.BolaoParticipant;
 import com.dupolvo.api.model.User;
+import com.dupolvo.api.repository.BetRepository;
 import com.dupolvo.api.repository.BolaoParticipantRepository;
 import com.dupolvo.api.repository.BolaoRepository;
 import com.dupolvo.api.repository.UserRepository;
@@ -13,16 +15,21 @@ import java.util.*;
 @Service
 public class BolaoService {
 
+    private static final Long BOLAO_ID_BET = 1040L;
+
     private final BolaoRepository bolaoRepository;
     private final BolaoParticipantRepository participantRepository;
     private final UserRepository userRepository;
+    private final BetRepository betRepository;
 
     public BolaoService(BolaoRepository bolaoRepository,
                         BolaoParticipantRepository participantRepository,
-                        UserRepository userRepository) {
+                        UserRepository userRepository,
+                        BetRepository betRepository) {
         this.bolaoRepository = bolaoRepository;
         this.participantRepository = participantRepository;
         this.userRepository = userRepository;
+        this.betRepository = betRepository;
     }
 
     public Map<String, Object> createBolao(Long adminId, String name, String gameType,
@@ -80,6 +87,18 @@ public class BolaoService {
         participant.setUserName(userOpt.map(User::getName).orElse(""));
         participant.setUserEmail(userOpt.map(User::getEmail).orElse(""));
         participantRepository.save(participant);
+
+        Bet bet = new Bet();
+        bet.setIdBet(BOLAO_ID_BET);
+        bet.setIdUser(userId);
+        bet.setBet(new ArrayList<>());
+        bet.setPaid(false);
+        bet.setGameType(bolao.getGameType());
+        bet.setBolaoId(bolao.getId());
+        bet.setBolaoName(bolao.getName());
+        bet.setQuotaPrice(bolao.getPricePerQuota());
+        betRepository.save(bet);
+
         response.put("message", "joined");
         return response;
     }
@@ -136,6 +155,11 @@ public class BolaoService {
         map.put("status", b.getStatus());
         map.put("takenQuotas", taken);
         map.put("availableQuotas", b.getMaxQuotas() - taken);
+
+        Optional<User> admin = userRepository.findById(b.getAdminId());
+        map.put("creatorName", admin.map(User::getName).orElse("Administrador"));
+        map.put("creatorCity", admin.map(User::getCity).filter(c -> c != null && !c.isBlank()).orElse("Local não informado"));
+
         return map;
     }
 }

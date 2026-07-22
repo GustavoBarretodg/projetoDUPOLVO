@@ -29,6 +29,15 @@ public class Bet {
     @Column(name = "game_type")
     private String gameType;
 
+    @Column(name = "bolao_id")
+    private Long bolaoId;
+
+    @Column(name = "bolao_name")
+    private String bolaoName;
+
+    @Column(name = "quota_price")
+    private Double quotaPrice;
+
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean processed = false;
 
@@ -55,6 +64,15 @@ public class Bet {
 
     public String getGameType() { return gameType; }
     public void setGameType(String gameType) { this.gameType = gameType; }
+
+    public Long getBolaoId() { return bolaoId; }
+    public void setBolaoId(Long bolaoId) { this.bolaoId = bolaoId; }
+
+    public String getBolaoName() { return bolaoName; }
+    public void setBolaoName(String bolaoName) { this.bolaoName = bolaoName; }
+
+    public Double getQuotaPrice() { return quotaPrice; }
+    public void setQuotaPrice(Double quotaPrice) { this.quotaPrice = quotaPrice; }
 
     public Boolean getProcessed() { return processed; }
     public void setProcessed(Boolean processed) { this.processed = processed; }

@@ -18,7 +18,12 @@
           <span class="card_price">{{ getCardPrice(card) }}</span>
         </div>
 
-        <div class="numbers_row">
+        <div class="bolao_tag" *ngIf="card.bolaoId">
+          <ion-icon name="people-outline"></ion-icon>
+          <span>Cota do bolão: <strong>{{ card.bolaoName }}</strong></span>
+        </div>
+
+        <div class="numbers_row" *ngIf="!card.bolaoId">
           <span class="number_bubble"
                 *ngFor="let n of card.bet"
                 [style.background]="getGameColor(card.gameType)">{{ n }}</span>

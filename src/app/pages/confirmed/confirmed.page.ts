@@ -50,9 +50,14 @@ export class ConfirmedPage implements OnInit {
 
   calcTotal() {
     const total = this.cards.reduce((sum: number, card: any) => {
-      return sum + getBetPrice(card.gameType, card.bet?.length || 0);
+      return sum + this.getCardRawPrice(card);
     }, 0);
     this.totalValue = formatBRL(total);
+  }
+
+  private getCardRawPrice(card: any): number {
+    if (card.bolaoId) return card.quotaPrice || 0;
+    return getBetPrice(card.gameType, card.bet?.length || 0);
   }
 
   getGameName(gameType: string): string {
@@ -64,8 +69,7 @@ export class ConfirmedPage implements OnInit {
   }
 
   getCardPrice(card: any): string {
-    const price = getBetPrice(card.gameType, card.bet?.length || 0);
-    return formatBRL(price);
+    return formatBRL(this.getCardRawPrice(card));
   }
 
   showToast(msg: string) {
