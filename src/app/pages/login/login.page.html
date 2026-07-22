@@ -14,10 +14,10 @@
       </div>
 
       <div class="actions_area">
-        <ion-button expand="block" class="btn_primary" (click)="showForm = true">
+        <ion-button expand="block" class="btn_primary dp-pill-btn" (click)="showForm = true">
           Entrar
         </ion-button>
-        <ion-button expand="block" fill="outline" class="btn_outline" (click)="goToRegister()">
+        <ion-button expand="block" fill="outline" class="btn_outline dp-pill-btn" (click)="goToRegister()">
           Criar conta
         </ion-button>
       </div>
@@ -27,11 +27,7 @@
     <!-- Formulário de login -->
     <div class="login_screen" *ngIf="showForm">
 
-      <div class="back_image">
-        <img src="assets/imgs/dupolvo-logo.png">
-      </div>
-
-      <div class="blue_div">
+      <app-page-header [showBack]="false">
 
         <ion-label class="head_lbl">Entre com a sua conta</ion-label>
 
@@ -39,7 +35,7 @@
         <ion-input type="password" placeholder="Senha" #password></ion-input>
 
         <div class="btn_div">
-          <ion-button (click)="onLogin(email, password)" expand="block">
+          <ion-button class="dp-pill-btn" (click)="onLogin(email, password)" expand="block">
             Entrar
           </ion-button>
         </div>
@@ -47,7 +43,7 @@
         <ion-label class="head_lbl_bottom" (click)="goToRegister()">Ainda não possui cadastro, clique aqui</ion-label>
         <ion-label class="back_lbl" (click)="showForm = false">← Voltar</ion-label>
 
-      </div>
+      </app-page-header>
     </div>
 
   </div>

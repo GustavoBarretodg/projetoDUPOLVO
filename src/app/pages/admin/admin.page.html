@@ -9,14 +9,14 @@
           <p>{{ bets.length }} cartões no total</p>
         </div>
       </div>
-      <ion-button fill="clear" color="light" (click)="logout()">
+      <ion-button class="dp-pill-btn" fill="clear" color="light" (click)="logout()">
         <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </div>
 
     <div class="filter-bar">
-      <button class="filter-btn" [class.active]="view === 'apostas'" (click)="view = 'apostas'">Apostas</button>
-      <button class="filter-btn" [class.active]="view === 'bolaos'" (click)="switchToBolao()">Bolões</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="view === 'apostas'" (click)="view = 'apostas'">Apostas</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="view === 'bolaos'" (click)="switchToBolao()">Bolões</button>
     </div>
 
     <!-- ===== SEÇÃO BOLÕES ===== -->
@@ -33,7 +33,7 @@
         </ion-select>
         <ion-input [(ngModel)]="newBolao.pricePerQuota" type="number" placeholder="Preço da cota (R$)" class="bolao-input"></ion-input>
         <ion-input [(ngModel)]="newBolao.maxQuotas" type="number" placeholder="Nº máximo de cotas" class="bolao-input"></ion-input>
-        <ion-button expand="block" (click)="createBolao()">
+        <ion-button class="dp-pill-btn" expand="block" (click)="createBolao()">
           <ion-icon slot="start" name="add-circle-outline"></ion-icon>
           Criar Bolão
         </ion-button>
@@ -63,13 +63,13 @@
             <span class="p-status" [class.confirmed]="p.status === 'CONFIRMED'">
               {{ p.status === 'CONFIRMED' ? 'Pago ✓' : 'Pendente' }}
             </span>
-            <button class="confirm-btn" *ngIf="p.status !== 'CONFIRMED'" (click)="confirmParticipant(p)">
+            <button class="confirm-btn dp-pill-btn" *ngIf="p.status !== 'CONFIRMED'" (click)="confirmParticipant(p)">
               Confirmar
             </button>
           </div>
         </div>
 
-        <ion-button fill="outline" color="danger" size="small" *ngIf="bolao.status === 'OPEN'" (click)="closeBolao(bolao)">
+        <ion-button class="dp-pill-btn" fill="outline" color="danger" size="small" *ngIf="bolao.status === 'OPEN'" (click)="closeBolao(bolao)">
           Encerrar Bolão
         </ion-button>
       </div>
@@ -79,10 +79,10 @@
     <!-- ===== SEÇÃO APOSTAS ===== -->
     <div *ngIf="view === 'apostas'">
     <div class="filter-bar" style="margin-top:0">
-      <button class="filter-btn" [class.active]="filter === 'all'" (click)="filter = 'all'">Todos</button>
-      <button class="filter-btn" [class.active]="filter === 'pending'" (click)="filter = 'pending'">Pendentes</button>
-      <button class="filter-btn" [class.active]="filter === 'paid'" (click)="filter = 'paid'">Pagos</button>
-      <button class="filter-btn" [class.active]="filter === 'processed'" (click)="filter = 'processed'">Processados</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'all'" (click)="filter = 'all'">Todos</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'pending'" (click)="filter = 'pending'">Pendentes</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'paid'" (click)="filter = 'paid'">Pagos</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'processed'" (click)="filter = 'processed'">Processados</button>
     </div>
 
     <div class="loading-wrap" *ngIf="loading">
@@ -117,15 +117,15 @@
         </div>
 
         <div class="numbers-wrap">
-          <span class="ball" *ngFor="let n of bet.bet">{{ n }}</span>
+          <app-lottery-ball *ngFor="let n of bet.bet" [value]="n"></app-lottery-ball>
         </div>
 
         <div class="bet-actions">
-          <button class="action-btn" [class.active]="bet.paid" (click)="togglePaid(bet)">
+          <button class="action-btn dp-pill-btn" [class.active]="bet.paid" (click)="togglePaid(bet)">
             <ion-icon [name]="bet.paid ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
             {{ bet.paid ? 'Pago' : 'Marcar Pago' }}
           </button>
-          <button class="action-btn success" [class.active]="bet.processed" [disabled]="!bet.paid" (click)="toggleProcessed(bet)">
+          <button class="action-btn success dp-pill-btn" [class.active]="bet.processed" [disabled]="!bet.paid" (click)="toggleProcessed(bet)">
             <ion-icon [name]="bet.processed ? 'trophy' : 'trophy-outline'"></ion-icon>
             {{ bet.processed ? 'Processado' : 'Processar' }}
           </button>
@@ -135,7 +135,7 @@
     </div>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button (click)="loadBets()">
+      <ion-fab-button class="dp-pill-btn" (click)="loadBets()">
         <ion-icon name="refresh-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>

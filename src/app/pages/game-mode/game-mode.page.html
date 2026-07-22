@@ -1,14 +1,7 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image">
-      <img src="assets/imgs/dupolvo-logo.png">
-      <div class="blue_back_div" (click)="goBack()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </div>
-    </div>
-
-    <div class="blue_div">
+    <app-page-header (back)="goBack()">
 
       <div class="game-badge" [style.background]="game?.color">
         <ion-icon [name]="game?.icon"></ion-icon>
@@ -56,6 +49,6 @@
         <ion-icon name="chevron-forward-outline" class="mode-arrow"></ion-icon>
       </div>
 
-    </div>
+    </app-page-header>
   </div>
 </ion-content>

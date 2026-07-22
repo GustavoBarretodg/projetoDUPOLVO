@@ -1,0 +1,53 @@
+@import '../../../theme/dp-tokens';
+
+.back_image {
+  width: 100%;
+  height: 45vh;
+  position: relative;
+  top: 30px;
+}
+
+.blue_back_div {
+  position: absolute;
+  z-index: 9999;
+  height: 40px;
+  width: 40px;
+  background: var(--dp-blue-300, #0DADEE) !important;
+  color: #FFFFFF;
+  border-radius: 100%;
+  top: 0px;
+  left: 16px;
+  @include dp-border(2px, #FFFFFF);
+  @include dp-offset-shadow(3px, 3px);
+
+  ion-icon {
+    font-size: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.blue_div {
+  width: 100%;
+  padding: 16px;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+  margin-top: -30px;
+  position: fixed;
+  overflow-y: auto;
+  background: var(--dp-blue-500, #2F89C5);
+  height: 60vh;
+  border-top: $dp-border-width solid $dp-border-color;
+
+  .head_lbl {
+    display: block;
+    color: #FFFFFF;
+    font-family: $dp-font-bold;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+}

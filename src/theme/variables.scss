@@ -6,12 +6,19 @@
   /** primary **/
 
   --ion-color-primary: #0B4454;
-  // --ion-color-primary: #3880ff;
-  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-rgb: 11, 68, 84;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary-shade: #093a48;
+  --ion-color-primary-tint: #235567;
+
+  /** DuPolvo — paleta azul do app **/
+  --dp-blue-900: #1A3D5C;
+  --dp-blue-700: #1A5F8A;
+  --dp-blue-500: #2F89C5;
+  --dp-blue-300: #0DADEE;
+  --dp-blue-gray: #6B8299;
+  --dp-gradient-main: linear-gradient(135deg, var(--dp-blue-700) 0%, var(--dp-blue-500) 60%, var(--dp-blue-300) 100%);
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;

@@ -1,3 +1,5 @@
+@import '../../../theme/dp-tokens';
+
 ion-content {
   --background: #F0F4F8;
 }
@@ -50,8 +52,6 @@ ion-content {
   .filter-btn {
     flex-shrink: 0;
     padding: 7px 16px;
-    border-radius: 20px;
-    border: 1.5px solid #D0DDE8;
     background: transparent;
     color: #6B8299;
     font-size: 13px;
@@ -61,7 +61,6 @@ ion-content {
 
     &.active {
       background: #2F89C5;
-      border-color: #2F89C5;
       color: #FFFFFF;
     }
   }
@@ -97,8 +96,9 @@ ion-content {
 .bet-card {
   background: #FFFFFF;
   border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
   overflow: hidden;
+  @include dp-border();
+  @include dp-offset-shadow();
 
   .bet-card-header {
     display: flex;
@@ -113,6 +113,7 @@ ion-content {
       gap: 6px;
       border-radius: 10px;
       padding: 5px 10px;
+      @include dp-border(1.5px, $dp-border-color);
 
       ion-icon {
         font-size: 16px;
@@ -133,6 +134,7 @@ ion-content {
       padding: 4px 10px;
       border-radius: 10px;
       letter-spacing: 0.3px;
+      @include dp-border(1.5px, $dp-border-color);
     }
   }
 
@@ -167,19 +169,6 @@ ion-content {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-
-    .ball {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #2F89C5;
-      color: #FFFFFF;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   }
 
   .bet-actions {
@@ -194,8 +183,6 @@ ion-content {
       justify-content: center;
       gap: 5px;
       padding: 9px;
-      border-radius: 10px;
-      border: 1.5px solid #D0DDE8;
       background: transparent;
       color: #6B8299;
       font-size: 13px;
@@ -209,13 +196,11 @@ ion-content {
 
       &.active {
         background: #2F89C5;
-        border-color: #2F89C5;
         color: #FFFFFF;
       }
 
       &.success.active {
         background: #209869;
-        border-color: #209869;
       }
 
       &:disabled {
@@ -223,5 +208,123 @@ ion-content {
         cursor: not-allowed;
       }
     }
+  }
+}
+
+// ===== SEÇÃO BOLÕES =====
+
+.bolao-create-card {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  margin: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  @include dp-border();
+  @include dp-offset-shadow();
+
+  h2 {
+    font-family: $dp-font-bold;
+    font-size: 17px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin: 0 0 6px;
+  }
+
+  .bolao-input {
+    margin: 0;
+  }
+}
+
+.bolao-admin-card {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  margin: 0 16px 14px;
+  padding: 16px;
+  @include dp-border();
+  @include dp-offset-shadow();
+
+  .bolao-admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .bolao-admin-name {
+    font-family: $dp-font-bold;
+    font-size: 15px;
+    color: var(--dp-blue-900, #1A3D5C);
+  }
+
+  .bolao-status {
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    background: #6B8299;
+    @include dp-border(1.5px, $dp-border-color);
+
+    &.open {
+      background: #2F89C5;
+    }
+  }
+
+  .bolao-meta {
+    font-size: 13px;
+    color: #6B8299;
+    margin: 6px 0 0;
+  }
+
+  .participant-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .participant-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: #F8FAFB;
+    border-radius: 10px;
+
+    .p-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1A3D5C;
+    }
+
+    .p-status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 10px;
+      background: #6B8299;
+      color: #FFFFFF;
+      @include dp-border(1.5px, $dp-border-color);
+
+      &.confirmed {
+        background: #209869;
+      }
+    }
+
+    .confirm-btn {
+      padding: 6px 12px;
+      background: var(--dp-blue-500, #2F89C5);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+
+  ion-button {
+    margin-top: 12px;
   }
 }

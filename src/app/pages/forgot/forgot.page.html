@@ -19,11 +19,11 @@
       <ion-label class="small_lbl" *ngIf="otp == true">Email OTP</ion-label>
       <ion-input type="text" *ngIf="otp == true" placeholder="Email OTP"></ion-input>
 
-      <ion-button (click)="SendOtp()" *ngIf="otp == false" expand="block">
+      <ion-button class="dp-pill-btn" (click)="SendOtp()" *ngIf="otp == false" expand="block">
         Send OTP
       </ion-button>
 
-      <ion-button (click)="verify()" *ngIf="otp == true" expand="block">
+      <ion-button class="dp-pill-btn" (click)="verify()" *ngIf="otp == true" expand="block">
         Verify
       </ion-button>
 

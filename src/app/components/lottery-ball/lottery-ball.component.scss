@@ -1,0 +1,20 @@
+@import '../../../theme/dp-tokens';
+
+.ball {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-family: $dp-font-semibold;
+  font-size: 13px;
+  color: var(--dp-blue-500, #2F89C5);
+  background: #FFFFFF;
+  @include dp-border(1.5px, $dp-border-color);
+
+  &.highlighted {
+    background: var(--dp-blue-500, #2F89C5);
+    color: #FFFFFF;
+  }
+}

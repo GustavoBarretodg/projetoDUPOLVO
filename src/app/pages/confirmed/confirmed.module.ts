@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ConfirmedPageRoutingModule } from './confirmed-routing.module';
 import { ConfirmedPage } from './confirmed.page';
+import { SharedComponentsModule } from '../../components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConfirmedPageRoutingModule
+    ConfirmedPageRoutingModule,
+    SharedComponentsModule
   ],
   declarations: [ConfirmedPage]
 })

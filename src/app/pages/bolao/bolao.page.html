@@ -1,14 +1,7 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image">
-      <img src="assets/imgs/dupolvo-logo.png">
-      <div class="blue_back_div" (click)="goBack()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </div>
-    </div>
-
-    <div class="blue_div">
+    <app-page-header (back)="goBack()">
       <ion-label class="head_lbl">Bolões Disponíveis</ion-label>
       <p class="subtitle_lbl">Escolha um bolão e entre para concorrer!</p>
 
@@ -43,7 +36,7 @@
           </div>
         </div>
 
-        <ion-button expand="block" class="join_btn"
+        <ion-button expand="block" class="join_btn dp-pill-btn"
                     [disabled]="bolao.availableQuotas === 0 || isJoined(bolao.id)"
                     [color]="isJoined(bolao.id) ? 'success' : 'light'"
                     (click)="joinBolao(bolao)">
@@ -54,7 +47,7 @@
       </div>
 
       <p>&nbsp;</p>
-    </div>
+    </app-page-header>
 
   </div>
 </ion-content>

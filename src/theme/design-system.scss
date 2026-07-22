@@ -1,0 +1,31 @@
+// Design system "Positivus" (paleta azul do DuPolvo) - classes utilitarias globais.
+@import './dp-tokens';
+
+.dp-pill-btn {
+  --border-radius: #{$dp-radius-pill};
+  --border-width: #{$dp-border-width};
+  --border-style: solid;
+  --border-color: #{$dp-border-color};
+  --box-shadow: none;
+  font-family: $dp-font-bold;
+  text-transform: none;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+// Para botoes HTML puro (nao ion-button), a mesma pilula via propriedades normais
+button.dp-pill-btn,
+a.dp-pill-btn {
+  border-radius: $dp-radius-pill;
+  @include dp-border();
+  box-shadow: none;
+  font-family: $dp-font-bold;
+  font-weight: 700;
+}
+
+.dp-card {
+  border-radius: $dp-radius-card;
+  background: #FFFFFF;
+  @include dp-border();
+  @include dp-offset-shadow();
+}

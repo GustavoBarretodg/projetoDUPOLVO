@@ -1,3 +1,5 @@
+@import '../../../theme/dp-tokens';
+
 ion-content {
   --background: #f4f4f4;
 }
@@ -49,7 +51,8 @@ ion-content {
 .admin_card {
   border-radius: 12px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  @include dp-border();
+  @include dp-offset-shadow();
 
   .admin_info {
     display: flex;
@@ -80,6 +83,7 @@ ion-content {
       ion-badge {
         margin-top: 4px;
         width: fit-content;
+        @include dp-border(1.5px, $dp-border-color);
       }
     }
   }

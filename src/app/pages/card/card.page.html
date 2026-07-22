@@ -1,11 +1,7 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image">
-      <img src="assets/imgs/dupolvo-logo.png">
-    </div>
-
-    <div class="blue_div">
+    <app-page-header [showBack]="false">
       <ion-label class="head_lbl">Carrinho de apostas</ion-label>
       <p class="subtitle_lbl">Apostas pendentes de confirmação</p>
 
@@ -30,7 +26,7 @@
 
         <div class="card_footer">
           <ion-badge color="warning">Pendente</ion-badge>
-          <ion-button fill="clear" color="danger" size="small" (click)="removeCard(card.id)">
+          <ion-button class="dp-pill-btn" fill="clear" color="danger" size="small" (click)="removeCard(card.id)">
             <ion-icon name="trash-outline" slot="start"></ion-icon>
             Remover
           </ion-button>
@@ -43,6 +39,6 @@
         <span class="total_value">{{ totalValue }}</span>
       </div>
 
-    </div>
+    </app-page-header>
   </div>
 </ion-content>

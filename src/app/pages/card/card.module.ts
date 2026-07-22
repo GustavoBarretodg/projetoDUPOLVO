@@ -9,6 +9,7 @@ import { CardPageRoutingModule } from './card-routing.module';
 import { CardPage } from './card.page';
 
 import { MiAccordionComponent } from '../../widgets/mi-accordion/mi-accordion.component';
+import { SharedComponentsModule } from '../../components/shared-components.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { MiAccordionComponent } from '../../widgets/mi-accordion/mi-accordion.co
     CommonModule,
     FormsModule,
     IonicModule,
-    CardPageRoutingModule
+    CardPageRoutingModule,
+    SharedComponentsModule
   ],
   declarations: [CardPage, MiAccordionComponent]
 })

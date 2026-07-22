@@ -1,0 +1,22 @@
+// Tokens do design system "Positivus" (paleta azul do DuPolvo).
+// Partial sem output proprio - so variaveis/mixins, importado por design-system.scss
+// (para as classes utilitarias globais) e pelos .scss de componente/pagina que precisarem.
+
+$dp-font-light:    'Poppins-Light';
+$dp-font-regular:  'Poppins-Regular';
+$dp-font-medium:   'Poppins-Medium';
+$dp-font-semibold: 'Poppins-SemiBold';
+$dp-font-bold:     'Poppins-Bold';
+
+$dp-border-width: 2px;
+$dp-border-color: #16181D;
+$dp-radius-pill: 999px;
+$dp-radius-card: 16px;
+
+@mixin dp-offset-shadow($x: 4px, $y: 4px, $color: $dp-border-color) {
+  box-shadow: $x $y 0 0 $color;
+}
+
+@mixin dp-border($width: $dp-border-width, $color: $dp-border-color) {
+  border: $width solid $color;
+}

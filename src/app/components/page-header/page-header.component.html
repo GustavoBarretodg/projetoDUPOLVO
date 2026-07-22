@@ -1,0 +1,11 @@
+<div class="back_image" *ngIf="showLogo">
+  <img src="assets/imgs/dupolvo-logo.png">
+  <div class="blue_back_div" *ngIf="showBack" (click)="back.emit()">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+  </div>
+</div>
+
+<div class="blue_div" [style.background]="panelColor">
+  <ion-label class="head_lbl" *ngIf="title">{{ title }}</ion-label>
+  <ng-content></ng-content>
+</div>

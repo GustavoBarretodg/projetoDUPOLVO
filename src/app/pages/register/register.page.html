@@ -7,11 +7,7 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image" >
-      <img src="assets/imgs/dupolvo-logo.png">
-    </div>
-
-    <div class="blue_div">
+    <app-page-header [showBack]="false">
 
       <ion-label class="head_lbl">Crie a sua conta</ion-label>
 
@@ -34,7 +30,7 @@
       </div>
 
       <div class="btn_div">
-        <ion-button (click)="onRegister(name, email, phone, password, city)" expand="block">
+        <ion-button class="dp-pill-btn" (click)="onRegister(name, email, phone, password, city)" expand="block">
           Salvar
         </ion-button>
       </div>
@@ -43,7 +39,7 @@
         Já possui cadastro, clique aqui para acessar sua conta
       </ion-label>
 
-    </div>
+    </app-page-header>
   </div>
 </ion-content>
 

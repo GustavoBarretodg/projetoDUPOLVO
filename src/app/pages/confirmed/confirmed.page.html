@@ -1,11 +1,7 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image">
-      <img src="assets/imgs/dupolvo-logo.png">
-    </div>
-
-    <div class="green_div">
+    <app-page-header [showBack]="false" panelColor="#209869">
       <ion-label class="head_lbl">Apostas confirmadas</ion-label>
       <p class="subtitle_lbl">Pagamentos aprovados pelo administrador</p>
 
@@ -50,6 +46,6 @@
         <span class="total_value">{{ totalValue }}</span>
       </div>
 
-    </div>
+    </app-page-header>
   </div>
 </ion-content>

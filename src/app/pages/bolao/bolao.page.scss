@@ -1,3 +1,5 @@
+@import '../../../theme/dp-tokens';
+
 ion-content {
   --background: #FFFFFF;
 }
@@ -7,44 +9,7 @@ ion-content {
 
   ion-label { display: block; }
 
-  .back_image {
-    width: 100%;
-    height: 45vh;
-    position: relative;
-    top: 30px;
-  }
-
-  .blue_back_div {
-    position: absolute;
-    z-index: 9999;
-    height: 40px;
-    width: 40px;
-    background: #0DADEE !important;
-    color: #FFFFFF;
-    border-radius: 100%;
-    top: 0px;
-    left: 16px;
-    box-shadow: 0px 3px 6px rgba(0,0,0,0.5);
-
-    ion-icon {
-      font-size: 25px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  .blue_div {
-    width: 100%;
-    padding: 16px;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
-    margin-top: -30px;
-    position: fixed;
-    overflow-y: auto;
-    background: #2F89C5;
-    height: 60vh;
+  app-page-header {
 
     .head_lbl {
       color: #FFFFFF;
@@ -85,11 +50,18 @@ ion-content {
       p { font-size: 13px; }
     }
 
+    // Nao usamos <app-dp-card> aqui: .bolao_header usa border-left na mesma
+    // caixa de fundo translucido, e o texto interno e branco (pensado pra
+    // ficar sobre o azul). Trocar pelo wrapper reusavel exigiria reescrever
+    // as cores internas para contraste em fundo solido branco - mais risco
+    // que beneficio. Aplicamos a moldura "Positivus" direto na classe.
     .bolao_card {
       background: rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
+      border-radius: $dp-radius-card;
       padding: 14px;
       margin-bottom: 12px;
+      @include dp-border(2px, #FFFFFF);
+      @include dp-offset-shadow(3px, 3px, rgba(22, 24, 29, 0.6));
 
       .bolao_header {
         display: flex;
@@ -100,6 +72,7 @@ ion-content {
         margin-bottom: 8px;
 
         .game_name {
+          font-family: $dp-font-bold;
           font-size: 13px;
           font-weight: 700;
           text-transform: uppercase;
@@ -108,6 +81,7 @@ ion-content {
 
         .bolao_price {
           font-size: 15px;
+          font-family: $dp-font-bold;
           font-weight: 700;
           color: #FFFFFF;
         }
@@ -115,6 +89,7 @@ ion-content {
 
       .bolao_name {
         font-size: 17px;
+        font-family: $dp-font-bold;
         font-weight: 700;
         color: #FFFFFF;
         margin-bottom: 10px;
@@ -137,7 +112,7 @@ ion-content {
       }
 
       .join_btn {
-        --border-radius: 8px;
+        --border-radius: #{$dp-radius-pill};
         --background: #FFFFFF;
         --color: #2F89C5;
         font-weight: 600;

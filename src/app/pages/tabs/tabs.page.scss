@@ -1,3 +1,16 @@
-ion-icon{
-    font-size: 18px;
+@import '../../../theme/dp-tokens';
+
+ion-icon {
+  font-size: 18px;
+}
+
+ion-tab-bar {
+  --background: #FFFFFF;
+  border-top: $dp-border-width solid $dp-border-color;
+}
+
+ion-tab-button {
+  --color: var(--dp-blue-gray, #6B8299);
+  --color-selected: var(--dp-blue-500, #2F89C5);
+  font-family: $dp-font-semibold;
 }

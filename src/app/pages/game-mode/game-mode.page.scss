@@ -1,3 +1,5 @@
+@import '../../../theme/dp-tokens';
+
 ion-content {
   --background: #FFFFFF;
 }
@@ -9,154 +11,112 @@ ion-content {
     display: block;
   }
 
-  .back_image {
-    width: 100%;
-    height: 38vh;
-    position: relative;
-    top: 30px;
+  .game-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    @include dp-border();
+    @include dp-offset-shadow();
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    ion-icon {
+      font-size: 32px;
+      color: #FFFFFF;
     }
   }
 
-  .blue_div {
-    width: 100%;
-    padding: 20px 16px 100px;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
-    margin-top: -30px;
-    background: #2F89C5;
-    min-height: 62vh;
+  .head_lbl {
+    color: #FFFFFF;
+    font-family: $dp-font-bold;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+  }
 
-    .game-badge {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+  .sub_lbl {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .game-info-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 6px 14px;
+    margin: 0 auto 20px;
+    width: fit-content;
+
+    ion-icon {
+      font-size: 16px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    span {
+      color: rgba(255,255,255,0.95);
+      font-size: 13px;
+    }
+  }
+
+  .mode-card {
+    background: rgba(255,255,255,0.15);
+    border-radius: $dp-radius-card;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    @include dp-border($dp-border-width, #FFFFFF);
+
+    &:active {
+      background: rgba(255,255,255,0.28);
+    }
+
+    .mode-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      flex-shrink: 0;
 
       ion-icon {
-        font-size: 32px;
+        font-size: 22px;
         color: #FFFFFF;
       }
     }
 
-    .head_lbl {
-      color: #FFFFFF;
-      font-size: 22px;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 4px;
-    }
+    .mode-text {
+      flex: 1;
 
-    .sub_lbl {
-      color: rgba(255,255,255,0.8);
-      font-size: 14px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
-    .game-info-chip {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 20px;
-      padding: 6px 14px;
-      margin: 0 auto 20px;
-      width: fit-content;
-
-      ion-icon {
-        font-size: 16px;
-        color: rgba(255,255,255,0.9);
+      h3 {
+        color: #FFFFFF;
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 0 3px;
       }
 
-      span {
-        color: rgba(255,255,255,0.95);
-        font-size: 13px;
+      p {
+        color: rgba(255,255,255,0.75);
+        font-size: 12px;
+        margin: 0;
       }
     }
 
-    .mode-card {
-      background: rgba(255,255,255,0.15);
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-      border: 1px solid rgba(255,255,255,0.25);
-
-      &:active {
-        background: rgba(255,255,255,0.28);
-      }
-
-      .mode-icon {
-        width: 46px;
-        height: 46px;
-        background: rgba(255,255,255,0.25);
-        border-radius: 13px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-
-        ion-icon {
-          font-size: 22px;
-          color: #FFFFFF;
-        }
-      }
-
-      .mode-text {
-        flex: 1;
-
-        h3 {
-          color: #FFFFFF;
-          font-size: 15px;
-          font-weight: 600;
-          margin: 0 0 3px;
-        }
-
-        p {
-          color: rgba(255,255,255,0.75);
-          font-size: 12px;
-          margin: 0;
-        }
-      }
-
-      .mode-arrow {
-        font-size: 20px;
-        color: rgba(255,255,255,0.7);
-      }
-    }
-  }
-
-  .blue_back_div {
-    position: absolute;
-    z-index: 999;
-    height: 40px;
-    width: 40px;
-    background: #0DADEE;
-    color: #FFFFFF;
-    border-radius: 100%;
-    top: 0;
-    left: 16px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
-
-    ion-icon {
-      font-size: 25px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .mode-arrow {
+      font-size: 20px;
+      color: rgba(255,255,255,0.7);
     }
   }
 }

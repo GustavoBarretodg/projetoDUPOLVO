@@ -1,3 +1,5 @@
+@import '../../../theme/dp-tokens';
+
 ion-content {
   --background: #FFFFFF;
 }
@@ -58,100 +60,70 @@ ion-content {
       width: 100%;
 
       .btn_primary {
-        --background: #2F89C5;
-        --border-radius: 10px;
+        --background: var(--dp-blue-500, #2F89C5);
         --color: #FFFFFF;
         height: 52px;
         font-size: 16px;
-        font-weight: 600;
         margin-bottom: 12px;
       }
 
       .btn_outline {
-        --border-radius: 10px;
-        --color: #2F89C5;
-        --border-color: #2F89C5;
+        --color: var(--dp-blue-500, #2F89C5);
         height: 52px;
         font-size: 16px;
-        font-weight: 600;
       }
     }
   }
 
   // ---- TELA DE LOGIN ----
+  // .back_image / .blue_div (com o header + logo) agora vêm de app-page-header
+  // (ver page-header.component.scss). Aqui ficam só os estilos do conteúdo
+  // projetado via ng-content dentro do componente.
   .login_screen {
     width: 100%;
     height: 100%;
 
-    .back_image {
-      width: 100%;
-      height: 42vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .head_lbl {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
 
-      img {
-        max-width: 200px;
-        width: 60%;
-        object-fit: contain;
+    ion-input {
+      color: #FFFFFF;
+      border-radius: 8px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      --padding-start: 12px;
+      margin-bottom: 12px;
+    }
+
+    .btn_div {
+      margin-top: 24px;
+
+      ion-button {
+        --background: #FFFFFF;
+        --color: var(--dp-blue-500, #2F89C5);
+        height: 48px;
       }
     }
 
-    .blue_div {
-      width: 100%;
-      padding: 24px 20px;
-      border-top-left-radius: 35px;
-      border-top-right-radius: 35px;
-      background: #2F89C5;
-      position: fixed;
-      bottom: 0;
-      height: 60vh;
-      overflow-y: auto;
+    .head_lbl_bottom {
+      font-size: 14px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 20px;
+      cursor: pointer;
+    }
 
-      .head_lbl {
-        font-size: 18px;
-        font-weight: 600;
-        text-align: center;
-        color: #FFFFFF;
-        margin-bottom: 20px;
-      }
-
-      ion-input {
-        color: #FFFFFF;
-        border-radius: 8px;
-        height: 48px;
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        --padding-start: 12px;
-        margin-bottom: 12px;
-      }
-
-      .btn_div {
-        margin-top: 24px;
-
-        ion-button {
-          --border-radius: 8px;
-          --background: #FFFFFF;
-          --color: #2F89C5;
-          height: 48px;
-          font-weight: 600;
-        }
-      }
-
-      .head_lbl_bottom {
-        font-size: 14px;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.85);
-        margin-top: 20px;
-        cursor: pointer;
-      }
-
-      .back_lbl {
-        font-size: 14px;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 10px;
-        cursor: pointer;
-      }
+    .back_lbl {
+      font-size: 14px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 10px;
+      cursor: pointer;
     }
   }
 }

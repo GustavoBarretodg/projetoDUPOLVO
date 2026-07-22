@@ -1,14 +1,7 @@
 <ion-content>
   <div class="main_content_div">
 
-    <div class="back_image">
-      <img src="assets/imgs/dupolvo-logo.png">
-      <div class="blue_back_div" (click)="goBack()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </div>
-    </div>
-
-    <div class="blue_div">
+    <app-page-header (back)="goBack()">
       <ion-label class="head_lbl">{{ gameConfig.name }}</ion-label>
       <ion-label class="sub_lbl">Desdobramento — escolha a quantidade de cartões</ion-label>
 
@@ -26,12 +19,12 @@
       </ion-list>
 
       <div class="btn_div">
-        <ion-button (click)="onSave(qtdCard)" expand="block">
+        <ion-button class="dp-pill-btn" (click)="onSave(qtdCard)" expand="block">
           Gerar
         </ion-button>
       </div>
       <p>&nbsp;</p>
-    </div>
+    </app-page-header>
 
   </div>
 </ion-content>

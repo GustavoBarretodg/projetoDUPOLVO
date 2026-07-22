@@ -1,3 +1,5 @@
+@import '../../../theme/dp-tokens';
+
 ion-content {
   --background: #F0F4F8;
 }
@@ -8,11 +10,12 @@ ion-content {
 }
 
 .dash-header {
-  background: linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%);
+  background: var(--dp-gradient-main, linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%));
   padding: 40px 20px 30px;
   text-align: center;
   border-bottom-left-radius: 28px;
   border-bottom-right-radius: 28px;
+  border-bottom: $dp-border-width solid $dp-border-color;
   box-shadow: 0 4px 15px rgba(47, 137, 197, 0.4);
 
   .dash-logo {
@@ -22,12 +25,13 @@ ion-content {
     border-radius: 16px;
     background: rgba(255,255,255,0.15);
     padding: 8px;
+    @include dp-border(2px, #FFFFFF);
   }
 
   .dash-title {
     color: #FFFFFF;
+    font-family: $dp-font-bold;
     font-size: 26px;
-    font-weight: 700;
     margin: 10px 0 4px;
     letter-spacing: 0.5px;
   }
@@ -47,38 +51,40 @@ ion-content {
   margin-bottom: 24px;
 
   .section-title {
+    font-family: $dp-font-bold;
     font-size: 17px;
-    font-weight: 700;
-    color: #1A3D5C;
+    color: var(--dp-blue-900, #1A3D5C);
     margin: 0 0 4px 4px;
   }
 
   .section-desc {
     font-size: 13px;
-    color: #6B8299;
+    color: var(--dp-blue-gray, #6B8299);
     margin: 0 0 12px 4px;
   }
 }
 
 .quick-card {
   background: #FFFFFF;
-  border-radius: 16px;
+  border-radius: $dp-radius-card;
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   cursor: pointer;
+  @include dp-border();
+  @include dp-offset-shadow();
 
   .quick-icon {
     width: 48px;
     height: 48px;
-    background: #2F89C5;
+    background: var(--dp-blue-500, #2F89C5);
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    @include dp-border(1.5px, $dp-border-color);
 
     ion-icon {
       font-size: 24px;
@@ -91,22 +97,22 @@ ion-content {
 
     .quick-name {
       display: block;
+      font-family: $dp-font-bold;
       font-size: 16px;
-      font-weight: 600;
-      color: #1A3D5C;
+      color: var(--dp-blue-900, #1A3D5C);
     }
 
     .quick-desc {
       display: block;
       font-size: 13px;
-      color: #6B8299;
+      color: var(--dp-blue-gray, #6B8299);
       margin-top: 2px;
     }
   }
 
   .quick-arrow {
     font-size: 20px;
-    color: #2F89C5;
+    color: var(--dp-blue-500, #2F89C5);
   }
 
   & + .quick-card {
@@ -124,16 +130,16 @@ ion-content {
 
 .game-card {
   background: #FFFFFF;
-  border-radius: 16px;
-  border: 2px solid #2F89C5;
+  border-radius: $dp-radius-card;
   padding: 14px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   cursor: pointer;
   transition: transform 0.15s ease;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
 
   &:active {
     transform: scale(0.96);
@@ -146,6 +152,7 @@ ion-content {
     display: flex;
     align-items: center;
     justify-content: center;
+    @include dp-border(1.5px, $dp-border-color);
 
     ion-icon {
       font-size: 26px;
@@ -154,16 +161,16 @@ ion-content {
   }
 
   .game-name {
+    font-family: $dp-font-bold;
     font-size: 14px;
-    font-weight: 700;
-    color: #1A3D5C;
+    color: var(--dp-blue-900, #1A3D5C);
     text-align: center;
     line-height: 1.2;
   }
 
   .game-range {
     font-size: 11px;
-    color: #6B8299;
+    color: var(--dp-blue-gray, #6B8299);
     text-align: center;
   }
 }

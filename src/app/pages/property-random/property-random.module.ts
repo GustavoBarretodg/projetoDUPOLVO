@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { PropertyRandomPageRoutingModule } from './property-random-routing.module';
 
 import { PropertyRandomPage } from './property-random.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PropertyRandomPageRoutingModule
+    PropertyRandomPageRoutingModule,
+    SharedComponentsModule
   ],
   declarations: [PropertyRandomPage]
 })
