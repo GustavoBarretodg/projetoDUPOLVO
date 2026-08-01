@@ -92,7 +92,7 @@ public class BolaoService {
         bet.setIdBet(BOLAO_ID_BET);
         bet.setIdUser(userId);
         bet.setBet(new ArrayList<>());
-        bet.setPaid(false);
+        bet.setMarked(false);
         bet.setGameType(bolao.getGameType());
         bet.setBolaoId(bolao.getId());
         bet.setBolaoName(bolao.getName());

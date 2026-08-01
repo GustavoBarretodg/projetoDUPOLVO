@@ -39,10 +39,8 @@ public class AdminService {
             item.put("id", bet.getId());
             item.put("game_type", bet.getGameType());
             item.put("bet", bet.getBet());
-            item.put("paid", bet.getPaid());
-            item.put("processed", bet.getProcessed());
-            item.put("paid_at", bet.getPaidAt());
-            item.put("processed_at", bet.getProcessedAt());
+            item.put("marked", bet.getMarked());
+            item.put("marked_at", bet.getMarkedAt());
 
             User u = userCache.get(bet.getIdUser());
             if (u != null) {
@@ -59,7 +57,7 @@ public class AdminService {
         return response;
     }
 
-    public Map<String, Object> updateBetStatus(Long betId, Boolean paid, Boolean processed) {
+    public Map<String, Object> updateBetStatus(Long betId, Boolean marked) {
         Map<String, Object> response = new HashMap<>();
 
         Optional<Bet> betOpt = betRepository.findById(betId);
@@ -69,14 +67,8 @@ public class AdminService {
         }
 
         Bet bet = betOpt.get();
-        if (paid != null) {
-            bet.setPaid(paid);
-            bet.setPaidAt(paid ? LocalDateTime.now() : null);
-        }
-        if (processed != null) {
-            bet.setProcessed(processed);
-            bet.setProcessedAt(processed ? LocalDateTime.now() : null);
-        }
+        bet.setMarked(marked);
+        bet.setMarkedAt(marked ? LocalDateTime.now() : null);
         betRepository.save(bet);
 
         response.put("message", "bet_updated");

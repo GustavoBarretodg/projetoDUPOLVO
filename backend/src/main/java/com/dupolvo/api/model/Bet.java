@@ -23,8 +23,8 @@ public class Bet {
     @Column(columnDefinition = "TEXT")
     private List<Integer> bet;
 
-    @Column(nullable = false)
-    private Boolean paid = false;
+    @Column(name = "paid", nullable = false)
+    private Boolean marked = false;
 
     @Column(name = "game_type")
     private String gameType;
@@ -38,14 +38,8 @@ public class Bet {
     @Column(name = "quota_price")
     private Double quotaPrice;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean processed = false;
-
     @Column(name = "paid_at")
-    private LocalDateTime paidAt;
-
-    @Column(name = "processed_at")
-    private LocalDateTime processedAt;
+    private LocalDateTime markedAt;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -59,8 +53,8 @@ public class Bet {
     public List<Integer> getBet() { return bet; }
     public void setBet(List<Integer> bet) { this.bet = bet; }
 
-    public Boolean getPaid() { return paid; }
-    public void setPaid(Boolean paid) { this.paid = paid; }
+    public Boolean getMarked() { return marked; }
+    public void setMarked(Boolean marked) { this.marked = marked; }
 
     public String getGameType() { return gameType; }
     public void setGameType(String gameType) { this.gameType = gameType; }
@@ -74,12 +68,6 @@ public class Bet {
     public Double getQuotaPrice() { return quotaPrice; }
     public void setQuotaPrice(Double quotaPrice) { this.quotaPrice = quotaPrice; }
 
-    public Boolean getProcessed() { return processed; }
-    public void setProcessed(Boolean processed) { this.processed = processed; }
-
-    public LocalDateTime getPaidAt() { return paidAt; }
-    public void setPaidAt(LocalDateTime paidAt) { this.paidAt = paidAt; }
-
-    public LocalDateTime getProcessedAt() { return processedAt; }
-    public void setProcessedAt(LocalDateTime processedAt) { this.processedAt = processedAt; }
+    public LocalDateTime getMarkedAt() { return markedAt; }
+    public void setMarkedAt(LocalDateTime markedAt) { this.markedAt = markedAt; }
 }

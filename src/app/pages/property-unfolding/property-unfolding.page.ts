@@ -77,7 +77,6 @@ export class PropertyUnfoldingPage implements OnInit {
       id_bet: 1040,
       id_user: this.user.id,
       qtd_card: qtdCard.value,
-      paid: 0,
       game_type: this.gameKey
     };
 

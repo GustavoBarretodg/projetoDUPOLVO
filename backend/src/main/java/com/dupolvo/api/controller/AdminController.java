@@ -28,9 +28,8 @@ public class AdminController {
     @PostMapping("/bet/status")
     public ResponseEntity<Map<String, Object>> updateBetStatus(@RequestBody Map<String, Object> body) {
         Long betId = Long.valueOf(body.get("bet_id").toString());
-        Boolean paid = body.containsKey("paid") ? (Boolean) body.get("paid") : null;
-        Boolean processed = body.containsKey("processed") ? (Boolean) body.get("processed") : null;
-        return ResponseEntity.ok(adminService.updateBetStatus(betId, paid, processed));
+        Boolean marked = (Boolean) body.get("marked");
+        return ResponseEntity.ok(adminService.updateBetStatus(betId, marked));
     }
 
     private String extractCity() {

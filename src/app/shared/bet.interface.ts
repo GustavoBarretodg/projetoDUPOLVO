@@ -3,5 +3,5 @@ export interface Bet {
     id_bet: number;
     id_user: number;
     bet: object;
-    paid: boolean;
+    marked: boolean;
 }

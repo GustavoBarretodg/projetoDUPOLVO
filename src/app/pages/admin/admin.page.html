@@ -80,9 +80,8 @@
     <div *ngIf="view === 'apostas'">
     <div class="filter-bar" style="margin-top:0">
       <button class="filter-btn dp-pill-btn" [class.active]="filter === 'all'" (click)="filter = 'all'">Todos</button>
-      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'pending'" (click)="filter = 'pending'">Pendentes</button>
-      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'paid'" (click)="filter = 'paid'">Pagos</button>
-      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'processed'" (click)="filter = 'processed'">Processados</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'pending'" (click)="filter = 'pending'">Não Marcados</button>
+      <button class="filter-btn dp-pill-btn" [class.active]="filter === 'marked'" (click)="filter = 'marked'">Marcados</button>
     </div>
 
     <div class="loading-wrap" *ngIf="loading">
@@ -121,13 +120,9 @@
         </div>
 
         <div class="bet-actions">
-          <button class="action-btn dp-pill-btn" [class.active]="bet.paid" (click)="togglePaid(bet)">
-            <ion-icon [name]="bet.paid ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
-            {{ bet.paid ? 'Pago' : 'Marcar Pago' }}
-          </button>
-          <button class="action-btn success dp-pill-btn" [class.active]="bet.processed" [disabled]="!bet.paid" (click)="toggleProcessed(bet)">
-            <ion-icon [name]="bet.processed ? 'trophy' : 'trophy-outline'"></ion-icon>
-            {{ bet.processed ? 'Processado' : 'Processar' }}
+          <button class="action-btn dp-pill-btn" [class.active]="bet.marked" (click)="toggleMarked(bet)">
+            <ion-icon [name]="bet.marked ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
+            {{ bet.marked ? 'Jogo Marcado' : 'Marcar Jogo' }}
           </button>
         </div>
 

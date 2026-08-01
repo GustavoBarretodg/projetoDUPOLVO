@@ -13,10 +13,7 @@ export class AdminService {
     return this.http.get<any>(`${API_URL}/admin/bets`);
   }
 
-  updateBetStatus(betId: number, paid?: boolean, processed?: boolean) {
-    const body: any = { bet_id: betId };
-    if (paid !== undefined) body.paid = paid;
-    if (processed !== undefined) body.processed = processed;
-    return this.http.post<any>(`${API_URL}/admin/bet/status`, body);
+  updateBetStatus(betId: number, marked: boolean) {
+    return this.http.post<any>(`${API_URL}/admin/bet/status`, { bet_id: betId, marked });
   }
 }

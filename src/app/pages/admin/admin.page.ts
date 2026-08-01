@@ -16,7 +16,7 @@ export class AdminPage implements OnInit {
   // Apostas
   bets: any[] = [];
   loading = true;
-  filter: 'all' | 'pending' | 'paid' | 'processed' = 'all';
+  filter: 'all' | 'pending' | 'marked' = 'all';
 
   // Navegação de views
   view: 'apostas' | 'bolaos' = 'apostas';
@@ -53,29 +53,17 @@ export class AdminPage implements OnInit {
 
   get filteredBets() {
     switch (this.filter) {
-      case 'pending':   return this.bets.filter(b => !b.paid && !b.processed);
-      case 'paid':      return this.bets.filter(b => b.paid && !b.processed);
-      case 'processed': return this.bets.filter(b => b.processed);
-      default:          return this.bets;
+      case 'pending': return this.bets.filter(b => !b.marked);
+      case 'marked':  return this.bets.filter(b => b.marked);
+      default:        return this.bets;
     }
   }
 
-  togglePaid(bet: any) {
-    const newPaid = !bet.paid;
-    this.adminSvc.updateBetStatus(bet.id, newPaid, undefined).subscribe(() => {
-      bet.paid = newPaid;
-      if (!newPaid) bet.processed = false;
-      this.showToast(newPaid ? 'Marcado como pago' : 'Pagamento desmarcado');
-    }, () => {
-      this.showToast('Erro ao atualizar');
-    });
-  }
-
-  toggleProcessed(bet: any) {
-    const newProcessed = !bet.processed;
-    this.adminSvc.updateBetStatus(bet.id, undefined, newProcessed).subscribe(() => {
-      bet.processed = newProcessed;
-      this.showToast(newProcessed ? 'Marcado como processado' : 'Processamento desmarcado');
+  toggleMarked(bet: any) {
+    const newMarked = !bet.marked;
+    this.adminSvc.updateBetStatus(bet.id, newMarked).subscribe(() => {
+      bet.marked = newMarked;
+      this.showToast(newMarked ? 'Jogo marcado' : 'Jogo desmarcado');
     }, () => {
       this.showToast('Erro ao atualizar');
     });
@@ -86,15 +74,11 @@ export class AdminPage implements OnInit {
   }
 
   getStatusLabel(bet: any): string {
-    if (bet.processed) return 'Processado';
-    if (bet.paid) return 'Pago';
-    return 'Pendente';
+    return bet.marked ? 'Jogo Marcado' : 'Não Marcado';
   }
 
   getStatusColor(bet: any): string {
-    if (bet.processed) return '#209869';
-    if (bet.paid) return '#2F89C5';
-    return '#F78B00';
+    return bet.marked ? '#209869' : '#F78B00';
   }
 
   // ---- BOLÕES ----

@@ -16,7 +16,7 @@ public class BetService {
         this.betRepository = betRepository;
     }
 
-    public Map<String, Object> addBet(Long idBet, Long idUser, List<Integer> numbers, Boolean paid, String gameType) {
+    public Map<String, Object> addBet(Long idBet, Long idUser, List<Integer> numbers, String gameType) {
         Map<String, Object> response = new HashMap<>();
         GameConfig config = GameConfig.fromString(gameType);
 
@@ -52,7 +52,6 @@ public class BetService {
         bet.setIdBet(idBet);
         bet.setIdUser(idUser);
         bet.setBet(sorted);
-        bet.setPaid(paid);
         bet.setGameType(config.name());
         betRepository.save(bet);
 
@@ -60,7 +59,7 @@ public class BetService {
         return response;
     }
 
-    public Map<String, Object> addBetRandom(Long idBet, Long idUser, int qtdCard, Boolean paid, String gameType) {
+    public Map<String, Object> addBetRandom(Long idBet, Long idUser, int qtdCard, String gameType) {
         Map<String, Object> response = new HashMap<>();
         GameConfig config = GameConfig.fromString(gameType);
 
@@ -71,7 +70,6 @@ public class BetService {
             bet.setIdBet(idBet);
             bet.setIdUser(idUser);
             bet.setBet(numbers);
-            bet.setPaid(paid);
             bet.setGameType(config.name());
             betRepository.save(bet);
         }

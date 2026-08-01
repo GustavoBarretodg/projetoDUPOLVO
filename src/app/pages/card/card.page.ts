@@ -42,7 +42,7 @@ export class CardPage implements OnInit {
 
     this.betSvc.getBet({ id_user: this.user.id }).subscribe((res) => {
       const all = res.data || [];
-      this.cards = all.filter((b: any) => !b.paid);
+      this.cards = all.filter((b: any) => !b.marked);
       this.calcTotal();
     }, () => {
       this.showToast('Falha ao buscar cartões');

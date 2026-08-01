@@ -3,12 +3,12 @@
 
     <app-page-header [showBack]="false" panelColor="#209869">
       <ion-label class="head_lbl">Apostas confirmadas</ion-label>
-      <p class="subtitle_lbl">Pagamentos aprovados pelo administrador</p>
+      <p class="subtitle_lbl">Jogos marcados pelo administrador</p>
 
       <div *ngIf="cards.length === 0" class="empty_msg">
         <ion-icon name="checkmark-circle-outline" class="empty_icon"></ion-icon>
         <ion-label>Nenhuma aposta confirmada ainda.</ion-label>
-        <p>Suas apostas aparecerão aqui após o pagamento ser aprovado pelo administrador.</p>
+        <p>Suas apostas aparecerão aqui depois que o administrador marcar o jogo.</p>
       </div>
 
       <div class="card_item" *ngFor="let card of cards">
@@ -32,15 +32,10 @@
         <div class="card_footer">
           <ion-badge color="success">
             <ion-icon name="checkmark-circle-outline"></ion-icon>
-            Pago
-          </ion-badge>
-          <ion-badge *ngIf="card.processed" color="primary">
-            <ion-icon name="ribbon-outline"></ion-icon>
-            Processado
+            Jogo Marcado
           </ion-badge>
           <div class="dates">
-            <span *ngIf="card.paidAt" class="date_lbl">Pago em: {{ card.paidAt | date:'dd/MM/yyyy' }}</span>
-            <span *ngIf="card.processedAt" class="date_lbl">Processado em: {{ card.processedAt | date:'dd/MM/yyyy' }}</span>
+            <span *ngIf="card.markedAt" class="date_lbl">Marcado em: {{ card.markedAt | date:'dd/MM/yyyy' }}</span>
           </div>
         </div>
 

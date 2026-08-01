@@ -195,17 +195,8 @@ ion-content {
       }
 
       &.active {
-        background: #2F89C5;
-        color: #FFFFFF;
-      }
-
-      &.success.active {
         background: #209869;
-      }
-
-      &:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
+        color: #FFFFFF;
       }
     }
   }
