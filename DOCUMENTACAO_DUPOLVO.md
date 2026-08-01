@@ -1,6 +1,9 @@
 # Documentação do Projeto — DuPolvo
 **App de Lotofácil | Ionic + Angular + Capacitor**
 **Data:** Maio de 2026
+**Revisão de status:** 26/07/2026 *(comparação com o código atual do repositório)*
+
+> **Legenda:** ✅ Feito · 🟡 Parcial · ❌ Não feito
 
 ---
 
@@ -62,65 +65,65 @@ A interface do usuário já está implementada com as seguintes telas:
 
 ## 4. Próximos Passos — Escopo de Desenvolvimento
 
-### 4.1 Administrador 1 — Global *(incluso sem custo adicional)*
+### 4.1 Administrador 1 — Global *(incluso sem custo adicional)* — 🟡 Parcial
 
 Interface exclusiva para o administrador principal da plataforma.
 
 **Funcionalidades:**
-- Login exclusivo com perfil de Admin Global
-- Dashboard com todas as operações dos usuários *(sem exibir os números apostados)*
-- Visualização de todos os bolões criados pelo Admin 2
-- Recebimento automático do comprovante de PIX a cada jogo realizado
-- Chave PIX configurável diretamente no painel
-- Vinculação dos jogos ao número oficial do concurso da Lotofácil
-- Gestão de premiação — lançamento do resultado e cálculo automático dos ganhadores
-- Relatórios exportáveis (Excel/PDF) com jogos e pagamentos
+- 🟡 Login exclusivo com perfil de Admin Global — *existe um perfil "Super Admin", mas com escopo diferente do descrito (ver seção 9)*
+- ❌ Dashboard com todas as operações dos usuários *(sem exibir os números apostados)*
+- ❌ Visualização de todos os bolões criados pelo Admin 2
+- ❌ Recebimento automático do comprovante de PIX a cada jogo realizado — *hoje a confirmação é manual, feita pelo admin de cada cidade, não automática nem centralizada*
+- ❌ Chave PIX configurável diretamente no painel
+- ❌ Vinculação dos jogos ao número oficial do concurso da Lotofácil
+- ❌ Gestão de premiação — lançamento do resultado e cálculo automático dos ganhadores
+- ❌ Relatórios exportáveis (Excel/PDF) com jogos e pagamentos
 
 **Valor: Incluso**
 
 ---
 
-### 4.2 Administrador 2 — Bolões
+### 4.2 Administrador 2 — Bolões — 🟡 Parcial
 
 Interface exclusiva para o administrador de bolões.
 
 **Funcionalidades:**
-- Login exclusivo com perfil de Admin de Bolão
-- Criação de bolões com definição de:
-  - Valor da cota
-  - Número máximo de participantes
-  - Data limite para entrada
-  - Regulamento do bolão
-- Gestão de status do bolão: **Aberto → Fechado → Registrado → Resultado**
-- Visualização dos participantes de cada bolão
+- ✅ Login exclusivo com perfil de Admin de Bolão
+- 🟡 Criação de bolões com definição de:
+  - ✅ Valor da cota
+  - ✅ Número máximo de participantes
+  - ❌ Data limite para entrada — *campo não existe no modelo do bolão*
+  - ❌ Regulamento do bolão — *campo não existe*
+- 🟡 Gestão de status do bolão: **Aberto → Fechado → Registrado → Resultado** — *só existem os status Aberto e Fechado; "Registrado" e "Resultado" não foram implementados*
+- ✅ Visualização dos participantes de cada bolão *(inclui confirmação manual de pagamento por participante)*
 
 **Valor: R$ 700,00**
 
 ---
 
-### 4.3 Integração de Pagamento — PIX
+### 4.3 Integração de Pagamento — PIX — ❌ Não feito
 
 Geração de cobrança via PIX no momento em que o usuário finaliza o jogo.
 
 **Funcionalidades:**
-- QR Code PIX gerado automaticamente após confirmação do jogo
-- Comprovante de pagamento enviado ao Admin 1 em tempo real
-- Comprovante disponível também para o usuário
-- Status do pagamento: **Pendente → Confirmado**
+- ❌ QR Code PIX gerado automaticamente após confirmação do jogo
+- ❌ Comprovante de pagamento enviado ao Admin 1 em tempo real
+- ❌ Comprovante disponível também para o usuário
+- 🟡 Status do pagamento: **Pendente → Confirmado** — *existe o controle Pendente/Pago/Processado, mas a confirmação é manual pelo admin, sem gateway PIX nem QR Code real*
 
 **Valor: R$ 900,00**
 
 ---
 
-### 4.4 Bolão para o Usuário
+### 4.4 Bolão para o Usuário — 🟡 Parcial
 
 Funcionalidade que permite ao usuário visualizar e participar dos bolões criados pelo Admin 2.
 
 **Funcionalidades:**
-- Listagem de bolões disponíveis com informações de cota, participantes e data limite
-- Entrada no bolão com pagamento via PIX
-- Acompanhamento do status do bolão em que o usuário participa
-- Extrato financeiro — histórico de pagamentos e jogos realizados
+- 🟡 Listagem de bolões disponíveis com informações de cota, participantes e data limite — *sem data limite, pois o campo não existe*
+- 🟡 Entrada no bolão com pagamento via PIX — *o usuário entra no bolão, mas o pagamento ainda é confirmado manualmente, fora de um fluxo PIX real*
+- 🟡 Acompanhamento do status do bolão em que o usuário participa — *só há a listagem de bolões abertos; não existe uma tela "meus bolões" com status detalhado*
+- ❌ Extrato financeiro — histórico de pagamentos e jogos realizados
 
 **Valor: R$ 600,00**
 
@@ -128,7 +131,7 @@ Funcionalidade que permite ao usuário visualizar e participar dos bolões criad
 
 ## 5. Funcionalidades Adicionais Sugeridas
 
-### 5.1 Notificações Push
+### 5.1 Notificações Push — ❌ Não feito
 
 Envio de notificações automáticas para o celular do usuário em momentos-chave:
 
@@ -141,7 +144,7 @@ Envio de notificações automáticas para o celular do usuário em momentos-chav
 
 ---
 
-### 5.2 Integração com Resultado da Lotofácil *(recomendado)*
+### 5.2 Integração com Resultado da Lotofácil *(recomendado)* — ❌ Não feito
 
 > **Esta funcionalidade agrega alto valor ao produto e eleva significativamente a experiência do usuário.**
 
@@ -167,7 +170,33 @@ A Caixa disponibiliza um endpoint público em seu portal de loterias que retorna
 
 ---
 
-## 6. Proposta Comercial
+## 6. Funcionalidades Adicionadas *(não previstas nesta documentação)*
+
+Durante o desenvolvimento, foram construídas funcionalidades que não constavam no escopo original:
+
+### 6.1 Sistema multi-tenant por cidade
+A plataforma passou a operar com **um administrador por cidade**: no cadastro, o usuário escolhe entre criar conta de Usuário ou de Administrador, informando a cidade. Só é permitido um Admin por cidade. As apostas exibidas ao Admin no painel são filtradas automaticamente pela cidade dele. Esse conceito de "cidade" não existe na documentação original.
+
+### 6.2 Perfil Super Admin com aprovação de administradores
+Foi criado um terceiro nível de acesso, o **Super Admin**, com painel próprio (`superadmin.page.ts`), que:
+- Visualiza e aprova/rejeita cadastros de Administrador pendentes por cidade
+- Pode resetar o banco de dados (apaga todos os usuários e apostas, exceto contas de Super Admin)
+
+Esse perfil cobre parte do papel do "Administrador 1 Global" descrito na seção 4.1, mas com uma responsabilidade diferente (governança de contas, não operação financeira/premiação).
+
+### 6.3 Controle manual de pagamento (Pendente/Pago/Processado)
+Como a integração PIX automática (seção 4.3) ainda não existe, foi implementado um controle manual no painel do Admin: cada aposta pode ser marcada como paga e depois como processada, com registro de data/hora. Isso permite operar a plataforma hoje, mesmo sem o PIX automático.
+
+### 6.4 Carrinho de jogos
+Ao montar um cartão (manual, aleatório ou desdobramento), o usuário agora tem a opção de **adicionar o jogo ao carrinho** antes de confirmar — o jogo fica salvo como pendente de pagamento (`paid: 0`) e some da tela de escolha para a lista de "Meus cartões". Essa etapa de carrinho não existia no projeto anterior nem estava prevista nesta documentação. É hoje o ponto de entrada natural para a futura integração de pagamento (seção 4.3): é logo depois de "adicionar ao carrinho" que o QR Code PIX deveria aparecer.
+
+> ⚠️ **Ponto de atenção técnico:** no back-end (`AuthService.java`), o bloqueio de login para administradores com cadastro pendente de aprovação está **desativado propositalmente para testes**, com o comentário `TEMP: bloqueio de aprovacao de admin desativado para testes - REVERTER antes de deixar em producao`. Ou seja, hoje um Admin pendente consegue logar normalmente antes de ser aprovado pelo Super Admin. **Precisa ser revertido antes de qualquer publicação em produção.**
+
+> **Nota:** a rota `/superadmin` também não está registrada no roteador do app (`app-routing.module.ts`) — a tela existe mas não há navegação até ela hoje.
+
+---
+
+## 7. Proposta Comercial
 
 ### Opção 1 — Pacote Essencial
 
@@ -202,7 +231,7 @@ Inclui tudo do Pacote Essencial mais as integrações que elevam a experiência 
 
 ---
 
-## 7. Resumo Financeiro do Projeto
+## 8. Resumo Financeiro do Projeto
 
 | Fase | Descrição | Valor |
 |---|---|---|
@@ -218,7 +247,7 @@ Inclui tudo do Pacote Essencial mais as integrações que elevam a experiência 
 
 ---
 
-## 8. Observação Legal
+## 9. Observação Legal
 
 A operação de bolões e coleta de pagamentos envolvendo loterias no Brasil é regulada. Recomenda-se consultar um advogado para verificar se o modelo de negócio exige alguma licença específica ou se há restrições legais relacionadas ao repasse de valores entre usuários, especialmente em operações de bolão.
 

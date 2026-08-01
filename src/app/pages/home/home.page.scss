@@ -173,4 +173,19 @@ ion-content {
     color: var(--dp-blue-gray, #6B8299);
     text-align: center;
   }
+
+  &.game-card--disabled {
+    opacity: 0.5;
+
+    .game-soon {
+      font-family: $dp-font-bold;
+      font-size: 10px;
+      color: #FFFFFF;
+      background: var(--dp-blue-gray, #6B8299);
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+  }
 }

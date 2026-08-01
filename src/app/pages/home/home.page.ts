@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { GAME_LIST, GameConfig } from 'src/app/shared/game-config';
 
 @Component({
@@ -11,7 +12,7 @@ export class HomePage implements OnInit {
 
   games: GameConfig[] = GAME_LIST;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastCtrl: ToastController) {}
 
   ngOnInit() {}
 
@@ -24,6 +25,10 @@ export class HomePage implements OnInit {
   }
 
   goToGame(gameKey: string) {
+    if (gameKey !== 'LOTOFACIL') {
+      this.toastCtrl.create({ message: 'Em breve! No momento apenas a Lotofácil está disponível.', duration: 2000 }).then(t => t.present());
+      return;
+    }
     this.router.navigate(['/tabs/game-mode'], { queryParams: { game: gameKey } });
   }
 }
