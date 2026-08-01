@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { BetService } from '../../services/bet.service';
 import { StorageService } from '../../services/storage.service';
@@ -16,12 +16,12 @@ export class PropertyDetailPage implements OnInit {
   numberRange: number[] = [];
   gameConfig: GameConfig = GAME_CONFIGS['LOTOFACIL'];
   gameKey: string = 'LOTOFACIL';
+  cartCount: number = 0;
 
   public user = { id: '', name: '', email: '', phone: '' };
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private navCtrl: NavController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
@@ -47,6 +47,7 @@ export class PropertyDetailPage implements OnInit {
     );
     this.numbers = [];
     this.counter = 0;
+    this.cartCount = 0;
   }
 
   getUser() {
@@ -85,7 +86,6 @@ export class PropertyDetailPage implements OnInit {
       id_bet: 1020,
       id_user: this.user.id,
       bet: this.numbers.sort((a: number, b: number) => a - b),
-      paid: 0,
       game_type: this.gameKey
     };
 
@@ -94,27 +94,27 @@ export class PropertyDetailPage implements OnInit {
         this.showToast('Esse cartão já existe, escolha outros números!');
         return;
       }
-      this.showToast('Cartão adicionado ao carrinho!');
-      this.router.navigate(['/tabs/card']);
+      this.cartCount++;
+      this.numbers = [];
+      this.counter = 0;
+      this.showToast('Cartão adicionado ao carrinho! Marque outro jogo quando quiser.');
     }, () => {
       this.showToast('Falha ao criar cartão');
     });
   }
 
-  highlightItem(event: any, index: number) {
-    if (!event.target.classList.contains('highlighted')) {
-      if (this.counter < this.gameConfig.maxPick) {
-        event.target.classList.add('highlighted');
-        this.counter++;
-        this.numbers.push(index);
-        this.checkQty();
-      }
+  highlightItem(index: number) {
+    const pos = this.numbers.indexOf(index);
+    if (pos > -1) {
+      this.numbers.splice(pos, 1);
     } else {
-      event.target.classList.remove('highlighted');
-      this.counter--;
-      this.numbers = this.numbers.filter(n => n !== index);
-      this.checkQty();
+      if (this.numbers.length >= this.gameConfig.maxPick) {
+        return;
+      }
+      this.numbers.push(index);
     }
+    this.counter = this.numbers.length;
+    this.checkQty();
   }
 
   checkQty() {

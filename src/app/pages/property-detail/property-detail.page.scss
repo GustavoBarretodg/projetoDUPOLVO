@@ -27,6 +27,25 @@ ion-content{
         position: relative;
     }
 
+    .cart-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: fit-content;
+        margin: 0 auto 14px;
+        padding: 4px 14px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.15);
+        color: #FFFFFF;
+        font-size: 12px;
+        font-family: $dp-font-semibold;
+
+        ion-icon {
+            font-size: 15px;
+        }
+    }
+
     .head_lbl_bottom {
         font-family: $dp-font-semibold;
         font-size: 15px;

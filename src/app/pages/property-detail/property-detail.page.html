@@ -8,10 +8,16 @@
         números ({{ counter }}/{{ gameConfig.maxPick }})
       </ion-label>
 
+      <div class="cart-badge" *ngIf="cartCount > 0">
+        <ion-icon name="cart-outline"></ion-icon>
+        <span>{{ cartCount }} jogo<ng-container *ngIf="cartCount > 1">s</ng-container> no carrinho</span>
+      </div>
+
       <ul>
         <li class="ball"
             *ngFor="let index of numberRange"
-            (click)="highlightItem($event, index)">
+            [class.highlighted]="numbers.includes(index)"
+            (click)="highlightItem(index)">
           {{ index }}
         </li>
       </ul>
