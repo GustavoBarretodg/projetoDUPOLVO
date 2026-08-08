@@ -63,6 +63,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/bolao/bolao.module').then(m => m.BolaoPageModule)
   },
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardPageModule)
+  },
 ];
 
 @NgModule({

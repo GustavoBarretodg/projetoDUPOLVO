@@ -24,6 +24,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/bolao']);
   }
 
+  goToDashboardPreview() {
+    this.router.navigate(['/dashboard']);
+  }
+
   goToGame(gameKey: string) {
     if (gameKey !== 'LOTOFACIL') {
       this.toastCtrl.create({ message: 'Em breve! No momento apenas a Lotofácil está disponível.', duration: 2000 }).then(t => t.present());

@@ -1,0 +1,223 @@
+@import '../../../theme/dp-tokens';
+
+ion-content {
+  --background: #F0F4F8;
+}
+
+.dashboard {
+  min-height: 100%;
+  padding-bottom: 80px;
+}
+
+.dash-header {
+  background: var(--dp-gradient-main, linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%));
+  padding: 24px 20px 30px;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  border-bottom: $dp-border-width solid $dp-border-color;
+  box-shadow: 0 4px 15px rgba(47, 137, 197, 0.4);
+
+  .profile-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    .profile-icon {
+      font-size: 40px;
+      color: #FFFFFF;
+    }
+
+    .profile-name {
+      font-family: $dp-font-bold;
+      font-size: 17px;
+      color: #FFFFFF;
+    }
+  }
+}
+
+.dash-body {
+  padding: 20px 16px 0;
+}
+
+.wallet-card {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  @include dp-border();
+  @include dp-offset-shadow();
+
+  .wallet-icon-wrap {
+    width: 48px;
+    height: 48px;
+    background: var(--dp-blue-500, #2F89C5);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    @include dp-border(1.5px, $dp-border-color);
+
+    ion-icon {
+      font-size: 24px;
+      color: #FFFFFF;
+    }
+  }
+
+  .wallet-text {
+    display: flex;
+    flex-direction: column;
+
+    .wallet-label {
+      font-size: 13px;
+      color: var(--dp-blue-gray, #6B8299);
+    }
+
+    .wallet-value {
+      font-family: $dp-font-bold;
+      font-size: 22px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+}
+
+.games-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+
+  .game-shortcut {
+    background: #FFFFFF;
+    border-radius: $dp-radius-card;
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    @include dp-border();
+    @include dp-offset-shadow(3px, 3px);
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    ion-icon {
+      font-size: 28px;
+      color: var(--dp-blue-500, #2F89C5);
+    }
+
+    span {
+      font-family: $dp-font-bold;
+      font-size: 13px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+}
+
+.section {
+  margin-bottom: 24px;
+
+  .section-title {
+    font-family: $dp-font-bold;
+    font-size: 17px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin: 0 0 12px 4px;
+  }
+}
+
+.empty_msg {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 24px;
+  text-align: center;
+  @include dp-border();
+
+  .empty_icon {
+    font-size: 32px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: var(--dp-blue-gray, #6B8299);
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.activity-group {
+  margin-bottom: 14px;
+
+  .activity-date {
+    display: block;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--dp-blue-gray, #6B8299);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 0 0 8px 4px;
+  }
+}
+
+.activity-item {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+
+  & + .activity-item {
+    margin-top: 8px;
+  }
+
+  .activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    @include dp-border(1.5px, $dp-border-color);
+
+    ion-icon {
+      font-size: 18px;
+      color: #FFFFFF;
+    }
+  }
+
+  .activity-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .activity-game {
+      font-family: $dp-font-bold;
+      font-size: 14px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+
+    .activity-status {
+      font-size: 12px;
+      color: var(--dp-blue-gray, #6B8299);
+    }
+  }
+
+  .activity-price {
+    font-family: $dp-font-bold;
+    font-size: 14px;
+    color: var(--dp-blue-900, #1A3D5C);
+    white-space: nowrap;
+  }
+}

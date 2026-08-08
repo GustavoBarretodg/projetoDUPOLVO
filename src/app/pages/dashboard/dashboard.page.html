@@ -1,0 +1,60 @@
+<ion-content>
+  <div class="dashboard">
+
+    <div class="dash-header">
+      <div class="profile-row" (click)="goToProfile()">
+        <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+        <span class="profile-name">{{ user?.name || 'Minha conta' }}</span>
+      </div>
+    </div>
+
+    <div class="dash-body">
+
+      <div class="wallet-card">
+        <div class="wallet-icon-wrap">
+          <ion-icon name="wallet-outline"></ion-icon>
+        </div>
+        <div class="wallet-text">
+          <span class="wallet-label">Carteira</span>
+          <span class="wallet-value">{{ walletBalance }}</span>
+        </div>
+      </div>
+
+      <div class="games-row">
+        <div class="game-shortcut" (click)="goToMarkLotofacil()">
+          <ion-icon name="ticket-outline"></ion-icon>
+          <span>Marcar Lotofácil</span>
+        </div>
+        <div class="game-shortcut" (click)="goToMyCards()">
+          <ion-icon name="albums-outline"></ion-icon>
+          <span>Meus Cartões</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title">Últimos jogos marcados</h3>
+
+        <div class="empty_msg" *ngIf="!loading && activityGroups.length === 0">
+          <ion-icon name="checkmark-circle-outline" class="empty_icon"></ion-icon>
+          <p>Nenhum jogo marcado ainda.</p>
+        </div>
+
+        <div class="activity-group" *ngFor="let group of activityGroups">
+          <span class="activity-date">{{ group.dateLabel }}</span>
+
+          <div class="activity-item" *ngFor="let item of group.items">
+            <div class="activity-icon" [style.background]="getGameColor(item.gameType)">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </div>
+            <div class="activity-text">
+              <span class="activity-game">{{ getGameName(item.gameType) }}</span>
+              <span class="activity-status">Jogo marcado</span>
+            </div>
+            <span class="activity-price">{{ getBetPrice(item) }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
