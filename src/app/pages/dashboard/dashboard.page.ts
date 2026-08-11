@@ -17,6 +17,7 @@ export class DashboardPage implements OnInit {
   public walletBalance: string = 'R$ 0,00'; // placeholder ate a carteira ser implementada
   public activityGroups: { dateLabel: string; items: any[] }[] = [];
   public loading = true;
+  public lotofacilColor = GAME_CONFIGS['LOTOFACIL']?.color || '#930089';
 
   constructor(
     private router: Router,

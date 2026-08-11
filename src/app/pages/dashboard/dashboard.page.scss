@@ -92,9 +92,11 @@ ion-content {
   margin-bottom: 24px;
 
   .game-shortcut {
+    position: relative;
+    overflow: hidden;
     background: #FFFFFF;
     border-radius: $dp-radius-card;
-    padding: 16px 10px;
+    padding: 18px 12px 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,19 +107,48 @@ ion-content {
     @include dp-border();
     @include dp-offset-shadow(3px, 3px);
 
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-style: solid;
+      border-width: 22px 22px 0 0;
+      border-color: var(--accent, var(--dp-blue-500, #2F89C5)) transparent transparent transparent;
+    }
+
     &:active {
       transform: scale(0.96);
     }
 
-    ion-icon {
+    > ion-icon {
       font-size: 28px;
-      color: var(--dp-blue-500, #2F89C5);
+      color: var(--accent, var(--dp-blue-500, #2F89C5));
     }
 
-    span {
+    > span {
       font-family: $dp-font-bold;
       font-size: 13px;
       color: var(--dp-blue-900, #1A3D5C);
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+
+    .shortcut-cta {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--ion-color-success, #2DD36F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      @include dp-border(1.5px, $dp-border-color);
+
+      ion-icon {
+        font-size: 14px;
+        color: #FFFFFF;
+      }
     }
   }
 }
@@ -168,14 +199,26 @@ ion-content {
 }
 
 .activity-item {
+  position: relative;
+  overflow: hidden;
   background: #FFFFFF;
   border-radius: $dp-radius-card;
-  padding: 12px 14px;
+  padding: 12px 14px 12px 18px;
   display: flex;
   align-items: center;
   gap: 12px;
   @include dp-border();
   @include dp-offset-shadow(3px, 3px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 18px 18px 0 0;
+    border-color: var(--accent, var(--dp-blue-500, #2F89C5)) transparent transparent transparent;
+  }
 
   & + .activity-item {
     margin-top: 8px;
@@ -201,22 +244,38 @@ ion-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 3px;
 
     .activity-game {
       font-family: $dp-font-bold;
       font-size: 14px;
-      color: var(--dp-blue-900, #1A3D5C);
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
     }
 
     .activity-status {
-      font-size: 12px;
-      color: var(--dp-blue-gray, #6B8299);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      width: fit-content;
+      font-family: $dp-font-semibold;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--ion-color-success-shade, #28BA62);
+      background: rgba(45, 211, 111, 0.14);
+      border-radius: $dp-radius-pill;
+      padding: 2px 8px 2px 6px;
+
+      ion-icon {
+        font-size: 11px;
+      }
     }
   }
 
   .activity-price {
     font-family: $dp-font-bold;
-    font-size: 14px;
+    font-size: 17px;
     color: var(--dp-blue-900, #1A3D5C);
     white-space: nowrap;
   }

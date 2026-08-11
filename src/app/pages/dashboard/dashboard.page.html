@@ -21,13 +21,15 @@
       </div>
 
       <div class="games-row">
-        <div class="game-shortcut" (click)="goToMarkLotofacil()">
+        <div class="game-shortcut" [style.--accent]="lotofacilColor" (click)="goToMarkLotofacil()">
           <ion-icon name="ticket-outline"></ion-icon>
           <span>Marcar Lotofácil</span>
+          <span class="shortcut-cta"><ion-icon name="arrow-forward-outline"></ion-icon></span>
         </div>
-        <div class="game-shortcut" (click)="goToMyCards()">
+        <div class="game-shortcut" [style.--accent]="'var(--dp-blue-500, #2F89C5)'" (click)="goToMyCards()">
           <ion-icon name="albums-outline"></ion-icon>
           <span>Meus Cartões</span>
+          <span class="shortcut-cta"><ion-icon name="arrow-forward-outline"></ion-icon></span>
         </div>
       </div>
 
@@ -42,13 +44,16 @@
         <div class="activity-group" *ngFor="let group of activityGroups">
           <span class="activity-date">{{ group.dateLabel }}</span>
 
-          <div class="activity-item" *ngFor="let item of group.items">
+          <div class="activity-item" *ngFor="let item of group.items" [style.--accent]="getGameColor(item.gameType)">
             <div class="activity-icon" [style.background]="getGameColor(item.gameType)">
               <ion-icon name="checkmark-circle-outline"></ion-icon>
             </div>
             <div class="activity-text">
-              <span class="activity-game">{{ getGameName(item.gameType) }}</span>
-              <span class="activity-status">Jogo marcado</span>
+              <span class="activity-game" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
+              <span class="activity-status">
+                <ion-icon name="checkmark-circle"></ion-icon>
+                Marcado
+              </span>
             </div>
             <span class="activity-price">{{ getBetPrice(item) }}</span>
           </div>
