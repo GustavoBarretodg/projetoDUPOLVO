@@ -198,15 +198,21 @@ ion-content {
   }
 }
 
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
 .activity-item {
   position: relative;
   overflow: hidden;
   background: #FFFFFF;
   border-radius: $dp-radius-card;
-  padding: 12px 14px 12px 18px;
+  padding: 12px 12px 14px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   @include dp-border();
   @include dp-offset-shadow(3px, 3px);
 
@@ -220,14 +226,36 @@ ion-content {
     border-color: var(--accent, var(--dp-blue-500, #2F89C5)) transparent transparent transparent;
   }
 
-  & + .activity-item {
-    margin-top: 8px;
+  .activity-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-left: 14px;
+  }
+
+  .activity-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    width: fit-content;
+    font-family: $dp-font-semibold;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--ion-color-success-shade, #28BA62);
+    background: rgba(45, 211, 111, 0.14);
+    border-radius: $dp-radius-pill;
+    padding: 2px 8px 2px 6px;
+
+    ion-icon {
+      font-size: 11px;
+    }
   }
 
   .activity-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -235,48 +263,21 @@ ion-content {
     @include dp-border(1.5px, $dp-border-color);
 
     ion-icon {
-      font-size: 18px;
+      font-size: 16px;
       color: #FFFFFF;
     }
   }
 
-  .activity-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-
-    .activity-game {
-      font-family: $dp-font-bold;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.2px;
-    }
-
-    .activity-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      width: fit-content;
-      font-family: $dp-font-semibold;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      color: var(--ion-color-success-shade, #28BA62);
-      background: rgba(45, 211, 111, 0.14);
-      border-radius: $dp-radius-pill;
-      padding: 2px 8px 2px 6px;
-
-      ion-icon {
-        font-size: 11px;
-      }
-    }
+  .activity-game {
+    font-family: $dp-font-bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
   }
 
   .activity-price {
     font-family: $dp-font-bold;
-    font-size: 17px;
-    color: var(--dp-blue-900, #1A3D5C);
-    white-space: nowrap;
+    font-size: 19px;
+    color: var(--ion-color-success-shade, #28BA62);
   }
 }
