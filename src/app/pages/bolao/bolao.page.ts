@@ -4,6 +4,14 @@ import { ToastController } from '@ionic/angular';
 import { BolaoService } from '../../services/bolao.service';
 import { GAME_CONFIGS } from '../../shared/game-config';
 
+// Bolões ilustrativos exibidos apenas quando nao ha nenhum bolao real
+// aberto, para visualizar o layout do card enquanto nao ha dados reais.
+const FAKE_BOLOES: any[] = [
+  { id: 'fake-1', fake: true, gameType: 'LOTOFACIL', name: 'Bolão da Sorte Independência', pricePerQuota: 12, creatorName: 'DuPolvo', creatorCity: 'São Paulo/SP', takenQuotas: 73, maxQuotas: 100, availableQuotas: 27 },
+  { id: 'fake-2', fake: true, gameType: 'MEGA_SENA', name: 'Bolão Mega da Virada', pricePerQuota: 18, creatorName: 'DuPolvo', creatorCity: 'Rio de Janeiro/RJ', takenQuotas: 40, maxQuotas: 50, availableQuotas: 10 },
+  { id: 'fake-3', fake: true, gameType: 'QUINA', name: 'Bolão Quina Premiada', pricePerQuota: 9, creatorName: 'DuPolvo', creatorCity: 'Belo Horizonte/MG', takenQuotas: 88, maxQuotas: 100, availableQuotas: 12 },
+];
+
 @Component({
   selector: 'app-bolao',
   templateUrl: './bolao.page.html',
@@ -25,6 +33,14 @@ export class BolaoPage implements OnInit {
     this.load();
   }
 
+  get displayBolaos(): any[] {
+    return this.bolaos.length ? this.bolaos : FAKE_BOLOES;
+  }
+
+  get showingFake(): boolean {
+    return !this.loading && this.bolaos.length === 0;
+  }
+
   load() {
     this.loading = true;
     this.bolaoSvc.getAllOpen().subscribe((res) => {
@@ -37,6 +53,10 @@ export class BolaoPage implements OnInit {
   }
 
   joinBolao(bolao: any) {
+    if (bolao.fake) {
+      this.showToast('Esse bolão é só um exemplo ilustrativo.');
+      return;
+    }
     this.bolaoSvc.joinBolao(bolao.id).subscribe((res) => {
       if (res.message === 'joined') {
         this.joinedIds.add(bolao.id);

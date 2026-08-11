@@ -153,68 +153,67 @@ ion-content {
     }
   }
 
-  .lottery-group {
-    margin-bottom: 12px;
+  .lottery-scroll {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+  }
 
-    .lottery-group-label {
-      display: block;
-      font-family: $dp-font-bold;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      color: var(--dp-blue-900, #1A3D5C);
-      border-bottom: 2px solid var(--dp-blue-500, #2F89C5);
-      padding-bottom: 4px;
-      margin: 0 0 8px 2px;
-      width: fit-content;
-    }
+  .lottery-day-label {
+    flex-shrink: 0;
+    align-self: stretch;
+    display: flex;
+    align-items: flex-end;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    color: var(--dp-blue-900, #1A3D5C);
+    border-bottom: 2px solid var(--dp-blue-500, #2F89C5);
+    padding-bottom: 4px;
+    white-space: nowrap;
+  }
 
-    .lottery-scroll {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
+  .lottery-chip {
+    position: relative;
+    flex-shrink: 0;
+    width: 104px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    @include dp-border(1.5px);
+    @include dp-offset-shadow(3px, 3px);
+    @include dp-accent-flag(6px, 10px, 16px, 24px);
+    @include dp-accent-tint(50%, 0.12, 12px);
 
-    .lottery-chip {
+    ion-icon, .lottery-chip-name, .lottery-chip-prize {
       position: relative;
-      flex-shrink: 0;
-      width: 108px;
-      background: #FFFFFF;
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-      @include dp-border(1.5px);
-      @include dp-offset-shadow(3px, 3px);
-      @include dp-accent-flag(6px, 10px, 16px, 24px);
-      @include dp-accent-tint(50%, 0.12, 12px);
+      z-index: 1;
+    }
 
-      ion-icon, .lottery-chip-name, .lottery-chip-prize {
-        position: relative;
-        z-index: 1;
-      }
+    ion-icon {
+      font-size: 20px;
+      color: var(--accent, var(--dp-blue-500, #2F89C5));
+    }
 
-      ion-icon {
-        font-size: 20px;
-        color: var(--accent, var(--dp-blue-500, #2F89C5));
-      }
+    .lottery-chip-name {
+      font-family: $dp-font-medium;
+      font-size: 12px;
+      color: var(--dp-blue-900, #1A3D5C);
+      line-height: 1.25;
+    }
 
-      .lottery-chip-name {
-        font-family: $dp-font-bold;
-        font-size: 11px;
-        text-transform: uppercase;
-        color: var(--dp-blue-900, #1A3D5C);
-        line-height: 1.2;
-      }
-
-      .lottery-chip-prize {
-        font-family: $dp-font-bold;
-        font-size: 13px;
-        color: var(--accent, var(--dp-blue-500, #2F89C5));
-      }
+    .lottery-chip-prize {
+      font-family: $dp-font-semibold;
+      font-size: 13px;
+      color: var(--accent, var(--dp-blue-500, #2F89C5));
     }
   }
 
@@ -228,241 +227,4 @@ ion-content {
 
 .dash-body {
   padding: 20px 16px 0;
-}
-
-.wallet-card {
-  background: #FFFFFF;
-  border-radius: $dp-radius-card;
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-  @include dp-border();
-  @include dp-offset-shadow();
-
-  .wallet-icon-wrap {
-    width: 48px;
-    height: 48px;
-    background: var(--dp-blue-500, #2F89C5);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    @include dp-border(1.5px, $dp-border-color);
-
-    ion-icon {
-      font-size: 24px;
-      color: #FFFFFF;
-    }
-  }
-
-  .wallet-text {
-    display: flex;
-    flex-direction: column;
-
-    .wallet-label {
-      font-size: 13px;
-      color: var(--dp-blue-gray, #6B8299);
-    }
-
-    .wallet-value {
-      font-family: $dp-font-bold;
-      font-size: 22px;
-      color: var(--dp-blue-900, #1A3D5C);
-    }
-  }
-}
-
-.games-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 24px;
-
-  .game-shortcut {
-    position: relative;
-    overflow: hidden;
-    background: #FFFFFF;
-    border-radius: $dp-radius-card;
-    padding: 18px 12px 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.15s ease;
-    @include dp-border();
-    @include dp-offset-shadow(3px, 3px);
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      border-style: solid;
-      border-width: 22px 22px 0 0;
-      border-color: var(--accent, var(--dp-blue-500, #2F89C5)) transparent transparent transparent;
-    }
-
-    &:active {
-      transform: scale(0.96);
-    }
-
-    > ion-icon {
-      font-size: 28px;
-      color: var(--accent, var(--dp-blue-500, #2F89C5));
-    }
-
-    > span {
-      font-family: $dp-font-bold;
-      font-size: 13px;
-      color: var(--dp-blue-900, #1A3D5C);
-      text-transform: uppercase;
-      letter-spacing: 0.2px;
-    }
-
-    .shortcut-cta {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--ion-color-success, #2DD36F);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2px;
-      @include dp-border(1.5px, $dp-border-color);
-
-      ion-icon {
-        font-size: 14px;
-        color: #FFFFFF;
-      }
-    }
-  }
-}
-
-.section {
-  margin-bottom: 24px;
-
-  .section-title {
-    font-family: $dp-font-bold;
-    font-size: 17px;
-    color: var(--dp-blue-900, #1A3D5C);
-    margin: 0 0 12px 4px;
-  }
-}
-
-.empty_msg {
-  background: #FFFFFF;
-  border-radius: $dp-radius-card;
-  padding: 24px;
-  text-align: center;
-  @include dp-border();
-
-  .empty_icon {
-    font-size: 32px;
-    color: var(--dp-blue-gray, #6B8299);
-    margin-bottom: 8px;
-  }
-
-  p {
-    color: var(--dp-blue-gray, #6B8299);
-    font-size: 14px;
-    margin: 0;
-  }
-}
-
-.activity-group {
-  margin-bottom: 14px;
-
-  .activity-date {
-    display: block;
-    font-family: $dp-font-semibold;
-    font-size: 12px;
-    color: var(--dp-blue-gray, #6B8299);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin: 0 0 8px 4px;
-  }
-}
-
-.activity-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 10px;
-}
-
-.activity-item {
-  position: relative;
-  background: #FFFFFF;
-  border-radius: $dp-radius-card;
-  padding: 12px 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  @include dp-border();
-  @include dp-offset-shadow(3px, 3px);
-  @include dp-accent-flag(6px, 10px, 18px, 26px);
-  @include dp-accent-tint(46%, 0.1);
-
-  .activity-top, .activity-game, .activity-price {
-    position: relative;
-    z-index: 1;
-  }
-
-  .activity-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
-  .activity-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    width: fit-content;
-    font-family: $dp-font-semibold;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    color: var(--ion-color-success-shade, #28BA62);
-    background: rgba(45, 211, 111, 0.14);
-    border-radius: $dp-radius-pill;
-    padding: 2px 8px 2px 6px;
-
-    ion-icon {
-      font-size: 11px;
-    }
-  }
-
-  .activity-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    @include dp-border(1.5px, $dp-border-color);
-
-    ion-icon {
-      font-size: 16px;
-      color: #FFFFFF;
-    }
-  }
-
-  .activity-game {
-    font-family: $dp-font-bold;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.2px;
-  }
-
-  .activity-price {
-    font-family: $dp-font-bold;
-    font-size: 19px;
-    color: var(--ion-color-success-shade, #28BA62);
-  }
 }

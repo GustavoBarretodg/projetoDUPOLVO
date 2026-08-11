@@ -20,14 +20,14 @@
 
     <div class="nav-strip">
       <span class="nav-tab" (click)="goToBolaoList()">Bolões</span>
-      <span class="nav-tab" (click)="scrollToLoterias()">Loterias</span>
+      <span class="nav-tab" (click)="goToMarkLotofacil()">Loterias</span>
       <span class="nav-tab" (click)="comingSoon()">Especiais</span>
       <span class="nav-tab" (click)="comingSoon()">Resultados</span>
     </div>
 
     <div class="dash-body">
 
-      <div class="section lottery-section" id="loterias">
+      <div class="lottery-section">
         <div class="special-highlight" (click)="goToMarkLotofacil()">
           <span class="special-badge">{{ specialHighlight.badge }}</span>
           <ion-icon name="sparkles-outline" class="special-icon"></ion-icon>
@@ -35,86 +35,24 @@
           <span class="special-prize">{{ specialHighlight.prize }}</span>
         </div>
 
-        <div class="lottery-group">
-          <span class="lottery-group-label">Hoje</span>
-          <div class="lottery-scroll">
-            <div class="lottery-chip" *ngFor="let g of hojeGames" [style.--accent]="g.color" (click)="goToGame(g.key)">
-              <ion-icon [name]="g.icon"></ion-icon>
-              <span class="lottery-chip-name">{{ g.name }}</span>
-              <span class="lottery-chip-prize">{{ g.prize }}</span>
-            </div>
+        <div class="lottery-scroll">
+          <span class="lottery-day-label">Hoje</span>
+          <div class="lottery-chip" *ngFor="let g of hojeGames" [style.--accent]="g.color" (click)="goToGame(g.key)">
+            <ion-icon [name]="g.icon"></ion-icon>
+            <span class="lottery-chip-name">{{ g.name }}</span>
+            <span class="lottery-chip-prize">{{ g.prize }}</span>
           </div>
-        </div>
 
-        <div class="lottery-group">
-          <span class="lottery-group-label">Amanhã</span>
-          <div class="lottery-scroll">
-            <div class="lottery-chip" *ngFor="let g of amanhaGames" [style.--accent]="g.color" (click)="goToGame(g.key)">
-              <ion-icon [name]="g.icon"></ion-icon>
-              <span class="lottery-chip-name">{{ g.name }}</span>
-              <span class="lottery-chip-prize">{{ g.prize }}</span>
-            </div>
+          <span class="lottery-day-label">Amanhã</span>
+          <div class="lottery-chip" *ngFor="let g of amanhaGames" [style.--accent]="g.color" (click)="goToGame(g.key)">
+            <ion-icon [name]="g.icon"></ion-icon>
+            <span class="lottery-chip-name">{{ g.name }}</span>
+            <span class="lottery-chip-prize">{{ g.prize }}</span>
           </div>
         </div>
 
         <p class="fictitious-note">*Valores ilustrativos — integração com os resultados oficiais em breve.</p>
       </div>
-
-      <ng-container *ngIf="isLoggedIn">
-
-      <div class="wallet-card">
-        <div class="wallet-icon-wrap">
-          <ion-icon name="wallet-outline"></ion-icon>
-        </div>
-        <div class="wallet-text">
-          <span class="wallet-label">Carteira</span>
-          <span class="wallet-value">{{ walletBalance }}</span>
-        </div>
-      </div>
-
-      <div class="games-row">
-        <div class="game-shortcut" [style.--accent]="lotofacilColor" (click)="goToMarkLotofacil()">
-          <ion-icon name="ticket-outline"></ion-icon>
-          <span>Marcar Lotofácil</span>
-          <span class="shortcut-cta"><ion-icon name="arrow-forward-outline"></ion-icon></span>
-        </div>
-        <div class="game-shortcut" [style.--accent]="'var(--dp-blue-500, #2F89C5)'" (click)="goToMyCards()">
-          <ion-icon name="albums-outline"></ion-icon>
-          <span>Meus Cartões</span>
-          <span class="shortcut-cta"><ion-icon name="arrow-forward-outline"></ion-icon></span>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3 class="section-title">Últimos jogos marcados</h3>
-
-        <div class="empty_msg" *ngIf="!loading && activityGroups.length === 0">
-          <ion-icon name="checkmark-circle-outline" class="empty_icon"></ion-icon>
-          <p>Nenhum jogo marcado ainda.</p>
-        </div>
-
-        <div class="activity-group" *ngFor="let group of activityGroups">
-          <span class="activity-date">{{ group.dateLabel }}</span>
-
-          <div class="activity-grid">
-            <div class="activity-item" *ngFor="let item of group.items" [style.--accent]="getGameColor(item.gameType)">
-              <div class="activity-top">
-                <span class="activity-status">
-                  <ion-icon name="checkmark-circle"></ion-icon>
-                  Marcado
-                </span>
-                <div class="activity-icon" [style.background]="getGameColor(item.gameType)">
-                  <ion-icon name="checkmark-circle-outline"></ion-icon>
-                </div>
-              </div>
-              <span class="activity-game" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
-              <span class="activity-price">{{ getBetPrice(item) }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      </ng-container>
 
     </div>
   </div>

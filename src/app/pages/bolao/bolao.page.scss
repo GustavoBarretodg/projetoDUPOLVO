@@ -35,63 +35,56 @@ ion-content {
       p { font-size: 14px; margin-top: 10px; }
     }
 
-    .empty_msg {
-      text-align: center;
-      padding: 30px 16px;
+    .fake_note {
+      font-size: 12px;
+      font-style: italic;
       color: rgba(255, 255, 255, 0.85);
-
-      .empty_icon {
-        font-size: 48px;
-        display: block;
-        margin-bottom: 12px;
-      }
-
-      ion-label { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-      p { font-size: 13px; }
+      text-align: center;
+      margin: 0 0 14px;
     }
 
-    // Nao usamos <app-dp-card> aqui: .bolao_header usa border-left na mesma
-    // caixa de fundo translucido, e o texto interno e branco (pensado pra
-    // ficar sobre o azul). Trocar pelo wrapper reusavel exigiria reescrever
-    // as cores internas para contraste em fundo solido branco - mais risco
-    // que beneficio. Aplicamos a moldura "Positivus" direto na classe.
+    // Card branco no estilo do dashboard novo (bandeirinha + faixa de tinta
+    // na cor do jogo), flutuando sobre o fundo azul do app-page-header.
     .bolao_card {
-      background: rgba(255, 255, 255, 0.15);
+      position: relative;
+      background: #FFFFFF;
       border-radius: $dp-radius-card;
       padding: 14px;
       margin-bottom: 12px;
-      @include dp-border(2px, #FFFFFF);
-      @include dp-offset-shadow(3px, 3px, rgba(22, 24, 29, 0.6));
+      @include dp-border();
+      @include dp-offset-shadow(3px, 3px);
+      @include dp-accent-flag(6px, 10px, 18px, 26px);
+      @include dp-accent-tint(40%, 0.1);
+
+      .bolao_header, .bolao_name, .bolao_creator, .bolao_info, .join_btn {
+        position: relative;
+        z-index: 1;
+      }
 
       .bolao_header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-left: 4px solid #FFFFFF;
-        padding-left: 10px;
         margin-bottom: 8px;
 
         .game_name {
-          font-family: $dp-font-bold;
+          font-family: $dp-font-semibold;
           font-size: 13px;
-          font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.3px;
         }
 
         .bolao_price {
-          font-size: 15px;
+          font-size: 17px;
           font-family: $dp-font-bold;
-          font-weight: 700;
-          color: #FFFFFF;
+          color: var(--accent, var(--dp-blue-500, #2F89C5));
         }
       }
 
       .bolao_name {
-        font-size: 17px;
+        font-size: 16px;
         font-family: $dp-font-bold;
-        font-weight: 700;
-        color: #FFFFFF;
+        color: var(--dp-blue-900, #1A3D5C);
         margin-bottom: 10px;
       }
 
@@ -100,13 +93,13 @@ ion-content {
         align-items: center;
         flex-wrap: wrap;
         gap: 4px;
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--dp-blue-gray, #6B8299);
         font-size: 12px;
         margin-bottom: 10px;
 
         strong {
           font-family: $dp-font-semibold;
-          color: #FFFFFF;
+          color: var(--dp-blue-900, #1A3D5C);
         }
 
         ion-icon {
@@ -131,7 +124,7 @@ ion-content {
           display: flex;
           align-items: center;
           gap: 5px;
-          color: rgba(255, 255, 255, 0.85);
+          color: var(--dp-blue-gray, #6B8299);
           font-size: 13px;
 
           ion-icon { font-size: 16px; }
@@ -140,8 +133,8 @@ ion-content {
 
       .join_btn {
         --border-radius: #{$dp-radius-pill};
-        --background: #FFFFFF;
-        --color: #2F89C5;
+        --background: var(--accent, var(--dp-blue-500, #2F89C5));
+        --color: #FFFFFF;
         font-weight: 600;
       }
     }

@@ -10,15 +10,11 @@
         <p>Carregando bolões...</p>
       </div>
 
-      <div *ngIf="!loading && bolaos.length === 0" class="empty_msg">
-        <ion-icon name="people-outline" class="empty_icon"></ion-icon>
-        <ion-label>Nenhum bolão disponível no momento.</ion-label>
-        <p>Aguarde um administrador criar um bolão.</p>
-      </div>
+      <p class="fake_note" *ngIf="showingFake">*Exemplo ilustrativo — pré-visualização de layout, sem bolões reais abertos no momento.</p>
 
-      <div class="bolao_card" *ngFor="let bolao of bolaos">
+      <div class="bolao_card" *ngFor="let bolao of displayBolaos" [style.--accent]="getGameColor(bolao.gameType)">
 
-        <div class="bolao_header" [style.borderLeftColor]="getGameColor(bolao.gameType)">
+        <div class="bolao_header">
           <span class="game_name" [style.color]="getGameColor(bolao.gameType)">{{ getGameName(bolao.gameType) }}</span>
           <span class="bolao_price">R$ {{ bolao.pricePerQuota | number:'1.2-2' }}</span>
         </div>
