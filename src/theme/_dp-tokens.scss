@@ -20,3 +20,36 @@ $dp-radius-card: 16px;
 @mixin dp-border($width: $dp-border-width, $color: $dp-border-color) {
   border: $width solid $color;
 }
+
+// Bandeirinha pendurada na borda do card, cor via var(--accent).
+@mixin dp-accent-flag($top: -6px, $left: 14px, $width: 20px, $height: 30px) {
+  &::before {
+    content: '';
+    position: absolute;
+    top: $top;
+    left: $left;
+    width: $width;
+    height: $height;
+    background: var(--accent, $dp-border-color);
+    clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%);
+    filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, 0.18));
+    z-index: 0;
+  }
+}
+
+// Faixa sutil da cor de destaque no topo do card, atras do conteudo.
+@mixin dp-accent-tint($height: 46%, $opacity: 0.1, $radius: $dp-radius-card) {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $height;
+    background: var(--accent, $dp-border-color);
+    opacity: $opacity;
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+    z-index: 0;
+  }
+}

@@ -177,6 +177,7 @@ ion-content {
     }
 
     .lottery-chip {
+      position: relative;
       flex-shrink: 0;
       width: 108px;
       background: #FFFFFF;
@@ -188,6 +189,13 @@ ion-content {
       cursor: pointer;
       @include dp-border(1.5px);
       @include dp-offset-shadow(3px, 3px);
+      @include dp-accent-flag(6px, 10px, 16px, 24px);
+      @include dp-accent-tint(50%, 0.12, 12px);
+
+      ion-icon, .lottery-chip-name, .lottery-chip-prize {
+        position: relative;
+        z-index: 1;
+      }
 
       ion-icon {
         font-size: 20px;
@@ -388,7 +396,6 @@ ion-content {
 
 .activity-item {
   position: relative;
-  overflow: hidden;
   background: #FFFFFF;
   border-radius: $dp-radius-card;
   padding: 12px 12px 14px;
@@ -397,22 +404,18 @@ ion-content {
   gap: 8px;
   @include dp-border();
   @include dp-offset-shadow(3px, 3px);
+  @include dp-accent-flag(6px, 10px, 18px, 26px);
+  @include dp-accent-tint(46%, 0.1);
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-style: solid;
-    border-width: 18px 18px 0 0;
-    border-color: var(--accent, var(--dp-blue-500, #2F89C5)) transparent transparent transparent;
+  .activity-top, .activity-game, .activity-price {
+    position: relative;
+    z-index: 1;
   }
 
   .activity-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-left: 14px;
   }
 
   .activity-status {
