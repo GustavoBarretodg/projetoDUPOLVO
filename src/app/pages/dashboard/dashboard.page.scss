@@ -164,17 +164,21 @@ ion-content {
 
   .lottery-day-label {
     flex-shrink: 0;
-    align-self: stretch;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     font-family: $dp-font-semibold;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.2px;
-    color: var(--dp-blue-900, #1A3D5C);
-    border-bottom: 2px solid var(--dp-blue-500, #2F89C5);
-    padding-bottom: 4px;
+    letter-spacing: 0.3px;
+    color: #FFFFFF;
+    background: var(--dp-blue-500, #2F89C5);
+    border-radius: $dp-radius-pill;
+    padding: 6px 12px;
     white-space: nowrap;
+
+    &:not(:first-child) {
+      margin-left: 6px;
+    }
   }
 
   .lottery-chip {
