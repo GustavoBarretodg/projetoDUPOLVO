@@ -217,11 +217,43 @@ ion-content {
     }
   }
 
-  .fictitious-note {
-    font-size: 11px;
-    font-style: italic;
-    color: var(--dp-blue-gray, #6B8299);
-    margin: 4px 2px 0;
+}
+
+.fictitious-note {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--dp-blue-gray, #6B8299);
+  margin: 4px 2px 10px;
+}
+
+.boloes-section {
+  margin-top: 24px;
+
+  .boloes-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 2px 12px;
+
+    .section-title {
+      font-family: $dp-font-bold;
+      font-size: 17px;
+      color: var(--dp-blue-900, #1A3D5C);
+      margin: 0;
+    }
+
+    .see-all {
+      font-family: $dp-font-semibold;
+      font-size: 13px;
+      color: var(--dp-blue-500, #2F89C5);
+      cursor: pointer;
+    }
+  }
+
+  .bolao_card {
+    @include dp-bolao-card();
+    cursor: pointer;
+    margin-bottom: 10px;
   }
 }
 

@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
+import { BolaoService } from '../../services/bolao.service';
 import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
+import { FAKE_BOLOES } from 'src/app/shared/bolao-mock';
+
+const FEATURED_BOLOES_COUNT = 3;
 
 // Premios ilustrativos ate a integracao com o resultado oficial da loteria.
 const FICTITIOUS_PRIZES: { [key: string]: string } = {
@@ -37,6 +41,9 @@ export class DashboardPage implements OnInit {
   public amanhaGames: (GameConfig & { prize: string })[] = ['TIMEMANIA', 'DUPLA_SENA', 'LOTOMANIA', 'MILIONARIA']
     .map(key => ({ ...GAME_CONFIGS[key], prize: FICTITIOUS_PRIZES[key] }));
 
+  public featuredBolaos: any[] = FAKE_BOLOES.slice(0, FEATURED_BOLOES_COUNT);
+  public showingFakeBolaos = true;
+
   get isLoggedIn(): boolean {
     return !!(this.user && this.user.id);
   }
@@ -44,11 +51,31 @@ export class DashboardPage implements OnInit {
   constructor(
     private router: Router,
     private storage: StorageService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private bolaoSvc: BolaoService
   ) {}
 
   ngOnInit() {
     this.getUser();
+    this.loadFeaturedBolaos();
+  }
+
+  loadFeaturedBolaos() {
+    this.bolaoSvc.getAllOpen().subscribe((res) => {
+      const real = res.data || [];
+      if (real.length) {
+        this.featuredBolaos = real.slice(0, FEATURED_BOLOES_COUNT);
+        this.showingFakeBolaos = false;
+      }
+    }, () => {});
+  }
+
+  getGameColor(key: string): string {
+    return GAME_CONFIGS[key]?.color || '#2F89C5';
+  }
+
+  getGameName(key: string): string {
+    return GAME_CONFIGS[key]?.name || key;
   }
 
   ionViewWillEnter() {

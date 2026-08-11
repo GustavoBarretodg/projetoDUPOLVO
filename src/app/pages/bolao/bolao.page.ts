@@ -3,14 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { BolaoService } from '../../services/bolao.service';
 import { GAME_CONFIGS } from '../../shared/game-config';
-
-// Bolões ilustrativos exibidos apenas quando nao ha nenhum bolao real
-// aberto, para visualizar o layout do card enquanto nao ha dados reais.
-const FAKE_BOLOES: any[] = [
-  { id: 'fake-1', fake: true, gameType: 'LOTOFACIL', name: 'Bolão da Sorte Independência', pricePerQuota: 12, creatorName: 'DuPolvo', creatorCity: 'São Paulo/SP', takenQuotas: 73, maxQuotas: 100, availableQuotas: 27 },
-  { id: 'fake-2', fake: true, gameType: 'MEGA_SENA', name: 'Bolão Mega da Virada', pricePerQuota: 18, creatorName: 'DuPolvo', creatorCity: 'Rio de Janeiro/RJ', takenQuotas: 40, maxQuotas: 50, availableQuotas: 10 },
-  { id: 'fake-3', fake: true, gameType: 'QUINA', name: 'Bolão Quina Premiada', pricePerQuota: 9, creatorName: 'DuPolvo', creatorCity: 'Belo Horizonte/MG', takenQuotas: 88, maxQuotas: 100, availableQuotas: 12 },
-];
+import { FAKE_BOLOES } from '../../shared/bolao-mock';
 
 @Component({
   selector: 'app-bolao',
