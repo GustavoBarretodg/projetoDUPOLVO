@@ -1,10 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { BetService } from '../../services/bet.service';
 import { StorageService } from '../../services/storage.service';
-import { GAME_CONFIGS, getBetPrice, formatBRL } from 'src/app/shared/game-config';
+import { GAME_CONFIGS, GameConfig, getBetPrice, formatBRL } from 'src/app/shared/game-config';
 
 const MAX_RECENT_ITEMS = 10;
+
+// Premios ilustrativos ate a integracao com o resultado oficial da loteria.
+const FICTITIOUS_PRIZES: { [key: string]: string } = {
+  LOTOFACIL: '2 Milhões',
+  MEGA_SENA: '3,5 Milhões',
+  QUINA: '3 Milhões',
+  DIA_DE_SORTE: '800 Mil',
+  TIMEMANIA: '7,5 Milhões',
+  DUPLA_SENA: '1,1 Milhão',
+  LOTOMANIA: '10,5 Milhões',
+  MILIONARIA: '82 Milhões',
+};
 
 @Component({
   selector: 'app-dashboard',
@@ -19,10 +32,27 @@ export class DashboardPage implements OnInit {
   public loading = true;
   public lotofacilColor = GAME_CONFIGS['LOTOFACIL']?.color || '#930089';
 
+  public specialHighlight = {
+    badge: 'Edição especial',
+    name: 'Lotofácil Turbo',
+    prize: 'R$ 50 Milhões',
+  };
+
+  public hojeGames: (GameConfig & { prize: string })[] = ['LOTOFACIL', 'MEGA_SENA', 'QUINA', 'DIA_DE_SORTE']
+    .map(key => ({ ...GAME_CONFIGS[key], prize: FICTITIOUS_PRIZES[key] }));
+
+  public amanhaGames: (GameConfig & { prize: string })[] = ['TIMEMANIA', 'DUPLA_SENA', 'LOTOMANIA', 'MILIONARIA']
+    .map(key => ({ ...GAME_CONFIGS[key], prize: FICTITIOUS_PRIZES[key] }));
+
+  get isLoggedIn(): boolean {
+    return !!(this.user && this.user.id);
+  }
+
   constructor(
     private router: Router,
     private betSvc: BetService,
-    private storage: StorageService
+    private storage: StorageService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -84,6 +114,34 @@ export class DashboardPage implements OnInit {
 
   goToMyCards() {
     this.router.navigate(['/tabs/card']);
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+
+  goToBolaoList() {
+    this.router.navigate(['/bolao']);
+  }
+
+  scrollToLoterias() {
+    document.getElementById('loterias')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  comingSoon() {
+    this.toastCtrl.create({ message: 'Em breve!', duration: 1500 }).then(t => t.present());
+  }
+
+  goToGame(gameKey: string) {
+    if (gameKey !== 'LOTOFACIL') {
+      this.toastCtrl.create({ message: 'Em breve! No momento apenas a Lotofácil está disponível.', duration: 2000 }).then(t => t.present());
+      return;
+    }
+    this.goToMarkLotofacil();
   }
 
   getGameName(gameType: string): string {
