@@ -133,5 +133,128 @@
       <p class="lp-fine-print">*Concursos e prêmios ilustrativos — integração com os resultados oficiais em breve.</p>
     </section>
 
+    <!-- ==== Secao 5: Banner de destaque - Bolao Interativo ==== -->
+    <section class="lp-section lp-bolao-banner" id="bolao-interativo">
+      <div class="lp-bolao-banner-head">
+        <h2 class="lp-section-title">Bolão Interativo Dupolvo</h2>
+        <p class="lp-section-subtitle">Junte-se a outros apostadores, divida o custo e multiplique suas chances de ganhar. Você escolhe os números, a gente cuida do resto.</p>
+        <button class="lp-btn lp-btn-filled lp-btn-lg" (click)="goToBolaoList()">Participar agora</button>
+      </div>
+
+      <p class="lp-fine-print" *ngIf="showingFakeBolaos">*Exemplo ilustrativo — sem bolões reais abertos no momento.</p>
+
+      <div class="lp-boloes-grid">
+        <div class="bolao_card" *ngFor="let bolao of featuredBolaos" [style.--accent]="getGameColor(bolao.gameType)" (click)="goToBolaoList()">
+          <div class="bolao_header">
+            <span class="game_name" [style.color]="getGameColor(bolao.gameType)">{{ getGameName(bolao.gameType) }}</span>
+            <span class="bolao_price">R$ {{ bolao.pricePerQuota | number:'1.2-2' }}</span>
+          </div>
+          <div class="bolao_name">{{ bolao.name }}</div>
+          <div class="bolao_info">
+            <div class="info_item">
+              <ion-icon name="people-outline"></ion-icon>
+              <span>{{ bolao.takenQuotas }}/{{ bolao.maxQuotas }} cotas</span>
+            </div>
+            <div class="info_item">
+              <ion-icon name="ticket-outline"></ion-icon>
+              <span>{{ bolao.availableQuotas }} disponíveis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==== Secao 6: Ultimos Resultados ==== -->
+    <section class="lp-section lp-resultados" id="resultados">
+      <h2 class="lp-section-title">Últimos Resultados</h2>
+      <p class="lp-section-subtitle">Confira os números sorteados e veja se a sorte já bateu na sua porta.</p>
+
+      <div class="lp-table-wrap">
+        <table class="lp-table">
+          <thead>
+            <tr>
+              <th>Loteria</th>
+              <th>Data</th>
+              <th>Prêmio</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of resultRows">
+              <td>{{ r.loteria }}</td>
+              <td>{{ r.data }}</td>
+              <td>{{ r.premio }}</td>
+              <td><span class="lp-table-link" (click)="comingSoon()">Ver resultado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="lp-fine-print">*Resultados ilustrativos — integração com os resultados oficiais em breve.</p>
+
+      <div class="lp-section-cta">
+        <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Ver todos os resultados</button>
+      </div>
+    </section>
+
+    <!-- ==== Secao 7 e 8: Simulador de Apostas + Compra de Creditos ==== -->
+    <section class="lp-section lp-features" id="simulador">
+      <div class="lp-feature-grid">
+        <div class="lp-feature-card">
+          <ion-icon name="calculator-outline"></ion-icon>
+          <h3>Simulador e Estatísticas</h3>
+          <p>Quer saber suas chances antes de apostar? Use nosso simulador gratuito e descubra a probabilidade do seu palpite ser sorteado.</p>
+          <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Simular meu jogo</button>
+        </div>
+
+        <div class="lp-feature-card" id="creditos">
+          <ion-icon name="wallet-outline"></ion-icon>
+          <h3>Compre Créditos</h3>
+          <p>Antecipe seus créditos e aposte quando quiser, sem precisar repetir o pagamento a cada jogo.</p>
+          <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Comprar créditos</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==== Secao 9: Como Funciona ==== -->
+    <section class="lp-section lp-como-funciona" id="como-funciona">
+      <h2 class="lp-section-title">Apostar é fácil</h2>
+      <p class="lp-section-subtitle">Escolha sua loteria, monte seus números ou entre em um bolão, finalize o pagamento e pronto — sua aposta está confirmada. Simples assim.</p>
+
+      <div class="lp-steps">
+        <div class="lp-step">
+          <span class="lp-step-number">1</span>
+          <ion-icon name="albums-outline"></ion-icon>
+          <span class="lp-step-title">Escolha</span>
+          <span class="lp-step-text">Sua loteria favorita ou um bolão pra multiplicar as chances.</span>
+        </div>
+        <div class="lp-step">
+          <span class="lp-step-number">2</span>
+          <ion-icon name="card-outline"></ion-icon>
+          <span class="lp-step-title">Pague</span>
+          <span class="lp-step-text">Finalize o pagamento em poucos cliques, direto pelo app.</span>
+        </div>
+        <div class="lp-step">
+          <span class="lp-step-number">3</span>
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          <span class="lp-step-title">Confirmado</span>
+          <span class="lp-step-text">Sua aposta está registrada — acompanhe tudo por aqui.</span>
+        </div>
+      </div>
+
+      <div class="lp-section-cta">
+        <button class="lp-btn lp-btn-filled" (click)="goToRegister()">Veja o passo a passo</button>
+      </div>
+    </section>
+
+    <!-- ==== Secao 10: Bolao em grupo ==== -->
+    <section class="lp-section lp-bolao-grupo" id="bolao-grupo">
+      <div class="lp-bolao-grupo-card">
+        <h2 class="lp-section-title lp-section-title-light">Bolão Dupolvo — jogue em grupo, ganhe em grupo</h2>
+        <p class="lp-section-subtitle lp-section-subtitle-light">Com os bolões Dupolvo você divide o valor da aposta com outros participantes e aumenta suas chances de faturar um prêmio, sem gastar mais por isso.</p>
+        <button class="lp-btn lp-btn-filled lp-btn-lg" (click)="goToBolaoList()">Saiba como jogar em bolão</button>
+      </div>
+    </section>
+
   </div>
 </ion-content>

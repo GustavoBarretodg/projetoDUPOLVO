@@ -2,7 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
+import { BolaoService } from '../../services/bolao.service';
 import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
+import { FAKE_BOLOES } from 'src/app/shared/bolao-mock';
+
+const FEATURED_BOLOES_COUNT = 3;
+
+interface ResultRow {
+  loteria: string;
+  data: string;
+  premio: string;
+}
+
+// Resultados ilustrativos ate a integracao com a API oficial.
+const RESULT_ROWS: ResultRow[] = [
+  { loteria: 'Lotofácil', data: '10/08/2026', premio: 'R$ 1.800.000' },
+  { loteria: 'Mega-Sena', data: '08/08/2026', premio: 'R$ 45.000.000' },
+  { loteria: 'Quina', data: '11/08/2026', premio: 'R$ 2.400.000' },
+  { loteria: '+Milionária', data: '09/08/2026', premio: 'R$ 68.000.000' },
+];
 
 interface TickerItem {
   name: string;
@@ -55,6 +73,11 @@ export class LandingPage implements OnInit {
     ...FEATURED_LOTTERIES_DATA[key],
   }));
 
+  public featuredBolaos: any[] = FAKE_BOLOES.slice(0, FEATURED_BOLOES_COUNT);
+  public showingFakeBolaos = true;
+
+  public resultRows = RESULT_ROWS;
+
   get isLoggedIn(): boolean {
     return !!(this.user && this.user.id);
   }
@@ -62,13 +85,34 @@ export class LandingPage implements OnInit {
   constructor(
     private router: Router,
     private storage: StorageService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private bolaoSvc: BolaoService
   ) {}
 
   ngOnInit() {
     this.storage.get('user').then((res) => {
       this.user = res || {};
     }).catch(() => {});
+
+    this.loadFeaturedBolaos();
+  }
+
+  loadFeaturedBolaos() {
+    this.bolaoSvc.getAllOpen().subscribe((res) => {
+      const real = res.data || [];
+      if (real.length) {
+        this.featuredBolaos = real.slice(0, FEATURED_BOLOES_COUNT);
+        this.showingFakeBolaos = false;
+      }
+    }, () => {});
+  }
+
+  getGameColor(key: string): string {
+    return GAME_CONFIGS[key]?.color || '#2F89C5';
+  }
+
+  getGameName(key: string): string {
+    return GAME_CONFIGS[key]?.name || key;
   }
 
   toggleMobileMenu() {
