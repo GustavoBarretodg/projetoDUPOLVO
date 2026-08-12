@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/storage.service';
@@ -12,15 +12,18 @@ import { StorageService } from '../../services/storage.service';
 export class LoginPage implements OnInit {
 
   showForm = false;
+  private returnUrl: string | null = null;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private authSvc: AuthService,
     private storage: StorageService
 ) { }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
   }
 
   goToRegister() {
@@ -51,6 +54,8 @@ export class LoginPage implements OnInit {
 
         if (res.data && res.data.role === 'ADMIN') {
           this.router.navigate(['/admin']);
+        } else if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
         } else {
           this.router.navigate(['/tabs/home']);
         }

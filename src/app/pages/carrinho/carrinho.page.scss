@@ -1,0 +1,223 @@
+@import '../../../theme/dp-tokens';
+
+ion-content {
+  --background: #F0F4F8;
+}
+
+.ct {
+  min-height: 100%;
+  padding: 0 16px 40px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ct-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+
+  .ct-back {
+    background: #FFFFFF;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    @include dp-border(1.5px);
+
+    ion-icon {
+      font-size: 20px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .ct-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    span {
+      font-family: $dp-font-bold;
+      font-size: 16px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .ct-spacer {
+    width: 38px;
+  }
+}
+
+.ct-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $dp-font-bold;
+  font-size: 20px;
+  color: var(--dp-blue-900, #1A3D5C);
+  margin: 4px 0 16px;
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.ct-empty {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 40px 20px;
+  text-align: center;
+  @include dp-border();
+
+  ion-icon {
+    font-size: 44px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-family: $dp-font-regular;
+    font-size: 14px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin: 0 0 18px;
+  }
+}
+
+.ct-item {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 14px;
+  margin-bottom: 12px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+  @include dp-accent-tint(38%, 0.08);
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ct-item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .ct-item-game {
+      font-family: $dp-font-bold;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .ct-item-price {
+      font-family: $dp-font-bold;
+      font-size: 16px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .ct-item-balls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .ct-ball {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $dp-font-bold;
+    font-size: 11px;
+    color: #FFFFFF;
+    @include dp-border(1.5px, $dp-border-color);
+  }
+
+  .ct-remove {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--ion-color-danger, #EB445A);
+    cursor: pointer;
+    padding: 0;
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+}
+
+.ct-summary {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 18px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  @include dp-border();
+  @include dp-offset-shadow();
+
+  .ct-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: $dp-font-medium;
+    font-size: 14px;
+    color: var(--dp-blue-gray, #6B8299);
+
+    .ct-summary-total {
+      font-family: $dp-font-bold;
+      font-size: 22px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+}
+
+.ct-btn {
+  width: 100%;
+  font-family: $dp-font-bold;
+  font-size: 14px;
+  border-radius: $dp-radius-pill;
+  padding: 12px 20px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.ct-btn-primary {
+  background: var(--dp-orange, #F7941D);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 4px 0 var(--dp-orange-dark, #D97A0A);
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--dp-orange-dark, #D97A0A);
+  }
+}
+
+.ct-btn-ghost {
+  background: transparent;
+  color: var(--dp-blue-500, #2F89C5);
+  @include dp-border(1.5px, var(--dp-blue-500, #2F89C5));
+}
