@@ -1,0 +1,61 @@
+<ion-content>
+  <div class="pg">
+
+    <div class="pg-topbar">
+      <button class="pg-back" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <div class="pg-brand">
+        <img src="assets/imgs/dupolvo-logo.png" alt="DuPolvo" />
+        <span>DuPolvo</span>
+      </div>
+      <span class="pg-spacer"></span>
+    </div>
+
+    <h1 class="pg-title"><ion-icon name="card-outline"></ion-icon> Pagamento</h1>
+
+    <div class="pg-summary">
+      <span class="pg-section-label">Resumo do pedido</span>
+
+      <div class="pg-summary-item" *ngFor="let item of items">
+        <span class="pg-summary-game" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
+        <span class="pg-summary-nums">{{ item.numbers.length }} dezenas</span>
+        <span class="pg-summary-price">{{ formatPrice(item.price) }}</span>
+      </div>
+
+      <div class="pg-summary-total">
+        <span>Total</span>
+        <span class="pg-total-value">{{ total }}</span>
+      </div>
+    </div>
+
+    <div class="pg-methods">
+      <span class="pg-section-label">Forma de pagamento</span>
+
+      <div class="pg-method" [class.active]="paymentMethod === 'pix'" (click)="paymentMethod = 'pix'">
+        <ion-icon name="qr-code-outline"></ion-icon>
+        <div class="pg-method-text">
+          <strong>PIX</strong>
+          <span>Aprovação na hora</span>
+        </div>
+        <span class="pg-radio" [class.checked]="paymentMethod === 'pix'"></span>
+      </div>
+
+      <div class="pg-method" [class.active]="paymentMethod === 'card'" (click)="paymentMethod = 'card'">
+        <ion-icon name="card-outline"></ion-icon>
+        <div class="pg-method-text">
+          <strong>Cartão de crédito</strong>
+          <span>Até 12x</span>
+        </div>
+        <span class="pg-radio" [class.checked]="paymentMethod === 'card'"></span>
+      </div>
+
+      <p class="pg-fine-print">*Ilustrativo — o pagamento direto pelo app está em desenvolvimento. Por enquanto, o pedido é enviado e o pagamento é combinado com o administrador.</p>
+    </div>
+
+    <button class="pg-btn-confirm" [disabled]="submitting" (click)="confirmOrder()">
+      {{ submitting ? 'Enviando...' : 'Confirmar pedido' }}
+    </button>
+
+  </div>
+</ion-content>

@@ -1,0 +1,227 @@
+@import '../../../theme/dp-tokens';
+
+ion-content {
+  --background: #F0F4F8;
+}
+
+.pg {
+  min-height: 100%;
+  padding: 0 16px 40px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.pg-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+
+  .pg-back {
+    background: #FFFFFF;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    @include dp-border(1.5px);
+
+    ion-icon {
+      font-size: 20px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .pg-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    span {
+      font-family: $dp-font-bold;
+      font-size: 16px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .pg-spacer {
+    width: 38px;
+  }
+}
+
+.pg-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $dp-font-bold;
+  font-size: 20px;
+  color: var(--dp-blue-900, #1A3D5C);
+  margin: 4px 0 16px;
+
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.pg-section-label {
+  display: block;
+  font-family: $dp-font-semibold;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--dp-blue-gray, #6B8299);
+  margin-bottom: 12px;
+}
+
+.pg-summary {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 18px;
+  margin-bottom: 14px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+
+  .pg-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #E4E9EF;
+
+    .pg-summary-game {
+      font-family: $dp-font-bold;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .pg-summary-nums {
+      font-family: $dp-font-regular;
+      font-size: 12px;
+      color: var(--dp-blue-gray, #6B8299);
+    }
+
+    .pg-summary-price {
+      margin-left: auto;
+      font-family: $dp-font-semibold;
+      font-size: 13px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .pg-summary-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    font-family: $dp-font-medium;
+    font-size: 14px;
+    color: var(--dp-blue-gray, #6B8299);
+
+    .pg-total-value {
+      font-family: $dp-font-bold;
+      font-size: 22px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+}
+
+.pg-methods {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 18px;
+  margin-bottom: 16px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+
+  .pg-method {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    @include dp-border(1.5px, #D5DEE7);
+
+    &.active {
+      @include dp-border(1.5px, var(--dp-blue-500, #2F89C5));
+      background: rgba(47, 137, 197, 0.06);
+    }
+
+    ion-icon {
+      font-size: 24px;
+      color: var(--dp-blue-500, #2F89C5);
+      flex-shrink: 0;
+    }
+
+    .pg-method-text {
+      display: flex;
+      flex-direction: column;
+
+      strong {
+        font-family: $dp-font-bold;
+        font-size: 14px;
+        color: var(--dp-blue-900, #1A3D5C);
+      }
+
+      span {
+        font-family: $dp-font-regular;
+        font-size: 12px;
+        color: var(--dp-blue-gray, #6B8299);
+      }
+    }
+
+    .pg-radio {
+      margin-left: auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      @include dp-border(2px, #C3CFDA);
+
+      &.checked {
+        border-color: var(--dp-blue-500, #2F89C5);
+        background: radial-gradient(circle, var(--dp-blue-500, #2F89C5) 45%, transparent 50%);
+      }
+    }
+  }
+
+  .pg-fine-print {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--dp-blue-gray, #6B8299);
+    margin: 8px 0 0;
+  }
+}
+
+.pg-btn-confirm {
+  width: 100%;
+  font-family: $dp-font-bold;
+  font-size: 15px;
+  border-radius: $dp-radius-pill;
+  padding: 14px;
+  background: var(--ion-color-success, #2DD36F);
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--ion-color-success-shade, #28BA62);
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--ion-color-success-shade, #28BA62);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

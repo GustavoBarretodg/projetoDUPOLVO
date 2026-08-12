@@ -33,6 +33,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/property-unfolding/property-unfolding.module').then(m => m.PropertyUnfoldingPageModule)
   },
   {
+    path: 'jogar',
+    loadChildren: () => import('./pages/jogo/jogo.module').then(m => m.JogoPageModule)
+  },
+  {
+    path: 'carrinho',
+    loadChildren: () => import('./pages/carrinho/carrinho.module').then(m => m.CarrinhoPageModule)
+  },
+  {
+    path: 'pagamento',
+    loadChildren: () => import('./pages/pagamento/pagamento.module').then(m => m.PagamentoPageModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
