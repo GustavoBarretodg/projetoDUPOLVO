@@ -29,11 +29,21 @@
             <button class="lp-btn lp-btn-primary" (click)="goToRegister()">Cadastre-se grátis</button>
           </ng-container>
           <button class="lp-btn lp-btn-outline" *ngIf="isLoggedIn" (click)="goToProfile()">Minha conta</button>
+          <button class="lp-cart-btn" (click)="goToCart()" aria-label="Meu carrinho">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span class="lp-cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+          </button>
         </div>
 
-        <button class="lp-hamburger" (click)="toggleMobileMenu()">
-          <ion-icon [name]="mobileMenuOpen ? 'close-outline' : 'menu-outline'"></ion-icon>
-        </button>
+        <div class="lp-header-mobile-tools">
+          <button class="lp-cart-btn" (click)="goToCart()" aria-label="Meu carrinho">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span class="lp-cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+          </button>
+          <button class="lp-hamburger" (click)="toggleMobileMenu()">
+            <ion-icon [name]="mobileMenuOpen ? 'close-outline' : 'menu-outline'"></ion-icon>
+          </button>
+        </div>
       </div>
 
       <div class="lp-mobile-panel" *ngIf="mobileMenuOpen">

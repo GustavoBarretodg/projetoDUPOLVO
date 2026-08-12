@@ -93,7 +93,7 @@ export class DashboardPage implements OnInit {
   }
 
   goToMarkLotofacil() {
-    this.router.navigate(['/tabs/game-mode'], { queryParams: { game: 'LOTOFACIL' } });
+    this.router.navigate(['/jogar'], { queryParams: { game: 'LOTOFACIL' } });
   }
 
   goToLogin() {

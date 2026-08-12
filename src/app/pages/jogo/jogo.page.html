@@ -1,0 +1,104 @@
+<ion-content>
+  <div class="jogo">
+
+    <!-- Topo: voltar + marca + carrinho -->
+    <div class="jg-topbar">
+      <button class="jg-back" (click)="goHome()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <div class="jg-brand" (click)="goHome()">
+        <img src="assets/imgs/dupolvo-logo.png" alt="DuPolvo" />
+        <span>DuPolvo</span>
+      </div>
+      <button class="jg-cart" (click)="goToCart()">
+        <ion-icon name="cart-outline"></ion-icon>
+        <span class="jg-cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+      </button>
+    </div>
+
+    <!-- Cabecalho do concurso -->
+    <div class="jg-header">
+      <div class="jg-header-info">
+        <h1 [style.color]="gameConfig.color">{{ gameConfig.name }}</h1>
+        <span class="jg-conc">CONC: {{ concurso }} — DATA: {{ contestDate }}</span>
+      </div>
+
+      <div class="jg-countdown">
+        <span class="jg-countdown-label"><ion-icon name="alarm-outline"></ion-icon> Encerra em</span>
+        <div class="jg-countdown-chips">
+          <span class="jg-chip" *ngFor="let part of countdown.split(' ')">{{ part }}</span>
+        </div>
+      </div>
+
+      <div class="jg-prize">
+        <span class="jg-prize-label"><ion-icon name="trending-up-outline"></ion-icon> Acumulado</span>
+        <span class="jg-prize-value">{{ prize }}</span>
+      </div>
+    </div>
+
+    <!-- Abas -->
+    <div class="jg-tabs">
+      <span class="jg-tab" (click)="goToBoloes()">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon> Bolões
+      </span>
+      <span class="jg-tab active">
+        <ion-icon name="apps-outline"></ion-icon> Faça seu jogo
+      </span>
+      <span class="jg-tab" (click)="comingSoon()">
+        <ion-icon name="star-outline"></ion-icon> Ver resultados
+      </span>
+    </div>
+
+    <!-- Barra surpresinha -->
+    <div class="jg-toolbar">
+      <div class="jg-surpresinha">
+        <span class="jg-toolbar-label"><ion-icon name="star"></ion-icon> Surpresinha</span>
+        <select [(ngModel)]="surpresinhaQty">
+          <option *ngFor="let q of surpresinhaOptions" [ngValue]="q">{{ q }} dez.</option>
+        </select>
+        <button class="jg-palpitar" (click)="surpresinha()">Palpitar</button>
+      </div>
+      <button class="jg-limpar" (click)="clearSelection()" *ngIf="selected.length">Limpar</button>
+    </div>
+
+    <!-- Grade + painel -->
+    <div class="jg-body">
+      <div class="jg-grid-card">
+        <p class="jg-grid-hint">Escolha de <b>{{ gameConfig.minPick }}</b> a <b>{{ gameConfig.maxPick }}</b> dezenas</p>
+        <div class="jg-grid">
+          <button class="jg-ball" *ngFor="let n of numberRange"
+                  [class.selected]="isSelected(n)"
+                  [style.--accent]="gameConfig.color"
+                  (click)="toggleNumber(n)">
+            {{ n < 10 ? '0' + n : n }}
+          </button>
+        </div>
+      </div>
+
+      <div class="jg-panel">
+        <div class="jg-panel-head">
+          <span>Selecionadas</span>
+          <span class="jg-panel-count">{{ selected.length }} / {{ gameConfig.maxPick }}</span>
+        </div>
+
+        <div class="jg-selected-balls">
+          <span class="jg-mini-ball" *ngFor="let n of selected" [style.background]="gameConfig.color">{{ n < 10 ? '0' + n : n }}</span>
+          <span class="jg-mini-ball empty" *ngFor="let slot of emptySlots"></span>
+        </div>
+
+        <span class="jg-minmax">Mín: {{ gameConfig.minPick }} · Máx: {{ gameConfig.maxPick }}</span>
+
+        <div class="jg-panel-total">
+          <span>Subtotal</span>
+          <span class="jg-panel-value">{{ subtotalLabel }}</span>
+        </div>
+
+        <button class="jg-btn jg-btn-add" [disabled]="!canAdd" (click)="addToCart()">+ Adicionar aposta</button>
+        <button class="jg-btn jg-btn-pay" (click)="goToPayment()">Ir para pagamento</button>
+      </div>
+    </div>
+
+    <p class="jg-fine-print">*Concurso, data e prêmio ilustrativos — integração com os resultados oficiais em breve.</p>
+
+  </div>
+</ion-content>
