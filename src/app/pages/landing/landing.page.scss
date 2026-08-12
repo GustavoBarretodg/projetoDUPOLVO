@@ -901,30 +901,48 @@ ion-content {
   overflow: hidden;
   @include dp-border();
   @include dp-offset-shadow(3px, 3px);
+}
 
-  ion-accordion {
-    ion-item[slot="header"] {
-      --background: #FFFFFF;
-      --color: var(--dp-blue-900, #1A3D5C);
-      font-family: $dp-font-semibold;
-      font-size: 14px;
-    }
+.lp-accordion-item {
+  background: #FFFFFF;
 
-    &.accordion-expanding, &.accordion-expanded {
-      ion-item[slot="header"] {
-        --color: var(--dp-blue-500, #2F89C5);
-      }
-    }
+  &:not(:last-child) {
+    border-bottom: 1px solid #E4E9EF;
   }
 
-  .lp-accordion-content {
-    padding: 4px 16px 18px;
-    font-family: $dp-font-regular;
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--dp-blue-gray, #6B8299);
-    background: #FFFFFF;
+  &.open .lp-accordion-header {
+    color: var(--dp-blue-500, #2F89C5);
+
+    ion-icon {
+      transform: rotate(180deg);
+    }
   }
+}
+
+.lp-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  cursor: pointer;
+  font-family: $dp-font-semibold;
+  font-size: 14px;
+  color: var(--dp-blue-900, #1A3D5C);
+
+  ion-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    transition: transform .15s ease;
+  }
+}
+
+.lp-accordion-content {
+  padding: 0 16px 18px;
+  font-family: $dp-font-regular;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--dp-blue-gray, #6B8299);
 }
 
 // ==== Secao 17: Rodape ====

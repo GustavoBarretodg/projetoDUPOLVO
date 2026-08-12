@@ -338,32 +338,17 @@
     <section class="lp-section lp-faq" id="faq">
       <h2 class="lp-section-title">Perguntas Frequentes</h2>
 
-      <ion-accordion-group class="lp-accordion">
-        <ion-accordion value="a1">
-          <ion-item slot="header">
-            <ion-label>Como funciona a Dupolvo?</ion-label>
-          </ion-item>
-          <div slot="content" class="lp-accordion-content">
-            Escolha sua loteria, selecione seus números ou entre em um bolão, finalize a compra e acompanhe o resultado direto na plataforma.
+      <div class="lp-accordion">
+        <div class="lp-accordion-item" *ngFor="let item of faqItems; let i = index" [class.open]="faqOpenIndex === i">
+          <div class="lp-accordion-header" (click)="toggleFaq(i)">
+            <span>{{ item.question }}</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
           </div>
-        </ion-accordion>
-        <ion-accordion value="a2">
-          <ion-item slot="header">
-            <ion-label>Como sei se fui premiado?</ion-label>
-          </ion-item>
-          <div slot="content" class="lp-accordion-content">
-            Você recebe uma notificação por e-mail (e/ou push) assim que o resultado sai, com todas as instruções para resgatar seu prêmio.
+          <div class="lp-accordion-content" *ngIf="faqOpenIndex === i">
+            {{ item.answer }}
           </div>
-        </ion-accordion>
-        <ion-accordion value="a3">
-          <ion-item slot="header">
-            <ion-label>O que é o bolão da Dupolvo?</ion-label>
-          </ion-item>
-          <div slot="content" class="lp-accordion-content">
-            É um grupo de apostas organizado matematicamente para aumentar as chances de premiação, dividido em cotas que você pode comprar.
-          </div>
-        </ion-accordion>
-      </ion-accordion-group>
+        </div>
+      </div>
 
       <div class="lp-section-cta">
         <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Ver todas as perguntas</button>

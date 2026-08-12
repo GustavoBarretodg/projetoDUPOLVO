@@ -48,6 +48,17 @@ const NEWS_ITEMS: NewsItem[] = [
   { category: 'Curiosidades', title: 'Os números mais sorteados nos últimos 12 meses', summary: 'Levantamento mostra quais dezenas mais saíram nos concursos recentes.', date: '11/08/2026' },
 ];
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+const FAQ_ITEMS: FaqItem[] = [
+  { question: 'Como funciona a Dupolvo?', answer: 'Escolha sua loteria, selecione seus números ou entre em um bolão, finalize a compra e acompanhe o resultado direto na plataforma.' },
+  { question: 'Como sei se fui premiado?', answer: 'Você recebe uma notificação por e-mail (e/ou push) assim que o resultado sai, com todas as instruções para resgatar seu prêmio.' },
+  { question: 'O que é o bolão da Dupolvo?', answer: 'É um grupo de apostas organizado matematicamente para aumentar as chances de premiação, dividido em cotas que você pode comprar.' },
+];
+
 interface TickerItem {
   name: string;
   prize: string;
@@ -107,6 +118,9 @@ export class LandingPage implements OnInit {
   public newsItems = NEWS_ITEMS;
   public newsletterEmail = '';
   public currentYear = new Date().getFullYear();
+
+  public faqItems = FAQ_ITEMS;
+  public faqOpenIndex: number | null = null;
 
   get isLoggedIn(): boolean {
     return !!(this.user && this.user.id);
@@ -190,6 +204,10 @@ export class LandingPage implements OnInit {
 
   comingSoon() {
     this.toastCtrl.create({ message: 'Em breve!', duration: 1500 }).then(t => t.present());
+  }
+
+  toggleFaq(index: number) {
+    this.faqOpenIndex = this.faqOpenIndex === index ? null : index;
   }
 
   submitNewsletter() {
