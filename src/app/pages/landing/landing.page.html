@@ -1,0 +1,137 @@
+<ion-content [fullscreen]="true">
+  <div class="landing">
+
+    <!-- ==== Secao 1: Header / Menu ==== -->
+    <header class="lp-header">
+      <div class="lp-header-inner">
+        <div class="lp-brand" (click)="scrollTo('topo')">
+          <img src="assets/imgs/dupolvo-logo.png" class="lp-brand-logo" alt="DuPolvo" />
+          <span class="lp-brand-name">DuPolvo</span>
+        </div>
+
+        <nav class="lp-nav lp-nav-desktop">
+          <div class="lp-nav-item lp-dropdown" [class.open]="loteriasOpen" (click)="toggleLoterias()">
+            <span>Loterias <ion-icon name="chevron-down-outline"></ion-icon></span>
+            <div class="lp-dropdown-menu" *ngIf="loteriasOpen">
+              <span (click)="scrollTo('resultados'); $event.stopPropagation()">Ver Resultados</span>
+              <span (click)="scrollTo('simulador'); $event.stopPropagation()">Simulador de Apostas</span>
+            </div>
+          </div>
+          <span class="lp-nav-item" (click)="scrollTo('como-funciona')">Como Funciona</span>
+          <span class="lp-nav-item" (click)="scrollTo('bolao-grupo')">Bolões</span>
+          <span class="lp-nav-item" (click)="scrollTo('noticias')">Notícias</span>
+          <span class="lp-nav-item" (click)="scrollTo('faq')">Central de Ajuda</span>
+        </nav>
+
+        <div class="lp-header-cta lp-header-cta-desktop">
+          <ng-container *ngIf="!isLoggedIn">
+            <button class="lp-btn lp-btn-outline" (click)="goToLogin()">Entrar</button>
+            <button class="lp-btn lp-btn-filled" (click)="goToRegister()">Cadastre-se grátis</button>
+          </ng-container>
+          <button class="lp-btn lp-btn-outline" *ngIf="isLoggedIn" (click)="goToProfile()">Minha conta</button>
+        </div>
+
+        <button class="lp-hamburger" (click)="toggleMobileMenu()">
+          <ion-icon [name]="mobileMenuOpen ? 'close-outline' : 'menu-outline'"></ion-icon>
+        </button>
+      </div>
+
+      <div class="lp-mobile-panel" *ngIf="mobileMenuOpen">
+        <div class="lp-nav-item lp-dropdown-mobile" [class.open]="loteriasOpen" (click)="toggleLoterias()">
+          <span>Loterias <ion-icon name="chevron-down-outline"></ion-icon></span>
+        </div>
+        <div class="lp-dropdown-menu-mobile" *ngIf="loteriasOpen">
+          <span (click)="scrollTo('resultados')">Ver Resultados</span>
+          <span (click)="scrollTo('simulador')">Simulador de Apostas</span>
+        </div>
+        <span class="lp-nav-item" (click)="scrollTo('como-funciona')">Como Funciona</span>
+        <span class="lp-nav-item" (click)="scrollTo('bolao-grupo')">Bolões</span>
+        <span class="lp-nav-item" (click)="scrollTo('noticias')">Notícias</span>
+        <span class="lp-nav-item" (click)="scrollTo('faq')">Central de Ajuda</span>
+
+        <div class="lp-mobile-cta">
+          <ng-container *ngIf="!isLoggedIn">
+            <button class="lp-btn lp-btn-outline" (click)="goToLogin()">Entrar</button>
+            <button class="lp-btn lp-btn-filled" (click)="goToRegister()">Cadastre-se grátis</button>
+          </ng-container>
+          <button class="lp-btn lp-btn-outline" *ngIf="isLoggedIn" (click)="goToProfile()">Minha conta</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="topo"></div>
+
+    <!-- ==== Secao 2: Ticker de premios acumulados ==== -->
+    <div class="lp-ticker">
+      <div class="lp-ticker-track">
+        <div class="lp-ticker-item" *ngFor="let t of tickerItems">
+          <ion-icon name="trophy-outline"></ion-icon>
+          <span class="lp-ticker-name">{{ t.name }}</span>
+          <span class="lp-ticker-prize">{{ t.prize }}</span>
+          <span class="lp-ticker-when">{{ t.when }}</span>
+        </div>
+        <div class="lp-ticker-item" *ngFor="let t of tickerItems" aria-hidden="true">
+          <ion-icon name="trophy-outline"></ion-icon>
+          <span class="lp-ticker-name">{{ t.name }}</span>
+          <span class="lp-ticker-prize">{{ t.prize }}</span>
+          <span class="lp-ticker-when">{{ t.when }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==== Secao 3: Hero ==== -->
+    <section class="lp-hero">
+      <ion-icon name="trophy" class="lp-hero-deco lp-hero-deco-1"></ion-icon>
+      <ion-icon name="sparkles" class="lp-hero-deco lp-hero-deco-2"></ion-icon>
+      <ion-icon name="cash" class="lp-hero-deco lp-hero-deco-3"></ion-icon>
+
+      <div class="lp-hero-content">
+        <h1 class="lp-hero-title">Dupolvo — sua sorte, todos os tentáculos apontando pra vitória.</h1>
+        <p class="lp-hero-subtitle">Aposte nas principais loterias do Brasil sem sair de casa. Rápido, seguro e sem filas.</p>
+
+        <div class="lp-hero-ctas">
+          <button class="lp-btn lp-btn-filled lp-btn-lg" (click)="goToRegister()">Fazer minha aposta</button>
+          <button class="lp-btn lp-btn-outline lp-btn-lg lp-btn-light" (click)="scrollTo('bolao-grupo')">Ver bolões disponíveis</button>
+        </div>
+
+        <div class="lp-hero-badges">
+          <div class="lp-hero-badge">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <span>Ambiente 100% seguro</span>
+          </div>
+          <div class="lp-hero-badge">
+            <ion-icon name="cash-outline"></ion-icon>
+            <span>Pagamento de prêmios garantido</span>
+          </div>
+          <div class="lp-hero-badge">
+            <ion-icon name="headset-outline"></ion-icon>
+            <span>Suporte humano todos os dias</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==== Secao 4: Cards de loterias em destaque ==== -->
+    <section class="lp-section lp-lotteries" id="loterias-destaque">
+      <h2 class="lp-section-title">Loterias em destaque</h2>
+
+      <div class="lp-lotteries-grid">
+        <div class="lp-lottery-card" *ngFor="let g of featuredLotteries" [style.--accent]="g.color">
+          <ion-icon [name]="g.icon"></ion-icon>
+          <span class="lp-lottery-name">{{ g.name }}</span>
+          <span class="lp-lottery-concurso">Concurso {{ g.concurso }}</span>
+          <span class="lp-lottery-prize">{{ g.prize }}</span>
+          <span class="lp-lottery-sorteio">Sorteio: {{ g.sorteio }}</span>
+
+          <div class="lp-lottery-ctas">
+            <button class="lp-btn lp-btn-outline lp-btn-sm" (click)="goToBolaoList()">Ver bolões</button>
+            <button class="lp-btn lp-btn-filled lp-btn-sm" (click)="goToGame(g.key)">Fazer meu jogo</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="lp-fine-print">*Concursos e prêmios ilustrativos — integração com os resultados oficiais em breve.</p>
+    </section>
+
+  </div>
+</ion-content>

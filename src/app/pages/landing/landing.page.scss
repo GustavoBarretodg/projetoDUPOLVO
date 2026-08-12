@@ -1,0 +1,423 @@
+@import '../../../theme/dp-tokens';
+
+ion-content {
+  --background: #FFFFFF;
+}
+
+.landing {
+  min-height: 100%;
+}
+
+.lp-btn {
+  font-family: $dp-font-bold;
+  font-size: 13px;
+  border-radius: $dp-radius-pill;
+  padding: 9px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &.lp-btn-outline {
+    background: transparent;
+    color: var(--dp-blue-500, #2F89C5);
+    @include dp-border(1.5px, var(--dp-blue-500, #2F89C5));
+
+    &.lp-btn-light {
+      color: #FFFFFF;
+      @include dp-border(1.5px, #FFFFFF);
+    }
+  }
+
+  &.lp-btn-filled {
+    background: var(--dp-blue-500, #2F89C5);
+    color: #FFFFFF;
+    @include dp-border(1.5px, $dp-border-color);
+  }
+
+  &.lp-btn-lg {
+    font-size: 15px;
+    padding: 13px 24px;
+  }
+
+  &.lp-btn-sm {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+
+// ==== Secao 1: Header / Menu ====
+.lp-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #FFFFFF;
+  border-bottom: $dp-border-width solid $dp-border-color;
+
+  .lp-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 20px;
+  }
+
+  .lp-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    .lp-brand-logo {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    .lp-brand-name {
+      font-family: $dp-font-bold;
+      font-size: 17px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .lp-nav-desktop {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .lp-nav-item {
+    position: relative;
+    font-family: $dp-font-semibold;
+    font-size: 14px;
+    color: var(--dp-blue-900, #1A3D5C);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+
+  .lp-dropdown {
+    .lp-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: -10px;
+      min-width: 200px;
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      @include dp-border(1.5px);
+      @include dp-offset-shadow(3px, 3px);
+
+      span {
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-family: $dp-font-medium;
+        font-size: 13px;
+        color: var(--dp-blue-900, #1A3D5C);
+
+        &:hover {
+          background: #F0F4F8;
+        }
+      }
+    }
+  }
+
+  .lp-header-cta-desktop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .lp-hamburger {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+
+    ion-icon {
+      font-size: 28px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .lp-mobile-panel {
+    display: none;
+    flex-direction: column;
+    padding: 10px 20px 16px;
+    border-top: $dp-border-width solid $dp-border-color;
+    gap: 4px;
+
+    .lp-nav-item {
+      padding: 10px 4px;
+      border-bottom: 1px solid #E4E9EF;
+    }
+
+    .lp-dropdown-menu-mobile {
+      display: flex;
+      flex-direction: column;
+      background: #F0F4F8;
+      border-radius: 10px;
+      padding: 4px 10px;
+      margin-bottom: 4px;
+
+      span {
+        padding: 8px 4px;
+        font-family: $dp-font-medium;
+        font-size: 13px;
+        color: var(--dp-blue-900, #1A3D5C);
+      }
+    }
+  }
+
+  .lp-mobile-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+
+    .lp-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .lp-nav-desktop,
+    .lp-header-cta-desktop {
+      display: none;
+    }
+
+    .lp-hamburger {
+      display: block;
+    }
+
+    .lp-mobile-panel {
+      display: flex;
+    }
+  }
+}
+
+// ==== Secao 2: Ticker de premios acumulados ====
+.lp-ticker {
+  background: var(--dp-blue-900, #1A3D5C);
+  overflow: hidden;
+  padding: 10px 0;
+
+  .lp-ticker-track {
+    display: flex;
+    width: max-content;
+    animation: lp-ticker-scroll 22s linear infinite;
+  }
+
+  .lp-ticker-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 26px;
+    white-space: nowrap;
+
+    ion-icon {
+      font-size: 16px;
+      color: var(--dp-blue-300, #0DADEE);
+    }
+
+    .lp-ticker-name {
+      font-family: $dp-font-semibold;
+      font-size: 13px;
+      color: #FFFFFF;
+    }
+
+    .lp-ticker-prize {
+      font-family: $dp-font-bold;
+      font-size: 13px;
+      color: var(--dp-blue-300, #0DADEE);
+    }
+
+    .lp-ticker-when {
+      font-family: $dp-font-regular;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+@keyframes lp-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+// ==== Secao 3: Hero ====
+.lp-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--dp-gradient-main, linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%));
+  padding: 56px 20px 44px;
+  text-align: center;
+
+  .lp-hero-deco {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.14);
+    pointer-events: none;
+  }
+
+  .lp-hero-deco-1 { font-size: 160px; top: -30px; left: -30px; transform: rotate(-15deg); }
+  .lp-hero-deco-2 { font-size: 90px; top: 20px; right: 8%; transform: rotate(12deg); }
+  .lp-hero-deco-3 { font-size: 130px; bottom: -40px; right: -20px; transform: rotate(20deg); }
+
+  .lp-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .lp-hero-title {
+    font-family: $dp-font-bold;
+    font-size: 30px;
+    line-height: 1.2;
+    color: #FFFFFF;
+    margin: 0 0 14px;
+  }
+
+  .lp-hero-subtitle {
+    font-family: $dp-font-regular;
+    font-size: 15px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 26px;
+  }
+
+  .lp-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .lp-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .lp-hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: $dp-font-medium;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+
+    ion-icon {
+      font-size: 16px;
+      color: var(--dp-blue-300, #0DADEE);
+    }
+  }
+}
+
+// ==== Secao 4: Cards de loterias em destaque ====
+.lp-section {
+  padding: 40px 20px;
+}
+
+.lp-section-title {
+  font-family: $dp-font-bold;
+  font-size: 22px;
+  color: var(--dp-blue-900, #1A3D5C);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.lp-fine-print {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--dp-blue-gray, #6B8299);
+  text-align: center;
+  margin: 16px 0 0;
+}
+
+.lp-lotteries {
+  background: #F0F4F8;
+}
+
+.lp-lotteries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.lp-lottery-card {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+  @include dp-accent-flag(6px, 12px, 18px, 26px);
+  @include dp-accent-tint(40%, 0.12);
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  ion-icon {
+    font-size: 24px;
+    color: var(--accent, var(--dp-blue-500, #2F89C5));
+    margin-bottom: 6px;
+  }
+
+  .lp-lottery-name {
+    font-family: $dp-font-bold;
+    font-size: 16px;
+    color: var(--dp-blue-900, #1A3D5C);
+  }
+
+  .lp-lottery-concurso {
+    font-family: $dp-font-regular;
+    font-size: 12px;
+    color: var(--dp-blue-gray, #6B8299);
+  }
+
+  .lp-lottery-prize {
+    font-family: $dp-font-bold;
+    font-size: 20px;
+    color: var(--accent, var(--dp-blue-500, #2F89C5));
+    margin: 6px 0 2px;
+  }
+
+  .lp-lottery-sorteio {
+    font-family: $dp-font-medium;
+    font-size: 12px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin-bottom: 12px;
+  }
+
+  .lp-lottery-ctas {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+
+    .lp-btn {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}

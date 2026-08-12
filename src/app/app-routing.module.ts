@@ -6,7 +6,7 @@ import { AdminGuard } from './guards/admin.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./pages/landing/landing.module').then(m => m.LandingPageModule)
   },
   {
     path: '',
