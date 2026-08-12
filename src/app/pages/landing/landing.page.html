@@ -25,8 +25,8 @@
 
         <div class="lp-header-cta lp-header-cta-desktop">
           <ng-container *ngIf="!isLoggedIn">
-            <button class="lp-btn lp-btn-outline" (click)="goToLogin()">Entrar</button>
-            <button class="lp-btn lp-btn-filled" (click)="goToRegister()">Cadastre-se grátis</button>
+            <button class="lp-btn lp-btn-link" (click)="goToLogin()">Entrar</button>
+            <button class="lp-btn lp-btn-primary" (click)="goToRegister()">Cadastre-se grátis</button>
           </ng-container>
           <button class="lp-btn lp-btn-outline" *ngIf="isLoggedIn" (click)="goToProfile()">Minha conta</button>
         </div>
@@ -51,8 +51,8 @@
 
         <div class="lp-mobile-cta">
           <ng-container *ngIf="!isLoggedIn">
-            <button class="lp-btn lp-btn-outline" (click)="goToLogin()">Entrar</button>
-            <button class="lp-btn lp-btn-filled" (click)="goToRegister()">Cadastre-se grátis</button>
+            <button class="lp-btn lp-btn-link" (click)="goToLogin()">Entrar</button>
+            <button class="lp-btn lp-btn-primary" (click)="goToRegister()">Cadastre-se grátis</button>
           </ng-container>
           <button class="lp-btn lp-btn-outline" *ngIf="isLoggedIn" (click)="goToProfile()">Minha conta</button>
         </div>
@@ -116,16 +116,17 @@
       <h2 class="lp-section-title">Loterias em destaque</h2>
 
       <div class="lp-lotteries-grid">
-        <div class="lp-lottery-card" *ngFor="let g of featuredLotteries" [style.--accent]="g.color">
-          <ion-icon [name]="g.icon"></ion-icon>
+        <div class="lp-lottery-card" *ngFor="let g of featuredLotteries; let i = index" [class.y]="i % 2 === 0" [class.b]="i % 2 !== 0">
+          <div class="lp-lottery-icon"><ion-icon [name]="g.icon"></ion-icon></div>
           <span class="lp-lottery-name">{{ g.name }}</span>
           <span class="lp-lottery-concurso">Concurso {{ g.concurso }}</span>
           <span class="lp-lottery-prize">{{ g.prize }}</span>
-          <span class="lp-lottery-sorteio">Sorteio: {{ g.sorteio }}</span>
 
-          <div class="lp-lottery-ctas">
-            <button class="lp-btn lp-btn-outline lp-btn-sm" (click)="goToBolaoList()">Ver bolões</button>
-            <button class="lp-btn lp-btn-filled lp-btn-sm" (click)="goToGame(g.key)">Fazer meu jogo</button>
+          <div class="lp-lottery-footer">
+            <span class="lp-lottery-day">{{ g.sorteio }}</span>
+            <button class="lp-lottery-go" (click)="goToGame(g.key)" aria-label="Fazer meu jogo">
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </button>
           </div>
         </div>
       </div>

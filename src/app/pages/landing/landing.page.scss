@@ -33,6 +33,27 @@ ion-content {
     @include dp-border(1.5px, $dp-border-color);
   }
 
+  // Botao "pressionavel" do protótipo: sombra solida embaixo, afunda ao clicar.
+  &.lp-btn-primary {
+    background: var(--dp-orange, #F7941D);
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 4px 0 var(--dp-orange-dark, #D97A0A);
+    transition: transform .15s ease, box-shadow .15s ease;
+
+    &:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 var(--dp-orange-dark, #D97A0A);
+    }
+  }
+
+  &.lp-btn-link {
+    background: transparent;
+    border: none;
+    padding: 9px 6px;
+    color: var(--dp-blue-500, #2F89C5);
+  }
+
   &.lp-btn-lg {
     font-size: 15px;
     padding: 13px 24px;
@@ -354,71 +375,123 @@ ion-content {
 
 .lp-lotteries-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   max-width: 1100px;
   margin: 0 auto;
+
+  @media (max-width: 980px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .lp-lottery-card {
   position: relative;
-  background: #FFFFFF;
-  border-radius: $dp-radius-card;
-  padding: 18px;
+  border-radius: 22px;
+  padding: 26px 22px 22px;
+  min-height: 230px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  @include dp-border();
-  @include dp-offset-shadow(3px, 3px);
-  @include dp-accent-flag(6px, 12px, 18px, 26px);
-  @include dp-accent-tint(40%, 0.12);
+  gap: 2px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+  transition: transform .18s ease, box-shadow .18s ease;
+  @include dp-border(1.5px, rgba(0, 0, 0, 0.08));
 
-  > * {
-    position: relative;
-    z-index: 1;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
   }
 
-  ion-icon {
-    font-size: 24px;
-    color: var(--accent, var(--dp-blue-500, #2F89C5));
-    margin-bottom: 6px;
+  &.y {
+    background: linear-gradient(155deg, var(--dp-yellow-light, #FFDE45), var(--dp-yellow, #FFD400));
+    color: var(--dp-blue-900, #1A3D5C);
+
+    .lp-lottery-icon { background: rgba(255, 255, 255, 0.5); }
+    .lp-lottery-day { background: rgba(255, 255, 255, 0.4); }
+  }
+
+  &.b {
+    background: linear-gradient(155deg, var(--dp-blue-500, #2F89C5), var(--dp-blue-700, #1A5F8A));
+    color: #FFFFFF;
+
+    .lp-lottery-icon { background: rgba(255, 255, 255, 0.18); }
+    .lp-lottery-concurso { color: rgba(255, 255, 255, 0.75); }
+    .lp-lottery-day { background: rgba(255, 255, 255, 0.16); }
+  }
+
+  .lp-lottery-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+
+    ion-icon {
+      font-size: 20px;
+      color: inherit;
+    }
   }
 
   .lp-lottery-name {
     font-family: $dp-font-bold;
-    font-size: 16px;
-    color: var(--dp-blue-900, #1A3D5C);
+    font-size: 20px;
   }
 
   .lp-lottery-concurso {
     font-family: $dp-font-regular;
     font-size: 12px;
-    color: var(--dp-blue-gray, #6B8299);
+    opacity: 0.75;
+    margin-top: 2px;
   }
 
   .lp-lottery-prize {
     font-family: $dp-font-bold;
-    font-size: 20px;
-    color: var(--accent, var(--dp-blue-500, #2F89C5));
-    margin: 6px 0 2px;
+    font-size: 28px;
+    margin-top: 14px;
   }
 
-  .lp-lottery-sorteio {
-    font-family: $dp-font-medium;
-    font-size: 12px;
-    color: var(--dp-blue-gray, #6B8299);
-    margin-bottom: 12px;
-  }
-
-  .lp-lottery-ctas {
-    display: flex;
-    gap: 8px;
+  .lp-lottery-footer {
     margin-top: auto;
+    padding-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-    .lp-btn {
-      flex: 1;
-      text-align: center;
+  .lp-lottery-day {
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: $dp-radius-pill;
+  }
+
+  .lp-lottery-go {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--dp-orange, #F7941D);
+    color: #FFFFFF;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform .15s;
+
+    ion-icon {
+      font-size: 16px;
     }
+  }
+
+  &:hover .lp-lottery-go {
+    transform: translateX(3px);
   }
 }
 
