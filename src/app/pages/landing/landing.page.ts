@@ -22,6 +22,32 @@ const RESULT_ROWS: ResultRow[] = [
   { loteria: '+Milionária', data: '09/08/2026', premio: 'R$ 68.000.000' },
 ];
 
+interface Testimonial {
+  text: string;
+  name: string;
+}
+
+// Depoimentos ilustrativos - reais a coletar apos o lancamento.
+const TESTIMONIALS: Testimonial[] = [
+  { text: 'Achei que ia ser complicado, mas em menos de cinco minutos já tinha feito minha primeira aposta pelo celular.', name: 'Renata A.' },
+  { text: 'Ganhei um prêmio pequeno na Quina e o valor caiu na minha conta certinho, sem enrolação.', name: 'Carlos M.' },
+  { text: 'Tive uma dúvida sobre um bolão e o suporte respondeu rapidinho, direto com uma pessoa de verdade.', name: 'Juliana P.' },
+];
+
+interface NewsItem {
+  category: string;
+  title: string;
+  summary: string;
+  date: string;
+}
+
+// Noticias ilustrativas - conteudo real a produzir na etapa de blog/SEO.
+const NEWS_ITEMS: NewsItem[] = [
+  { category: 'Dicas', title: 'Como montar um bolão equilibrado', summary: 'Veja como dividir cotas e escolher números pra aumentar suas chances sem gastar mais.', date: '05/08/2026' },
+  { category: 'Resultados', title: 'Mega-Sena acumula e prêmio passa dos R$ 40 milhões', summary: 'Ninguém acertou as seis dezenas do concurso anterior — próximo sorteio promete.', date: '08/08/2026' },
+  { category: 'Curiosidades', title: 'Os números mais sorteados nos últimos 12 meses', summary: 'Levantamento mostra quais dezenas mais saíram nos concursos recentes.', date: '11/08/2026' },
+];
+
 interface TickerItem {
   name: string;
   prize: string;
@@ -77,6 +103,10 @@ export class LandingPage implements OnInit {
   public showingFakeBolaos = true;
 
   public resultRows = RESULT_ROWS;
+  public testimonials = TESTIMONIALS;
+  public newsItems = NEWS_ITEMS;
+  public newsletterEmail = '';
+  public currentYear = new Date().getFullYear();
 
   get isLoggedIn(): boolean {
     return !!(this.user && this.user.id);
@@ -160,5 +190,14 @@ export class LandingPage implements OnInit {
 
   comingSoon() {
     this.toastCtrl.create({ message: 'Em breve!', duration: 1500 }).then(t => t.present());
+  }
+
+  submitNewsletter() {
+    if (!this.newsletterEmail.trim()) {
+      this.toastCtrl.create({ message: 'Informe um e-mail válido.', duration: 1500 }).then(t => t.present());
+      return;
+    }
+    this.newsletterEmail = '';
+    this.toastCtrl.create({ message: 'Obrigado! Você vai receber nossas novidades em breve.', duration: 2000 }).then(t => t.present());
   }
 }

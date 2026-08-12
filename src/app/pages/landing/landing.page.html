@@ -256,5 +256,193 @@
       </div>
     </section>
 
+    <!-- ==== Secao 11: Depoimentos ==== -->
+    <section class="lp-section lp-testimonials" id="depoimentos">
+      <h2 class="lp-section-title">Quem aposta com a Dupolvo, aprova</h2>
+      <p class="lp-fine-print lp-fine-print-top">*Depoimentos ilustrativos — depoimentos reais a coletar.</p>
+
+      <div class="lp-testimonials-grid">
+        <div class="lp-testimonial-card" *ngFor="let t of testimonials">
+          <ion-icon name="chatbox-ellipses-outline" class="lp-quote-icon"></ion-icon>
+          <p class="lp-testimonial-text">"{{ t.text }}"</p>
+          <span class="lp-testimonial-name">— {{ t.name }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==== Secao 12: Video institucional ==== -->
+    <section class="lp-section lp-video-section" id="video">
+      <h2 class="lp-section-title">Conheça a Dupolvo</h2>
+      <p class="lp-section-subtitle">A Dupolvo nasceu para simplificar o jogo. Nossa equipe reúne especialistas em loterias, tecnologia e segurança digital para garantir uma experiência de apostas ágil, transparente e confiável.</p>
+
+      <div class="lp-video-wrap">
+        <video controls preload="metadata" src="assets/imgs/video.mp4"></video>
+      </div>
+
+      <div class="lp-section-cta">
+        <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Saiba mais sobre nós</button>
+      </div>
+    </section>
+
+    <!-- ==== Secao 13: Noticias / Blog ==== -->
+    <section class="lp-section lp-news" id="noticias">
+      <h2 class="lp-section-title">Últimas Notícias</h2>
+      <p class="lp-fine-print lp-fine-print-top">*Conteúdo ilustrativo — matérias reais a publicar.</p>
+
+      <div class="lp-news-grid">
+        <div class="lp-news-card" *ngFor="let n of newsItems">
+          <span class="lp-news-category">{{ n.category }}</span>
+          <h3 class="lp-news-title">{{ n.title }}</h3>
+          <p class="lp-news-summary">{{ n.summary }}</p>
+          <span class="lp-news-date">{{ n.date }}</span>
+        </div>
+      </div>
+
+      <div class="lp-section-cta">
+        <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Ver mais notícias</button>
+      </div>
+    </section>
+
+    <!-- ==== Secao 14: Newsletter ==== -->
+    <section class="lp-section lp-newsletter" id="newsletter">
+      <div class="lp-newsletter-card">
+        <h2 class="lp-section-title lp-section-title-light">Fique por dentro</h2>
+        <p class="lp-section-subtitle lp-section-subtitle-light">Cadastre-se e receba em primeira mão os resultados, datas de sorteio, novidades e promoções exclusivas da Dupolvo.</p>
+
+        <form class="lp-newsletter-form" (ngSubmit)="submitNewsletter()">
+          <input type="email" name="newsletterEmail" placeholder="Seu melhor e-mail" [(ngModel)]="newsletterEmail" />
+          <button type="submit" class="lp-btn lp-btn-filled">Cadastrar e-mail</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==== Secao 15: Redes sociais ==== -->
+    <section class="lp-section lp-social" id="redes-sociais">
+      <h2 class="lp-section-title">Acompanhe a Dupolvo nas redes</h2>
+      <p class="lp-section-subtitle">Dicas de apostas, bastidores dos sorteios e novidades em primeira mão. Segue lá.</p>
+
+      <div class="lp-social-icons">
+        <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-instagram"></ion-icon></span>
+        <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-youtube"></ion-icon></span>
+        <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-facebook"></ion-icon></span>
+        <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-twitter"></ion-icon></span>
+      </div>
+
+      <div class="lp-section-cta">
+        <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Inscrever-se no canal</button>
+      </div>
+    </section>
+
+    <!-- ==== Secao 16: FAQ ==== -->
+    <section class="lp-section lp-faq" id="faq">
+      <h2 class="lp-section-title">Perguntas Frequentes</h2>
+
+      <ion-accordion-group class="lp-accordion">
+        <ion-accordion value="a1">
+          <ion-item slot="header">
+            <ion-label>Como funciona a Dupolvo?</ion-label>
+          </ion-item>
+          <div slot="content" class="lp-accordion-content">
+            Escolha sua loteria, selecione seus números ou entre em um bolão, finalize a compra e acompanhe o resultado direto na plataforma.
+          </div>
+        </ion-accordion>
+        <ion-accordion value="a2">
+          <ion-item slot="header">
+            <ion-label>Como sei se fui premiado?</ion-label>
+          </ion-item>
+          <div slot="content" class="lp-accordion-content">
+            Você recebe uma notificação por e-mail (e/ou push) assim que o resultado sai, com todas as instruções para resgatar seu prêmio.
+          </div>
+        </ion-accordion>
+        <ion-accordion value="a3">
+          <ion-item slot="header">
+            <ion-label>O que é o bolão da Dupolvo?</ion-label>
+          </ion-item>
+          <div slot="content" class="lp-accordion-content">
+            É um grupo de apostas organizado matematicamente para aumentar as chances de premiação, dividido em cotas que você pode comprar.
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
+      <div class="lp-section-cta">
+        <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Ver todas as perguntas</button>
+      </div>
+    </section>
+
+    <!-- ==== Secao 17: Rodape ==== -->
+    <footer class="lp-footer">
+      <div class="lp-footer-badges">
+        <div class="lp-footer-badge">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <div>
+            <strong>Site Seguro</strong>
+            <span>Ambiente protegido de ponta a ponta</span>
+          </div>
+        </div>
+        <div class="lp-footer-badge">
+          <ion-icon name="flash-outline"></ion-icon>
+          <div>
+            <strong>Fácil e Rápido</strong>
+            <span>Apostas em poucos cliques</span>
+          </div>
+        </div>
+        <div class="lp-footer-badge">
+          <ion-icon name="cash-outline"></ion-icon>
+          <div>
+            <strong>Prêmio Garantido</strong>
+            <span>Pagamento direto na sua conta</span>
+          </div>
+        </div>
+        <div class="lp-footer-badge">
+          <ion-icon name="headset-outline"></ion-icon>
+          <div>
+            <strong>Suporte Humanizado</strong>
+            <span>Atendimento real, todos os dias</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-footer-columns">
+        <div class="lp-footer-col">
+          <span class="lp-footer-col-title">Loterias</span>
+          <span *ngFor="let g of featuredLotteries" (click)="scrollTo('loterias-destaque')">{{ g.name }}</span>
+        </div>
+        <div class="lp-footer-col">
+          <span class="lp-footer-col-title">Institucional</span>
+          <span (click)="comingSoon()">Sobre</span>
+          <span (click)="scrollTo('como-funciona')">Como Apostar</span>
+          <span (click)="comingSoon()">Regulamento</span>
+          <span (click)="scrollTo('depoimentos')">Depoimentos</span>
+        </div>
+        <div class="lp-footer-col">
+          <span class="lp-footer-col-title">Notícias</span>
+          <span (click)="scrollTo('noticias')">Blog Dupolvo</span>
+        </div>
+        <div class="lp-footer-col">
+          <span class="lp-footer-col-title">Atendimento</span>
+          <span (click)="comingSoon()">Fale Conosco</span>
+          <span (click)="comingSoon()">WhatsApp</span>
+          <span (click)="scrollTo('faq')">FAQ</span>
+        </div>
+      </div>
+
+      <div class="lp-footer-legal">
+        <div class="lp-footer-legal-links">
+          <span (click)="comingSoon()">Regulamento</span>
+          <span (click)="comingSoon()">Privacidade</span>
+          <span (click)="comingSoon()">Termos de Uso</span>
+        </div>
+
+        <div class="lp-social-icons lp-footer-social">
+          <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-instagram"></ion-icon></span>
+          <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-youtube"></ion-icon></span>
+          <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-facebook"></ion-icon></span>
+          <span class="lp-social-icon" (click)="comingSoon()"><ion-icon name="logo-twitter"></ion-icon></span>
+        </div>
+
+        <p class="lp-footer-copyright">Copyright © {{ currentYear }} Dupolvo — Todos os direitos reservados. [Razão social / CNPJ / endereço — a definir]</p>
+      </div>
+    </footer>
+
   </div>
 </ion-content>
