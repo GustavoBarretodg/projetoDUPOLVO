@@ -7,7 +7,7 @@ ion-content {
 .ct {
   min-height: 100%;
   padding: 0 16px 40px;
-  max-width: 640px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -59,133 +59,206 @@ ion-content {
 }
 
 .ct-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-family: $dp-font-bold;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--dp-blue-900, #1A3D5C);
   margin: 4px 0 16px;
-
-  ion-icon {
-    font-size: 22px;
-  }
 }
 
 .ct-empty {
   background: #FFFFFF;
   border-radius: $dp-radius-card;
-  padding: 40px 20px;
-  text-align: center;
+  padding: 40px 24px;
   @include dp-border();
 
-  ion-icon {
-    font-size: 44px;
-    color: var(--dp-blue-gray, #6B8299);
-    margin-bottom: 10px;
+  .ct-empty-main {
+    font-family: $dp-font-medium;
+    font-size: 17px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin: 0 0 4px;
   }
 
-  p {
+  .ct-empty-sub {
     font-family: $dp-font-regular;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--dp-blue-gray, #6B8299);
-    margin: 0 0 18px;
+    margin: 0 0 20px;
+  }
+
+  .ct-btn {
+    width: auto;
   }
 }
 
-.ct-item {
-  position: relative;
+// ==== Grid: lista + pagamento ====
+.ct-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 18px;
+  align-items: start;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ct-list {
   background: #FFFFFF;
   border-radius: $dp-radius-card;
-  padding: 14px;
-  margin-bottom: 12px;
+  overflow: hidden;
   @include dp-border();
   @include dp-offset-shadow(3px, 3px);
-  @include dp-accent-tint(38%, 0.08);
+}
 
-  > * {
-    position: relative;
-    z-index: 1;
+.ct-table-head {
+  display: grid;
+  grid-template-columns: 140px 1fr 110px 60px;
+  padding: 12px 16px;
+  border-bottom: 2px solid #E4E9EF;
+
+  span {
+    font-family: $dp-font-semibold;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--dp-blue-gray, #6B8299);
   }
 
-  .ct-item-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+  @media (max-width: 800px) {
+    display: none;
+  }
+}
 
-    .ct-item-game {
-      font-family: $dp-font-bold;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
+.ct-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 110px 60px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #E4E9EF;
 
-    .ct-item-price {
-      font-family: $dp-font-bold;
-      font-size: 16px;
-      color: var(--dp-blue-900, #1A3D5C);
-    }
+  &:last-child {
+    border-bottom: none;
   }
 
-  .ct-item-balls {
+  .ct-cell-label {
+    display: none;
+  }
+
+  .ct-game-name {
+    font-family: $dp-font-bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .ct-balls {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 5px;
   }
 
   .ct-ball {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: $dp-font-bold;
-    font-size: 11px;
+    font-size: 10px;
     color: #FFFFFF;
     @include dp-border(1.5px, $dp-border-color);
   }
 
+  .ct-price {
+    font-family: $dp-font-bold;
+    font-size: 14px;
+    color: var(--dp-blue-900, #1A3D5C);
+  }
+
   .ct-remove {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
     background: transparent;
     border: none;
-    font-family: $dp-font-semibold;
-    font-size: 12px;
-    color: var(--ion-color-danger, #EB445A);
     cursor: pointer;
-    padding: 0;
+    padding: 6px;
 
     ion-icon {
-      font-size: 14px;
+      font-size: 18px;
+      color: var(--ion-color-danger, #EB445A);
+    }
+  }
+
+  // Mobile: vira card empilhado
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+
+    .ct-cell-label {
+      display: block;
+      font-family: $dp-font-semibold;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--dp-blue-gray, #6B8299);
+      margin-bottom: 2px;
+    }
+
+    .ct-cell-game {
+      order: 1;
+    }
+
+    .ct-cell-actions {
+      order: 2;
+      justify-self: end;
+    }
+
+    .ct-cell-balls {
+      order: 3;
+      grid-column: 1 / -1;
+    }
+
+    .ct-cell-price {
+      order: 4;
+      grid-column: 1 / -1;
     }
   }
 }
 
-.ct-summary {
+// ==== Coluna pagamento ====
+.ct-payment {
   background: #FFFFFF;
   border-radius: $dp-radius-card;
   padding: 18px;
-  margin-top: 6px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: sticky;
+  top: 12px;
   @include dp-border();
-  @include dp-offset-shadow();
+  @include dp-offset-shadow(3px, 3px);
 
-  .ct-summary-row {
+  h3 {
+    font-family: $dp-font-bold;
+    font-size: 16px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E4E9EF;
+  }
+
+  .ct-payment-total {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: $dp-font-medium;
-    font-size: 14px;
-    color: var(--dp-blue-gray, #6B8299);
 
-    .ct-summary-total {
+    p {
+      font-family: $dp-font-medium;
+      font-size: 13px;
+      color: var(--dp-blue-gray, #6B8299);
+      margin: 0;
+    }
+
+    span {
       font-family: $dp-font-bold;
       font-size: 22px;
       color: var(--dp-blue-900, #1A3D5C);
@@ -201,6 +274,14 @@ ion-content {
   padding: 12px 20px;
   cursor: pointer;
   text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  ion-icon {
+    font-size: 15px;
+  }
 }
 
 .ct-btn-primary {

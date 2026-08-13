@@ -7,14 +7,21 @@
         <span class="brand-name">DuPolvo</span>
       </div>
 
-      <div class="top-actions" *ngIf="!isLoggedIn">
-        <button class="btn-outline" (click)="goToLogin()">Entrar</button>
-        <button class="btn-filled" (click)="goToRegister()">Cadastre-se</button>
-      </div>
+      <div class="top-tools">
+        <div class="top-actions" *ngIf="!isLoggedIn">
+          <button class="btn-outline" (click)="goToLogin()">Entrar</button>
+          <button class="btn-filled" (click)="goToRegister()">Cadastre-se</button>
+        </div>
 
-      <div class="top-profile" *ngIf="isLoggedIn" (click)="goToProfile()">
-        <ion-icon name="person-circle-outline"></ion-icon>
-        <span>{{ user?.name || 'Minha conta' }}</span>
+        <div class="top-profile" *ngIf="isLoggedIn" (click)="goToProfile()">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <span>{{ user?.name || 'Minha conta' }}</span>
+        </div>
+
+        <button class="top-cart" (click)="goToCart()" aria-label="Meu carrinho">
+          <ion-icon name="cart-outline"></ion-icon>
+          <span class="top-cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+        </button>
       </div>
     </div>
 

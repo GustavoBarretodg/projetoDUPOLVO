@@ -12,41 +12,69 @@
       <span class="ct-spacer"></span>
     </div>
 
-    <h1 class="ct-title"><ion-icon name="cart-outline"></ion-icon> Meu Carrinho</h1>
+    <h1 class="ct-title">Meu carrinho</h1>
 
     <ng-container *ngIf="items$ | async as items">
 
       <div class="ct-empty" *ngIf="items.length === 0">
-        <ion-icon name="cart-outline"></ion-icon>
-        <p>Seu carrinho está vazio.</p>
+        <p class="ct-empty-main">Você ainda não adicionou nenhum item no carrinho.</p>
+        <p class="ct-empty-sub">Adicione algum item ao carrinho para concluir a compra.</p>
         <button class="ct-btn ct-btn-primary" (click)="goToGame()">Fazer um jogo</button>
       </div>
 
-      <ng-container *ngIf="items.length > 0">
-        <div class="ct-item" *ngFor="let item of items" [style.--accent]="getGameColor(item.gameType)">
-          <div class="ct-item-head">
-            <span class="ct-item-game" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
-            <span class="ct-item-price">{{ formatPrice(item.price) }}</span>
+      <div class="ct-grid" *ngIf="items.length > 0">
+
+        <!-- Coluna 1: lista -->
+        <div class="ct-list">
+          <div class="ct-table-head">
+            <span>Loteria</span>
+            <span>Dezenas</span>
+            <span>Valor</span>
+            <span></span>
           </div>
 
-          <div class="ct-item-balls">
-            <span class="ct-ball" *ngFor="let n of item.numbers" [style.background]="getGameColor(item.gameType)">{{ n < 10 ? '0' + n : n }}</span>
-          </div>
+          <div class="ct-row" *ngFor="let item of items" [style.--accent]="getGameColor(item.gameType)">
+            <div class="ct-cell ct-cell-game">
+              <span class="ct-cell-label">Loteria</span>
+              <span class="ct-game-name" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
+            </div>
 
-          <button class="ct-remove" (click)="remove(item)">
-            <ion-icon name="trash-outline"></ion-icon> Remover
-          </button>
+            <div class="ct-cell ct-cell-balls">
+              <span class="ct-cell-label">Dezenas</span>
+              <div class="ct-balls">
+                <span class="ct-ball" *ngFor="let n of item.numbers" [style.background]="getGameColor(item.gameType)">{{ n < 10 ? '0' + n : n }}</span>
+              </div>
+            </div>
+
+            <div class="ct-cell ct-cell-price">
+              <span class="ct-cell-label">Valor</span>
+              <span class="ct-price">{{ formatPrice(item.price) }}</span>
+            </div>
+
+            <div class="ct-cell ct-cell-actions">
+              <button class="ct-remove" title="Excluir" (click)="remove(item)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div class="ct-summary">
-          <div class="ct-summary-row">
-            <span>Total ({{ items.length }} {{ items.length === 1 ? 'aposta' : 'apostas' }})</span>
-            <span class="ct-summary-total">{{ total }}</span>
+        <!-- Coluna 2: pagamento -->
+        <div class="ct-payment">
+          <h3>Pagamento</h3>
+
+          <div class="ct-payment-total">
+            <p>Total da compra</p>
+            <span>{{ total }}</span>
           </div>
-          <button class="ct-btn ct-btn-primary" (click)="goToPayment()">Ir para pagamento</button>
+
+          <button class="ct-btn ct-btn-primary" (click)="goToPayment()">
+            Continuar <ion-icon name="arrow-forward-outline"></ion-icon>
+          </button>
           <button class="ct-btn ct-btn-ghost" (click)="goToGame()">+ Adicionar mais jogos</button>
         </div>
-      </ng-container>
+
+      </div>
 
     </ng-container>
 
