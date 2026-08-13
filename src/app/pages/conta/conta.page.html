@@ -1,0 +1,120 @@
+<ion-content>
+  <div class="mc">
+
+    <div class="mc-topbar">
+      <button class="mc-back" (click)="goHome()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <div class="mc-brand" (click)="goHome()">
+        <img src="assets/imgs/dupolvo-logo.png" alt="DuPolvo" />
+        <span>DuPolvo</span>
+      </div>
+      <span class="mc-spacer"></span>
+    </div>
+
+    <!-- Cabecalho do perfil -->
+    <div class="mc-profile-head">
+      <div class="mc-avatar">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+      <div class="mc-profile-info">
+        <h1>{{ user?.name || 'Minha conta' }}</h1>
+        <span class="mc-balance-label">Saldo:</span>
+        <span class="mc-balance">{{ walletBalance }}</span>
+      </div>
+
+      <div class="mc-referral">
+        <p><span class="mc-referral-gift">🎁</span> <b>INDIQUE E GANHE!</b> Ao indicar, você ganha bônus quando o indicado faz a primeira compra, pra usar em apostas futuras no DuPolvo.</p>
+        <button class="mc-referral-btn" (click)="comingSoon()">Copiar Link</button>
+        <span class="mc-referral-note">*Em breve</span>
+      </div>
+    </div>
+
+    <!-- Menu + conteudo -->
+    <div class="mc-grid">
+
+      <nav class="mc-menu">
+        <button class="mc-menu-item" *ngFor="let item of menu"
+                [class.active]="activeSection === item.key"
+                (click)="setSection(item)">
+          <span class="mc-menu-icon"><ion-icon [name]="item.icon"></ion-icon></span>
+          <span class="mc-menu-label">{{ item.label }}</span>
+        </button>
+
+        <button class="mc-menu-item mc-menu-sair" (click)="logout()">
+          <span class="mc-menu-icon"><ion-icon name="log-out-outline"></ion-icon></span>
+          <span class="mc-menu-label">Sair</span>
+        </button>
+      </nav>
+
+      <div class="mc-content">
+        <h2 class="mc-content-title">{{ activeLabel() }}</h2>
+
+        <!-- Minhas compras -->
+        <ng-container *ngIf="activeSection === 'compras'">
+          <div class="mc-card mc-empty" *ngIf="!loadingBets && bets.length === 0">
+            <p>Você ainda não fez nenhuma compra.</p>
+            <button class="mc-btn-primary" (click)="goToGame()">Fazer um jogo</button>
+          </div>
+
+          <div class="mc-card mc-bet" *ngFor="let bet of bets" [style.--accent]="getGameColor(bet.gameType)">
+            <div class="mc-bet-head">
+              <span class="mc-bet-game" [style.color]="getGameColor(bet.gameType)">{{ getGameName(bet.gameType) }}</span>
+              <span class="mc-bet-status" [class.confirmed]="bet.marked">
+                <ion-icon [name]="bet.marked ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+                {{ bet.marked ? 'Confirmada' : 'Aguardando confirmação' }}
+              </span>
+              <span class="mc-bet-price">{{ getBetPriceLabel(bet) }}</span>
+            </div>
+
+            <div class="mc-bet-tag" *ngIf="bet.bolaoId">
+              <ion-icon name="people-outline"></ion-icon> Cota do bolão {{ bet.bolaoName }}
+            </div>
+
+            <div class="mc-bet-balls" *ngIf="!bet.bolaoId">
+              <span class="mc-ball" *ngFor="let n of bet.bet" [style.background]="getGameColor(bet.gameType)">{{ n < 10 ? '0' + n : n }}</span>
+            </div>
+
+            <button class="mc-bet-remove" *ngIf="!bet.marked" (click)="removeBet(bet)">
+              <ion-icon name="trash-outline"></ion-icon> Remover
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Meus dados -->
+        <ng-container *ngIf="activeSection === 'dados'">
+          <div class="mc-card">
+            <div class="mc-field">
+              <label>Nome</label>
+              <input type="text" [(ngModel)]="editName" [disabled]="!editingData" />
+            </div>
+            <div class="mc-field">
+              <label>E-mail</label>
+              <input type="email" [value]="user?.email || ''" disabled />
+            </div>
+            <div class="mc-field">
+              <label>Telefone</label>
+              <input type="tel" [(ngModel)]="editPhone" [disabled]="!editingData" />
+            </div>
+
+            <button class="mc-btn-primary" (click)="toggleEditData()">
+              {{ editingData ? 'Salvar' : 'Editar dados' }}
+            </button>
+            <p class="mc-fine-print">*Sincronização com o servidor em breve — os dados ficam salvos neste dispositivo.</p>
+          </div>
+        </ng-container>
+
+        <!-- Secoes em breve -->
+        <ng-container *ngIf="activeSection !== 'compras' && activeSection !== 'dados'">
+          <div class="mc-card mc-empty">
+            <ion-icon name="construct-outline" class="mc-empty-icon"></ion-icon>
+            <p>Em breve!</p>
+            <span class="mc-fine-print">Estamos preparando essa área pra você.</span>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+  </div>
+</ion-content>

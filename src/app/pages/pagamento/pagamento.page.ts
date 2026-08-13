@@ -99,7 +99,7 @@ export class PagamentoPage implements OnInit {
     msg += ' Aguarde a confirmação do pagamento.';
     this.showToast(msg, 3500);
 
-    this.router.navigate(['/tabs/card']);
+    this.router.navigate(['/conta']);
   }
 
   goBack() {

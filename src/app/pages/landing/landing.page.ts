@@ -193,7 +193,7 @@ export class LandingPage implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/tabs/profile']);
+    this.router.navigate(['/conta']);
   }
 
   goToBolaoList() {

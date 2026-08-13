@@ -57,7 +57,7 @@ export class LoginPage implements OnInit {
         } else if (this.returnUrl) {
           this.router.navigateByUrl(this.returnUrl);
         } else {
-          this.router.navigate(['/tabs/home']);
+          this.router.navigate(['/']);
         }
       }
       else if(res.message === 'not_found_user') {

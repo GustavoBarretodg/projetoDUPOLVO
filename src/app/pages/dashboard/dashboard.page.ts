@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { BolaoService } from '../../services/bolao.service';
+import { CartService } from '../../services/cart.service';
 import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
 import { FAKE_BOLOES } from 'src/app/shared/bolao-mock';
 
@@ -52,8 +53,17 @@ export class DashboardPage implements OnInit {
     private router: Router,
     private storage: StorageService,
     private toastCtrl: ToastController,
-    private bolaoSvc: BolaoService
+    private bolaoSvc: BolaoService,
+    private cart: CartService
   ) {}
+
+  get cartCount$() {
+    return this.cart.count$;
+  }
+
+  goToCart() {
+    this.router.navigate(['/carrinho']);
+  }
 
   ngOnInit() {
     this.getUser();
@@ -89,7 +99,7 @@ export class DashboardPage implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(['/tabs/profile']);
+    this.router.navigate(['/conta']);
   }
 
   goToMarkLotofacil() {

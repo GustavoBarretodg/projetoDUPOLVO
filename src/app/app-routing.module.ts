@@ -13,11 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
-    path: 'home',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
-  },
-  {
     path: 'property-detail',
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/property-detail/property-detail.module').then(m => m.PropertyDetailPageModule)
@@ -61,9 +56,9 @@ const routes: Routes = [
     loadChildren: () => import('./pages/change-password/change-password.module').then(m => m.ChangePasswordPageModule)
   },
   {
-    path: 'profile',
+    path: 'conta',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
+    loadChildren: () => import('./pages/conta/conta.module').then(m => m.ContaPageModule)
   },
   {
     path: 'admin',
