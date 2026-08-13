@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-tabs',
@@ -8,9 +9,22 @@ import { Router } from '@angular/router';
 })
 export class TabsPage {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private storage: StorageService
+  ) {}
 
-  logout() {
-    this.router.navigate(['/login']);
+  goToGame() {
+    this.router.navigate(['/jogar'], { queryParams: { game: 'LOTOFACIL' } });
+  }
+
+  goToConta() {
+    this.router.navigate(['/conta']);
+  }
+
+  async logout() {
+    await this.storage.removeItem('user').catch(() => {});
+    await this.storage.removeItem('token').catch(() => {});
+    this.router.navigate(['/']);
   }
 }
