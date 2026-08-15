@@ -342,6 +342,12 @@ ion-content {
   .lp-hero-deco-2 { font-size: 90px; top: 20px; right: 8%; transform: rotate(12deg); }
   .lp-hero-deco-3 { font-size: 130px; bottom: -40px; right: -20px; transform: rotate(20deg); }
 
+  @media (max-width: 600px) {
+    .lp-hero-deco-1 { font-size: 90px; }
+    .lp-hero-deco-2 { font-size: 50px; }
+    .lp-hero-deco-3 { font-size: 70px; }
+  }
+
   .lp-hero-content {
     position: relative;
     z-index: 1;
