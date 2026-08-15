@@ -4,7 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { AdminService } from '../../services/admin.service';
 import { BolaoService } from '../../services/bolao.service';
 import { StorageService } from '../../services/storage.service';
-import { GAME_CONFIGS } from 'src/app/shared/game-config';
+import { GAME_CONFIGS, GAME_LIST } from 'src/app/shared/game-config';
 
 @Component({
   selector: 'app-admin',
@@ -25,6 +25,7 @@ export class AdminPage implements OnInit {
   adminBolaos: any[] = [];
   bolaoLoading = false;
   newBolao = { name: '', gameType: '', pricePerQuota: null, maxQuotas: null };
+  games = GAME_LIST;
 
   constructor(
     private adminSvc: AdminService,

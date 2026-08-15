@@ -26,10 +26,7 @@
         <h2>Criar Novo Bolão</h2>
         <ion-input [(ngModel)]="newBolao.name" placeholder="Nome do bolão" class="bolao-input"></ion-input>
         <ion-select [(ngModel)]="newBolao.gameType" placeholder="Tipo de jogo" class="bolao-input">
-          <ion-select-option value="lotofacil">Lotofácil</ion-select-option>
-          <ion-select-option value="megasena">Mega-Sena</ion-select-option>
-          <ion-select-option value="quina">Quina</ion-select-option>
-          <ion-select-option value="lotomania">Lotomania</ion-select-option>
+          <ion-select-option *ngFor="let g of games" [value]="g.key">{{ g.name }}</ion-select-option>
         </ion-select>
         <ion-input [(ngModel)]="newBolao.pricePerQuota" type="number" placeholder="Preço da cota (R$)" class="bolao-input"></ion-input>
         <ion-input [(ngModel)]="newBolao.maxQuotas" type="number" placeholder="Nº máximo de cotas" class="bolao-input"></ion-input>
