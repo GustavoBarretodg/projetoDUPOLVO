@@ -285,6 +285,15 @@ ion-content {
     color: var(--dp-blue-500, #2F89C5);
     cursor: pointer;
   }
+
+  .jg-gerar {
+    background: var(--dp-orange, #F7941D);
+    box-shadow: 0 3px 0 var(--dp-orange-dark, #D97A0A);
+
+    &:active {
+      box-shadow: 0 1px 0 var(--dp-orange-dark, #D97A0A);
+    }
+  }
 }
 
 // ==== Grade + painel ====
@@ -321,8 +330,10 @@ ion-content {
 
   .jg-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
+    max-width: 380px;
+    margin: 0 auto;
   }
 
   .jg-ball {

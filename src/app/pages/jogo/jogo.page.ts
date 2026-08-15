@@ -9,6 +9,9 @@ const FICTITIOUS_CONTEST: { [key: string]: { concurso: string; prize: string } }
   LOTOFACIL: { concurso: '3187', prize: 'R$ 2 Milhões' },
 };
 
+// Mesma lista de quantidades da antiga tela "Aleatorio".
+const BULK_QTY_OPTIONS = [1, 5, 10, 15, 20, 30, 33];
+
 @Component({
   selector: 'app-jogo',
   templateUrl: './jogo.page.html',
@@ -26,6 +29,9 @@ export class JogoPage implements OnInit, OnDestroy {
 
   public surpresinhaQty = 0;
   public surpresinhaOptions: number[] = [];
+
+  public bulkQty = BULK_QTY_OPTIONS[0];
+  public bulkOptions = BULK_QTY_OPTIONS;
 
   public countdown = '';
   private countdownTimer: any = null;
@@ -107,13 +113,44 @@ export class JogoPage implements OnInit, OnDestroy {
   }
 
   surpresinha() {
+    this.selected = this.randomCombo(this.surpresinhaQty);
+  }
+
+  private randomCombo(qty: number): number[] {
     const pool = [...this.numberRange];
     const picked: number[] = [];
-    while (picked.length < this.surpresinhaQty && pool.length) {
+    while (picked.length < qty && pool.length) {
       const i = Math.floor(Math.random() * pool.length);
       picked.push(pool.splice(i, 1)[0]);
     }
-    this.selected = picked.sort((a, b) => a - b);
+    return picked.sort((a, b) => a - b);
+  }
+
+  // Gera N cartoes aleatorios de uma vez e manda todos pro carrinho -
+  // equivalente a tela "Aleatorio" do layout antigo, mas gerado no
+  // cliente (o antigo gerava no servidor, o que exigia login).
+  generateBulk() {
+    const price = getBetPrice(this.gameConfig.key, this.gameConfig.minPick);
+    let added = 0;
+    let skipped = 0;
+
+    for (let i = 0; i < this.bulkQty; i++) {
+      const combo = this.randomCombo(this.gameConfig.minPick);
+      if (this.cart.add(this.gameConfig.key, combo, price)) {
+        added++;
+      } else {
+        skipped++;
+      }
+    }
+
+    if (added === 0) {
+      this.showToast('Não foi possível gerar novos cartões (todos já estavam no carrinho).', 2200);
+      return;
+    }
+
+    let msg = `${added} ${added === 1 ? 'cartão adicionado' : 'cartões adicionados'} ao carrinho!`;
+    if (skipped) msg += ` (${skipped} repetido${skipped > 1 ? 's' : ''} ignorado${skipped > 1 ? 's' : ''})`;
+    this.showToast(msg, 2500);
   }
 
   clearSelection() {
@@ -166,7 +203,7 @@ export class JogoPage implements OnInit, OnDestroy {
   }
 
   goToBoloes() {
-    this.router.navigate(['/bolao']);
+    this.router.navigate(['/bolao'], { queryParams: { game: this.gameConfig.key } });
   }
 
   goHome() {
@@ -177,7 +214,7 @@ export class JogoPage implements OnInit, OnDestroy {
     this.showToast('Em breve!');
   }
 
-  private showToast(msg: string) {
-    this.toastCtrl.create({ message: msg, duration: 1800 }).then(t => t.present());
+  private showToast(msg: string, duration = 1800) {
+    this.toastCtrl.create({ message: msg, duration }).then(t => t.present());
   }
 }

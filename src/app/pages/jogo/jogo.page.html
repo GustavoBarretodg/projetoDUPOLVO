@@ -61,6 +61,17 @@
       <button class="jg-limpar" (click)="clearSelection()" *ngIf="selected.length">Limpar</button>
     </div>
 
+    <!-- Gerar varios cartoes aleatorios de uma vez -->
+    <div class="jg-toolbar jg-toolbar-bulk">
+      <div class="jg-surpresinha">
+        <span class="jg-toolbar-label"><ion-icon name="shuffle-outline"></ion-icon> Gerar vários cartões</span>
+        <select [(ngModel)]="bulkQty">
+          <option *ngFor="let q of bulkOptions" [ngValue]="q">{{ q }} {{ q === 1 ? 'cartão' : 'cartões' }}</option>
+        </select>
+        <button class="jg-palpitar jg-gerar" (click)="generateBulk()">Gerar</button>
+      </div>
+    </div>
+
     <!-- Grade + painel -->
     <div class="jg-body">
       <div class="jg-grid-card">
