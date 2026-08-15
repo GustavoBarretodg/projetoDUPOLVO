@@ -5,4 +5,8 @@ export interface User {
     phone: string
     password: string
     emailVerified?: boolean;
+    role?: string;
+    city?: string;
+    status?: string;
+    premium?: boolean;
 }

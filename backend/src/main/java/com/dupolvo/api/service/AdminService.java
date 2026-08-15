@@ -57,6 +57,23 @@ public class AdminService {
         return response;
     }
 
+    public Map<String, Object> updateUserPremium(Long userId, Boolean premium) {
+        Map<String, Object> response = new HashMap<>();
+
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            response.put("message", "user_not_found");
+            return response;
+        }
+
+        User user = userOpt.get();
+        user.setPremium(premium);
+        userRepository.save(user);
+
+        response.put("message", "user_updated");
+        return response;
+    }
+
     public Map<String, Object> updateBetStatus(Long betId, Boolean marked) {
         Map<String, Object> response = new HashMap<>();
 

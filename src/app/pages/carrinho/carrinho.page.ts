@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService, CartItem } from '../../services/cart.service';
 import { StorageService } from '../../services/storage.service';
 import { GAME_CONFIGS, formatBRL } from 'src/app/shared/game-config';
+import { calculateOrder } from 'src/app/shared/pricing';
 
 @Component({
   selector: 'app-carrinho',
   templateUrl: './carrinho.page.html',
   styleUrls: ['./carrinho.page.scss'],
 })
-export class CarrinhoPage {
+export class CarrinhoPage implements OnInit {
 
   public items$ = this.cart.items$;
+  public user: any = null;
 
   constructor(
     private cart: CartService,
@@ -19,8 +21,30 @@ export class CarrinhoPage {
     private storage: StorageService
   ) {}
 
+  ngOnInit() {
+    this.storage.get('user').then((res) => {
+      this.user = res || null;
+    }).catch(() => {});
+  }
+
+  get orderTotals() {
+    return calculateOrder(this.cart.getTotal(), this.user);
+  }
+
+  get subtotalLabel(): string {
+    return formatBRL(this.orderTotals.subtotal);
+  }
+
+  get feeLabel(): string {
+    return formatBRL(this.orderTotals.fee);
+  }
+
   get total(): string {
-    return formatBRL(this.cart.getTotal());
+    return formatBRL(this.orderTotals.total);
+  }
+
+  get isPremium(): boolean {
+    return this.orderTotals.isPremium;
   }
 
   get hasItems(): boolean {

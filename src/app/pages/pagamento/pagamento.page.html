@@ -23,6 +23,23 @@
         <span class="pg-summary-price">{{ formatPrice(item.price) }}</span>
       </div>
 
+      <div class="pg-summary-row">
+        <span>Subtotal</span>
+        <span>{{ subtotalLabel }}</span>
+      </div>
+
+      <div class="pg-summary-row" *ngIf="!isPremium">
+        <span>Taxa de serviço (20%)</span>
+        <span>{{ feeLabel }}</span>
+      </div>
+
+      <p class="pg-premium-note" *ngIf="isPremium">
+        <ion-icon name="checkmark-circle"></ion-icon> Você é premium — sem taxa de serviço!
+      </p>
+      <p class="pg-premium-note pg-premium-note-muted" *ngIf="!isPremium">
+        *Membros premium não pagam essa taxa.
+      </p>
+
       <div class="pg-summary-total">
         <span>Total</span>
         <span class="pg-total-value">{{ total }}</span>

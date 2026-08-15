@@ -32,6 +32,12 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateBetStatus(betId, marked));
     }
 
+    @PatchMapping("/users/{id}/premium")
+    public ResponseEntity<Map<String, Object>> updateUserPremium(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        Boolean premium = (Boolean) body.get("premium");
+        return ResponseEntity.ok(adminService.updateUserPremium(id, premium));
+    }
+
     private String extractCity() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth instanceof UsernamePasswordAuthenticationToken token) {

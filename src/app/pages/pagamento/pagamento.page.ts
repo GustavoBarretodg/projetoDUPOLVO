@@ -5,6 +5,7 @@ import { CartService, CartItem } from '../../services/cart.service';
 import { StorageService } from '../../services/storage.service';
 import { BetService } from '../../services/bet.service';
 import { GAME_CONFIGS, formatBRL } from 'src/app/shared/game-config';
+import { calculateOrder } from 'src/app/shared/pricing';
 
 @Component({
   selector: 'app-pagamento',
@@ -39,8 +40,24 @@ export class PagamentoPage implements OnInit {
     }
   }
 
+  get orderTotals() {
+    return calculateOrder(this.cart.getTotal(), this.user);
+  }
+
+  get subtotalLabel(): string {
+    return formatBRL(this.orderTotals.subtotal);
+  }
+
+  get feeLabel(): string {
+    return formatBRL(this.orderTotals.fee);
+  }
+
   get total(): string {
-    return formatBRL(this.cart.getTotal());
+    return formatBRL(this.orderTotals.total);
+  }
+
+  get isPremium(): boolean {
+    return this.orderTotals.isPremium;
   }
 
   getGameName(key: string): string {

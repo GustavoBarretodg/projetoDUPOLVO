@@ -63,8 +63,25 @@
         <div class="ct-payment">
           <h3>Pagamento</h3>
 
+          <div class="ct-payment-row">
+            <p>Subtotal</p>
+            <span>{{ subtotalLabel }}</span>
+          </div>
+
+          <div class="ct-payment-row" *ngIf="!isPremium">
+            <p>Taxa de serviço (20%)</p>
+            <span>{{ feeLabel }}</span>
+          </div>
+
+          <p class="ct-premium-note" *ngIf="isPremium">
+            <ion-icon name="checkmark-circle"></ion-icon> Você é premium — sem taxa de serviço!
+          </p>
+          <p class="ct-premium-note ct-premium-note-muted" *ngIf="!isPremium">
+            *Membros premium não pagam essa taxa.
+          </p>
+
           <div class="ct-payment-total">
-            <p>Total da compra</p>
+            <p>Total</p>
             <span>{{ total }}</span>
           </div>
 

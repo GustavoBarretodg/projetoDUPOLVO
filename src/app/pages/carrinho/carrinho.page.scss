@@ -246,10 +246,50 @@ ion-content {
     border-bottom: 1px solid #E4E9EF;
   }
 
+  .ct-payment-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      font-family: $dp-font-medium;
+      font-size: 13px;
+      color: var(--dp-blue-gray, #6B8299);
+      margin: 0;
+    }
+
+    span {
+      font-family: $dp-font-semibold;
+      font-size: 14px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .ct-premium-note {
+    font-family: $dp-font-medium;
+    font-size: 11.5px;
+    color: var(--ion-color-success-shade, #28BA62);
+    margin: -4px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    ion-icon {
+      font-size: 13px;
+    }
+
+    &.ct-premium-note-muted {
+      color: var(--dp-blue-gray, #6B8299);
+      font-style: italic;
+    }
+  }
+
   .ct-payment-total {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #E4E9EF;
 
     p {
       font-family: $dp-font-medium;
