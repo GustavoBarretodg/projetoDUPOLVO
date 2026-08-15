@@ -5,8 +5,11 @@ import { StorageService } from './storage.service';
 
 export interface CartItem {
   id: string;
+  type: 'bet' | 'bolao';
   gameType: string;
-  numbers: number[];
+  numbers?: number[];       // so pra type 'bet'
+  bolaoId?: number | string; // so pra type 'bolao'
+  bolaoName?: string;        // so pra type 'bolao'
   price: number;
   createdAt: string;
 }
@@ -43,18 +46,20 @@ export class CartService {
     return this.items.reduce((sum, item) => sum + item.price, 0);
   }
 
-  /** Adiciona ao carrinho. Retorna false se ja existe jogo identico (mesmo tipo + mesmas dezenas). */
+  /** Adiciona uma aposta ao carrinho. Retorna false se ja existe jogo identico (mesmo tipo + mesmas dezenas). */
   add(gameType: string, numbers: number[], price: number): boolean {
     const sorted = [...numbers].sort((a, b) => a - b);
     const duplicate = this.items.some(item =>
+      item.type === 'bet' &&
       item.gameType === gameType &&
-      item.numbers.length === sorted.length &&
+      item.numbers && item.numbers.length === sorted.length &&
       item.numbers.every((n, i) => n === sorted[i])
     );
     if (duplicate) return false;
 
     const item: CartItem = {
       id: `${Date.now()}-${Math.floor(Math.random() * 10000)}`,
+      type: 'bet',
       gameType,
       numbers: sorted,
       price,
@@ -62,6 +67,28 @@ export class CartService {
     };
     this.persist([...this.items, item]);
     return true;
+  }
+
+  /** Adiciona uma cota de bolao ao carrinho. Retorna false se esse bolao ja esta no carrinho. */
+  addBolao(bolaoId: number | string, gameType: string, bolaoName: string, price: number): boolean {
+    const duplicate = this.items.some(item => item.type === 'bolao' && item.bolaoId === bolaoId);
+    if (duplicate) return false;
+
+    const item: CartItem = {
+      id: `${Date.now()}-${Math.floor(Math.random() * 10000)}`,
+      type: 'bolao',
+      gameType,
+      bolaoId,
+      bolaoName,
+      price,
+      createdAt: new Date().toISOString(),
+    };
+    this.persist([...this.items, item]);
+    return true;
+  }
+
+  isBolaoInCart(bolaoId: number | string): boolean {
+    return this.items.some(item => item.type === 'bolao' && item.bolaoId === bolaoId);
   }
 
   remove(id: string) {

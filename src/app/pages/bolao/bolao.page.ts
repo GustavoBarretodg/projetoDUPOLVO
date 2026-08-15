@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { BolaoService } from '../../services/bolao.service';
+import { CartService } from '../../services/cart.service';
 import { GAME_CONFIGS } from '../../shared/game-config';
 import { FAKE_BOLOES } from '../../shared/bolao-mock';
 
@@ -14,11 +15,11 @@ export class BolaoPage implements OnInit {
 
   bolaos: any[] = [];
   loading = true;
-  joinedIds = new Set<number>();
   gameFilter: string | null = null;
 
   constructor(
     private bolaoSvc: BolaoService,
+    private cart: CartService,
     private toastCtrl: ToastController,
     private router: Router,
     private route: ActivatedRoute
@@ -53,32 +54,28 @@ export class BolaoPage implements OnInit {
     });
   }
 
+  // Entrar no bolao so adiciona a cota ao carrinho local - a inscricao
+  // de verdade (joinBolao na API) so acontece no fluxo de pagamento,
+  // depois do login, igual as apostas de loteria.
   joinBolao(bolao: any) {
     if (bolao.fake) {
       this.showToast('Esse bolão é só um exemplo ilustrativo.');
       return;
     }
-    this.bolaoSvc.joinBolao(bolao.id).subscribe((res) => {
-      if (res.message === 'joined') {
-        this.joinedIds.add(bolao.id);
-        bolao.takenQuotas++;
-        bolao.availableQuotas--;
-        this.showToast('Você entrou no bolão! Aguarde confirmação do pagamento.');
-      } else if (res.message === 'already_joined') {
-        this.joinedIds.add(bolao.id);
-        this.showToast('Você já está inscrito neste bolão.');
-      } else if (res.message === 'bolao_full') {
-        this.showToast('Este bolão está lotado.');
-      } else if (res.message === 'bolao_closed') {
-        this.showToast('Este bolão está encerrado.');
-      }
-    }, () => {
-      this.showToast('Erro ao entrar no bolão. Tente novamente.');
-    });
+    if (bolao.availableQuotas === 0) {
+      this.showToast('Este bolão está lotado.');
+      return;
+    }
+    const added = this.cart.addBolao(bolao.id, bolao.gameType, bolao.name, bolao.pricePerQuota);
+    if (!added) {
+      this.showToast('Esse bolão já está no seu carrinho.');
+      return;
+    }
+    this.showToast('Cota adicionada ao carrinho!');
   }
 
-  isJoined(id: number): boolean {
-    return this.joinedIds.has(id);
+  isInCart(id: number): boolean {
+    return this.cart.isBolaoInCart(id);
   }
 
   getGameColor(key: string): string {

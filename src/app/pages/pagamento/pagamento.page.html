@@ -19,7 +19,8 @@
 
       <div class="pg-summary-item" *ngFor="let item of items">
         <span class="pg-summary-game" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
-        <span class="pg-summary-nums">{{ item.numbers.length }} dezenas</span>
+        <span class="pg-summary-nums" *ngIf="item.type === 'bet'">{{ item.numbers.length }} dezenas</span>
+        <span class="pg-summary-nums" *ngIf="item.type === 'bolao'">Cota — {{ item.bolaoName }}</span>
         <span class="pg-summary-price">{{ formatPrice(item.price) }}</span>
       </div>
 

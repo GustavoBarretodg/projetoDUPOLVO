@@ -28,7 +28,7 @@
         <div class="ct-list">
           <div class="ct-table-head">
             <span>Loteria</span>
-            <span>Dezenas</span>
+            <span>Dezenas / Bolão</span>
             <span>Valor</span>
             <span></span>
           </div>
@@ -39,11 +39,18 @@
               <span class="ct-game-name" [style.color]="getGameColor(item.gameType)">{{ getGameName(item.gameType) }}</span>
             </div>
 
-            <div class="ct-cell ct-cell-balls">
+            <div class="ct-cell ct-cell-balls" *ngIf="item.type === 'bet'">
               <span class="ct-cell-label">Dezenas</span>
               <div class="ct-balls">
                 <span class="ct-ball" *ngFor="let n of item.numbers" [style.background]="getGameColor(item.gameType)">{{ n < 10 ? '0' + n : n }}</span>
               </div>
+            </div>
+
+            <div class="ct-cell ct-cell-bolao" *ngIf="item.type === 'bolao'">
+              <span class="ct-cell-label">Bolão</span>
+              <span class="ct-bolao-tag">
+                <ion-icon name="people-outline"></ion-icon> {{ item.bolaoName }}
+              </span>
             </div>
 
             <div class="ct-cell ct-cell-price">

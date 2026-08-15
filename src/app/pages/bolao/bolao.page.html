@@ -46,11 +46,11 @@
         </div>
 
         <ion-button expand="block" class="join_btn dp-pill-btn"
-                    [disabled]="bolao.availableQuotas === 0 || isJoined(bolao.id)"
-                    [color]="isJoined(bolao.id) ? 'success' : 'light'"
+                    [disabled]="bolao.availableQuotas === 0 || isInCart(bolao.id)"
+                    [color]="isInCart(bolao.id) ? 'success' : 'light'"
                     (click)="joinBolao(bolao)">
-          <ion-icon slot="start" [name]="isJoined(bolao.id) ? 'checkmark-circle-outline' : 'enter-outline'"></ion-icon>
-          {{ isJoined(bolao.id) ? 'Inscrito — aguardando pagamento' : bolao.availableQuotas === 0 ? 'Bolão Lotado' : 'Entrar no Bolão' }}
+          <ion-icon slot="start" [name]="isInCart(bolao.id) ? 'checkmark-circle-outline' : 'enter-outline'"></ion-icon>
+          {{ isInCart(bolao.id) ? 'No carrinho' : bolao.availableQuotas === 0 ? 'Bolão Lotado' : 'Entrar no Bolão' }}
         </ion-button>
 
       </div>

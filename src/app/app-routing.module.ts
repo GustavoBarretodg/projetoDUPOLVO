@@ -67,7 +67,6 @@ const routes: Routes = [
   },
   {
     path: 'bolao',
-    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/bolao/bolao.module').then(m => m.BolaoPageModule)
   },
   {
