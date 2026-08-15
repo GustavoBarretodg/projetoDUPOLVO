@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { BolaoService } from '../../services/bolao.service';
 import { GAME_CONFIGS } from '../../shared/game-config';
@@ -15,19 +15,27 @@ export class BolaoPage implements OnInit {
   bolaos: any[] = [];
   loading = true;
   joinedIds = new Set<number>();
+  gameFilter: string | null = null;
 
   constructor(
     private bolaoSvc: BolaoService,
     private toastCtrl: ToastController,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.gameFilter = this.route.snapshot.queryParams['game'] || null;
     this.load();
   }
 
   get displayBolaos(): any[] {
-    return this.bolaos.length ? this.bolaos : FAKE_BOLOES;
+    const list = this.bolaos.length ? this.bolaos : FAKE_BOLOES;
+    return this.gameFilter ? list.filter(b => b.gameType === this.gameFilter) : list;
+  }
+
+  get pageTitle(): string {
+    return this.gameFilter ? `Bolões de ${this.getGameName(this.gameFilter)}` : 'Bolões Disponíveis';
   }
 
   get showingFake(): boolean {

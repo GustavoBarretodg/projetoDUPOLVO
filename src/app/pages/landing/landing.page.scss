@@ -579,19 +579,9 @@ ion-content {
     }
   }
 
-  .lp-lottery-footer {
-    margin-top: auto;
-    padding-top: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    @media (max-width: 700px) {
-      padding-top: 6px;
-    }
-  }
-
   .lp-lottery-day {
+    align-self: flex-start;
+    margin-top: auto;
     font-family: $dp-font-semibold;
     font-size: 12px;
     padding: 5px 12px;
@@ -603,36 +593,56 @@ ion-content {
     }
   }
 
-  .lp-lottery-go {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--dp-orange, #F7941D);
-    color: #FFFFFF;
-    border: none;
+  .lp-lottery-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+
+    @media (max-width: 700px) {
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 5px;
+    }
+  }
+
+  .lp-lottery-btn {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    gap: 4px;
+    font-family: $dp-font-bold;
+    font-size: 11px;
+    border-radius: $dp-radius-pill;
+    padding: 7px 8px;
     cursor: pointer;
-    transition: transform .15s;
+    white-space: nowrap;
 
     ion-icon {
-      font-size: 16px;
+      font-size: 12px;
     }
 
     @media (max-width: 700px) {
-      width: 20px;
-      height: 20px;
+      font-size: 8px;
+      padding: 4px 5px;
 
       ion-icon {
-        font-size: 10px;
+        font-size: 9px;
       }
     }
   }
 
-  &:hover .lp-lottery-go {
-    transform: translateX(3px);
+  .lp-lottery-btn-outline {
+    background: rgba(255, 255, 255, 0.55);
+    color: inherit;
+    border: none;
+    @include dp-border(1.5px, rgba(0, 0, 0, 0.15));
+  }
+
+  .lp-lottery-btn-filled {
+    background: var(--dp-orange, #F7941D);
+    color: #FFFFFF;
+    border: none;
   }
 }
 
@@ -649,32 +659,6 @@ ion-content {
 .lp-section-cta {
   text-align: center;
   margin-top: 26px;
-}
-
-// ==== Secao 5: Banner de destaque - Bolao Interativo ====
-.lp-bolao-banner {
-  .lp-bolao-banner-head {
-    text-align: center;
-    max-width: 620px;
-    margin: 0 auto 24px;
-
-    .lp-section-subtitle {
-      margin-bottom: 20px;
-    }
-  }
-}
-
-.lp-boloes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 14px;
-  max-width: 1000px;
-  margin: 0 auto;
-
-  .bolao_card {
-    @include dp-bolao-card();
-    cursor: pointer;
-  }
 }
 
 // ==== Secao 6: Ultimos Resultados ====

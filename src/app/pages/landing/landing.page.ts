@@ -2,12 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
-import { BolaoService } from '../../services/bolao.service';
 import { CartService } from '../../services/cart.service';
 import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
-import { FAKE_BOLOES } from 'src/app/shared/bolao-mock';
-
-const FEATURED_BOLOES_COUNT = 3;
 
 interface ResultRow {
   loteria: string;
@@ -111,9 +107,6 @@ export class LandingPage implements OnInit {
     ...FEATURED_LOTTERIES_DATA[key],
   }));
 
-  public featuredBolaos: any[] = FAKE_BOLOES.slice(0, FEATURED_BOLOES_COUNT);
-  public showingFakeBolaos = true;
-
   public resultRows = RESULT_ROWS;
   public testimonials = TESTIMONIALS;
   public newsItems = NEWS_ITEMS;
@@ -131,7 +124,6 @@ export class LandingPage implements OnInit {
     private router: Router,
     private storage: StorageService,
     private toastCtrl: ToastController,
-    private bolaoSvc: BolaoService,
     private cart: CartService
   ) {}
 
@@ -147,18 +139,6 @@ export class LandingPage implements OnInit {
     this.storage.get('user').then((res) => {
       this.user = res || {};
     }).catch(() => {});
-
-    this.loadFeaturedBolaos();
-  }
-
-  loadFeaturedBolaos() {
-    this.bolaoSvc.getAllOpen().subscribe((res) => {
-      const real = res.data || [];
-      if (real.length) {
-        this.featuredBolaos = real.slice(0, FEATURED_BOLOES_COUNT);
-        this.showingFakeBolaos = false;
-      }
-    }, () => {});
   }
 
   getGameColor(key: string): string {
@@ -198,6 +178,10 @@ export class LandingPage implements OnInit {
 
   goToBolaoList() {
     this.router.navigate(['/bolao']);
+  }
+
+  goToBoloesForGame(gameKey: string) {
+    this.router.navigate(['/bolao'], { queryParams: { game: gameKey } });
   }
 
   goToMarkLotofacil() {

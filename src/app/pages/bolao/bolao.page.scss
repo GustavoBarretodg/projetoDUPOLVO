@@ -43,6 +43,23 @@ ion-content {
       margin: 0 0 14px;
     }
 
+    .empty_msg {
+      text-align: center;
+      padding: 30px 16px;
+      color: rgba(255, 255, 255, 0.85);
+
+      .empty_icon {
+        font-size: 44px;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      ion-label {
+        font-size: 15px;
+        font-weight: 600;
+      }
+    }
+
     // Card branco no estilo do dashboard novo (bandeirinha + faixa de tinta
     // na cor do jogo), flutuando sobre o fundo azul do app-page-header.
     .bolao_card {

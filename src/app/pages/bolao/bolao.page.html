@@ -2,7 +2,7 @@
   <div class="main_content_div">
 
     <app-page-header (back)="goBack()">
-      <ion-label class="head_lbl">Bolões Disponíveis</ion-label>
+      <ion-label class="head_lbl">{{ pageTitle }}</ion-label>
       <p class="subtitle_lbl">Escolha um bolão e entre para concorrer!</p>
 
       <div *ngIf="loading" class="loading_wrap">
@@ -10,7 +10,12 @@
         <p>Carregando bolões...</p>
       </div>
 
-      <p class="fake_note" *ngIf="showingFake">*Exemplo ilustrativo — pré-visualização de layout, sem bolões reais abertos no momento.</p>
+      <p class="fake_note" *ngIf="showingFake && displayBolaos.length">*Exemplo ilustrativo — pré-visualização de layout, sem bolões reais abertos no momento.</p>
+
+      <div class="empty_msg" *ngIf="!loading && displayBolaos.length === 0">
+        <ion-icon name="people-outline" class="empty_icon"></ion-icon>
+        <ion-label>Nenhum bolão de {{ gameFilter ? getGameName(gameFilter) : 'loteria' }} disponível no momento.</ion-label>
+      </div>
 
       <div class="bolao_card" *ngFor="let bolao of displayBolaos" [style.--accent]="getGameColor(bolao.gameType)">
 
