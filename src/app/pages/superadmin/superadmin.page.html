@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <ion-title>Painel Master</ion-title>
+    <ion-title>Admin Global</ion-title>
     <ion-buttons slot="end">
       <ion-button class="dp-pill-btn" (click)="logout()">
         <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
@@ -10,6 +10,56 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <div class="section_header">
+    <ion-icon name="bar-chart-outline"></ion-icon>
+    <span>Admins regionais</span>
+    <ion-button class="dp-pill-btn" fill="clear" size="small" (click)="loadDashboard()">
+      <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div *ngIf="dashboardLoading" class="loading_msg">
+    <ion-spinner name="crescent"></ion-spinner>
+    <span>Carregando...</span>
+  </div>
+
+  <div *ngIf="!dashboardLoading && dashboard.length === 0" class="empty_msg">
+    <ion-icon name="people-outline"></ion-icon>
+    <p>Nenhum admin regional ativo ainda.</p>
+  </div>
+
+  <ion-card *ngFor="let a of dashboard" class="dash_card">
+    <ion-card-content>
+      <div class="dash_head">
+        <strong>{{ a.adminName }}</strong>
+        <ion-badge color="primary">{{ a.city }}</ion-badge>
+      </div>
+
+      <div class="dash_stats">
+        <div class="dash_stat">
+          <span class="dash_stat_value">{{ a.directBetsInCity }}</span>
+          <span class="dash_stat_label">apostas avulsas na cidade</span>
+        </div>
+        <div class="dash_stat">
+          <span class="dash_stat_value">{{ a.pendingBetsInCity }}</span>
+          <span class="dash_stat_label">aguardando marcação</span>
+        </div>
+        <div class="dash_stat">
+          <span class="dash_stat_value">{{ a.bolaoParticipants }}</span>
+          <span class="dash_stat_label">cotas de bolão vendidas</span>
+        </div>
+      </div>
+
+      <div class="dash_boloes" *ngIf="a.bolaosSold.length">
+        <span class="dash_boloes_label">Bolões (por cotas vendidas)</span>
+        <div class="dash_bolao_row" *ngFor="let b of a.bolaosSold">
+          <span>{{ b.name }}</span>
+          <span class="dash_bolao_qtd">{{ b.quotasSold }}/{{ b.maxQuotas }}</span>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
   <div class="section_header">
     <ion-icon name="time-outline"></ion-icon>

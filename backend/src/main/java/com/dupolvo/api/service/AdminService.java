@@ -1,8 +1,10 @@
 package com.dupolvo.api.service;
 
 import com.dupolvo.api.model.Bet;
+import com.dupolvo.api.model.Bolao;
 import com.dupolvo.api.model.User;
 import com.dupolvo.api.repository.BetRepository;
+import com.dupolvo.api.repository.BolaoRepository;
 import com.dupolvo.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +17,12 @@ public class AdminService {
 
     private final BetRepository betRepository;
     private final UserRepository userRepository;
+    private final BolaoRepository bolaoRepository;
 
-    public AdminService(BetRepository betRepository, UserRepository userRepository) {
+    public AdminService(BetRepository betRepository, UserRepository userRepository, BolaoRepository bolaoRepository) {
         this.betRepository = betRepository;
         this.userRepository = userRepository;
+        this.bolaoRepository = bolaoRepository;
     }
 
     public Map<String, Object> getAllBets(String adminCity) {
@@ -57,7 +61,7 @@ public class AdminService {
         return response;
     }
 
-    public Map<String, Object> updateUserPremium(Long userId, Boolean premium) {
+    public Map<String, Object> updateUserPremium(Long userId, Boolean premium, String adminCity) {
         Map<String, Object> response = new HashMap<>();
 
         Optional<User> userOpt = userRepository.findById(userId);
@@ -67,6 +71,11 @@ public class AdminService {
         }
 
         User user = userOpt.get();
+        if (adminCity == null || adminCity.isBlank() || !adminCity.equals(user.getCity())) {
+            response.put("message", "forbidden");
+            return response;
+        }
+
         user.setPremium(premium);
         userRepository.save(user);
 
@@ -74,7 +83,7 @@ public class AdminService {
         return response;
     }
 
-    public Map<String, Object> updateBetStatus(Long betId, Boolean marked) {
+    public Map<String, Object> updateBetStatus(Long betId, Boolean marked, Long adminId, String adminCity) {
         Map<String, Object> response = new HashMap<>();
 
         Optional<Bet> betOpt = betRepository.findById(betId);
@@ -84,11 +93,34 @@ public class AdminService {
         }
 
         Bet bet = betOpt.get();
+        if (!ownsBet(bet, adminId, adminCity)) {
+            response.put("message", "forbidden");
+            return response;
+        }
+
         bet.setMarked(marked);
         bet.setMarkedAt(marked ? LocalDateTime.now() : null);
         betRepository.save(bet);
 
         response.put("message", "bet_updated");
         return response;
+    }
+
+    // Aposta de bolao pertence ao admin que criou o bolao (mesmo se o
+    // apostador for de outra cidade); aposta avulsa pertence ao admin da
+    // cidade do apostador. So vale pra role ADMIN - SUPER_ADMIN nao chama
+    // esse endpoint hoje (bloqueado antes mesmo, no filtro de seguranca).
+    private boolean ownsBet(Bet bet, Long adminId, String adminCity) {
+        if (bet.getBolaoId() != null) {
+            Optional<Bolao> bolaoOpt = bolaoRepository.findById(bet.getBolaoId());
+            return bolaoOpt.isPresent() && bolaoOpt.get().getAdminId() != null
+                    && bolaoOpt.get().getAdminId().equals(adminId);
+        }
+
+        if (adminCity == null || adminCity.isBlank()) {
+            return false;
+        }
+        Optional<User> userOpt = userRepository.findById(bet.getIdUser());
+        return userOpt.isPresent() && adminCity.equals(userOpt.get().getCity());
     }
 }

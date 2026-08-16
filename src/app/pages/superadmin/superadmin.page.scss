@@ -95,6 +95,86 @@ ion-content {
   }
 }
 
+.dash_card {
+  border-radius: 12px;
+  margin-bottom: 12px;
+  @include dp-border();
+  @include dp-offset-shadow();
+
+  .dash_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    strong {
+      font-size: 15px;
+      color: #222;
+    }
+
+    ion-badge {
+      @include dp-border(1.5px, $dp-border-color);
+    }
+  }
+
+  .dash_stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .dash_stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #F0F4F8;
+    border-radius: 10px;
+    padding: 10px 6px;
+
+    .dash_stat_value {
+      font-family: $dp-font-bold;
+      font-size: 18px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+
+    .dash_stat_label {
+      font-size: 10px;
+      color: #666;
+      margin-top: 2px;
+    }
+  }
+
+  .dash_boloes {
+    border-top: 1px solid #E4E9EF;
+    padding-top: 10px;
+
+    .dash_boloes_label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #999;
+      margin-bottom: 6px;
+    }
+
+    .dash_bolao_row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #333;
+      padding: 4px 0;
+
+      .dash_bolao_qtd {
+        font-family: $dp-font-semibold;
+        color: var(--dp-blue-500, #2F89C5);
+      }
+    }
+  }
+}
+
 .danger_zone {
   margin-top: 32px;
 

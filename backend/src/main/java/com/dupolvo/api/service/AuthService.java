@@ -38,11 +38,15 @@ public class AuthService {
             return response;
         }
 
-        // TEMP: bloqueio de aprovacao de admin desativado para testes - REVERTER antes de deixar em producao
-        // if ("PENDING".equals(user.getStatus())) {
-        //     response.put("message", "account_pending");
-        //     return response;
-        // }
+        if ("PENDING".equals(user.getStatus())) {
+            response.put("message", "account_pending");
+            return response;
+        }
+
+        if ("REJECTED".equals(user.getStatus())) {
+            response.put("message", "account_rejected");
+            return response;
+        }
 
         String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole(), user.getCity());
 
@@ -68,7 +72,9 @@ public class AuthService {
         String normalizedRole = (role != null && role.equals("ADMIN")) ? "ADMIN" : "USER";
 
         if (normalizedRole.equals("ADMIN")) {
-            boolean adminExists = userRepository.findByCityAndRole(city, "ADMIN").isPresent();
+            // Considera a cidade ocupada so por um admin ATIVO ou PENDENTE - um admin
+            // REJECTED nao deve travar a cidade pra sempre.
+            boolean adminExists = !userRepository.findByCityAndRoleAndStatusNot(city, "ADMIN", "REJECTED").isEmpty();
             if (adminExists) {
                 response.put("message", "city_admin_exists");
                 return response;

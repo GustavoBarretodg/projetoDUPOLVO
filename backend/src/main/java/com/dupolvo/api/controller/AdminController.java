@@ -29,13 +29,13 @@ public class AdminController {
     public ResponseEntity<Map<String, Object>> updateBetStatus(@RequestBody Map<String, Object> body) {
         Long betId = Long.valueOf(body.get("bet_id").toString());
         Boolean marked = (Boolean) body.get("marked");
-        return ResponseEntity.ok(adminService.updateBetStatus(betId, marked));
+        return ResponseEntity.ok(adminService.updateBetStatus(betId, marked, extractUserId(), extractCity()));
     }
 
     @PatchMapping("/users/{id}/premium")
     public ResponseEntity<Map<String, Object>> updateUserPremium(@PathVariable Long id, @RequestBody Map<String, Object> body) {
         Boolean premium = (Boolean) body.get("premium");
-        return ResponseEntity.ok(adminService.updateUserPremium(id, premium));
+        return ResponseEntity.ok(adminService.updateUserPremium(id, premium, extractCity()));
     }
 
     private String extractCity() {
@@ -47,5 +47,17 @@ public class AdminController {
             }
         }
         return "";
+    }
+
+    private Long extractUserId() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            try {
+                return Long.valueOf(auth.getName());
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

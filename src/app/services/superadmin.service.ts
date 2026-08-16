@@ -7,6 +7,10 @@ export class SuperAdminService {
 
   constructor(private http: HttpClient) {}
 
+  getDashboard() {
+    return this.http.get<any>(`${API_URL}/superadmin/dashboard`);
+  }
+
   getPendingAdmins() {
     return this.http.get<any>(`${API_URL}/superadmin/pending-admins`);
   }
@@ -16,6 +20,6 @@ export class SuperAdminService {
   }
 
   resetUsers() {
-    return this.http.delete<any>(`${API_URL}/superadmin/reset-users`);
+    return this.http.delete<any>(`${API_URL}/superadmin/reset-users?confirm=RESET`);
   }
 }

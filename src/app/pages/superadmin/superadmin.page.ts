@@ -14,6 +14,9 @@ export class SuperAdminPage implements OnInit {
   pendingAdmins: any[] = [];
   loading = true;
 
+  dashboard: any[] = [];
+  dashboardLoading = true;
+
   constructor(
     private superAdminSvc: SuperAdminService,
     private storage: StorageService,
@@ -24,6 +27,7 @@ export class SuperAdminPage implements OnInit {
 
   ngOnInit() {
     this.loadPending();
+    this.loadDashboard();
   }
 
   loadPending() {
@@ -34,6 +38,17 @@ export class SuperAdminPage implements OnInit {
     }, () => {
       this.showToast('Erro ao carregar pendentes');
       this.loading = false;
+    });
+  }
+
+  loadDashboard() {
+    this.dashboardLoading = true;
+    this.superAdminSvc.getDashboard().subscribe((res) => {
+      this.dashboard = res.data || [];
+      this.dashboardLoading = false;
+    }, () => {
+      this.showToast('Erro ao carregar dashboard');
+      this.dashboardLoading = false;
     });
   }
 
@@ -49,6 +64,7 @@ export class SuperAdminPage implements OnInit {
             this.superAdminSvc.approveAdmin(admin.id, true).subscribe(() => {
               this.showToast(`${admin.name} aprovado com sucesso!`);
               this.loadPending();
+              this.loadDashboard();
             }, () => this.showToast('Erro ao aprovar'));
           }
         }
@@ -91,6 +107,7 @@ export class SuperAdminPage implements OnInit {
             this.superAdminSvc.resetUsers().subscribe((res) => {
               this.showToast(`${res.deleted_users} usuários removidos.`);
               this.loadPending();
+              this.loadDashboard();
             }, () => this.showToast('Erro ao resetar'));
           }
         }

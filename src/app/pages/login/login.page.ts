@@ -52,7 +52,9 @@ export class LoginPage implements OnInit {
 
         this.showToast('Usuário autenticado com sucesso');
 
-        if (res.data && res.data.role === 'ADMIN') {
+        if (res.data && res.data.role === 'SUPER_ADMIN') {
+          this.router.navigate(['/admin-global']);
+        } else if (res.data && res.data.role === 'ADMIN') {
           this.router.navigate(['/admin']);
         } else if (this.returnUrl) {
           this.router.navigateByUrl(this.returnUrl);
@@ -68,6 +70,9 @@ export class LoginPage implements OnInit {
       }
       else if(res.message === 'account_pending') {
         this.showToast('Sua conta está aguardando aprovação do administrador.');
+      }
+      else if(res.message === 'account_rejected') {
+        this.showToast('Seu cadastro de administrador não foi aprovado.');
       }
 
     }, () => {

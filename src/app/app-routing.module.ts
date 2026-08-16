@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { SuperAdminGuard } from './guards/superadmin.guard';
 
 const routes: Routes = [
   {
@@ -64,6 +65,11 @@ const routes: Routes = [
     path: 'admin',
     canActivate: [AdminGuard],
     loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminPageModule)
+  },
+  {
+    path: 'admin-global',
+    canActivate: [SuperAdminGuard],
+    loadChildren: () => import('./pages/superadmin/superadmin.module').then(m => m.SuperAdminPageModule)
   },
   {
     path: 'bolao',

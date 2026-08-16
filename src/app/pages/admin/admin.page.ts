@@ -62,9 +62,15 @@ export class AdminPage implements OnInit {
 
   toggleMarked(bet: any) {
     const newMarked = !bet.marked;
-    this.adminSvc.updateBetStatus(bet.id, newMarked).subscribe(() => {
-      bet.marked = newMarked;
-      this.showToast(newMarked ? 'Jogo marcado' : 'Jogo desmarcado');
+    this.adminSvc.updateBetStatus(bet.id, newMarked).subscribe((res) => {
+      if (res.message === 'bet_updated') {
+        bet.marked = newMarked;
+        this.showToast(newMarked ? 'Jogo marcado' : 'Jogo desmarcado');
+      } else if (res.message === 'forbidden') {
+        this.showToast('Esse jogo não é da sua cidade.');
+      } else {
+        this.showToast('Erro ao atualizar');
+      }
     }, () => {
       this.showToast('Erro ao atualizar');
     });

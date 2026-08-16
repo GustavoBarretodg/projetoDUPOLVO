@@ -16,6 +16,11 @@ public class SuperAdminController {
         this.superAdminService = superAdminService;
     }
 
+    @GetMapping("/dashboard")
+    public ResponseEntity<Map<String, Object>> getDashboard() {
+        return ResponseEntity.ok(superAdminService.getDashboard());
+    }
+
     @GetMapping("/pending-admins")
     public ResponseEntity<Map<String, Object>> getPendingAdmins() {
         return ResponseEntity.ok(superAdminService.getPendingAdmins());
@@ -29,7 +34,10 @@ public class SuperAdminController {
     }
 
     @DeleteMapping("/reset-users")
-    public ResponseEntity<Map<String, Object>> resetUsers() {
+    public ResponseEntity<Map<String, Object>> resetUsers(@RequestParam(required = false) String confirm) {
+        if (!"RESET".equals(confirm)) {
+            return ResponseEntity.ok(Map.of("message", "confirmation_required"));
+        }
         return ResponseEntity.ok(superAdminService.resetUsers());
     }
 }
