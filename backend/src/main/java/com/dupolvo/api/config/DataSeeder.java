@@ -13,7 +13,7 @@ public class DataSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${superadmin.email:gmichell48@gmail.com}")
+    @Value("${superadmin.email:superadmin@gmail.com}")
     private String superAdminEmail;
 
     @Value("${superadmin.password:Dupolvo@Master2026}")
@@ -26,7 +26,9 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (userRepository.findByEmail(superAdminEmail).isEmpty()) {
+        var existing = userRepository.findByEmail(superAdminEmail);
+
+        if (existing.isEmpty()) {
             User superAdmin = new User();
             superAdmin.setName("Super Admin");
             superAdmin.setEmail(superAdminEmail);
@@ -36,6 +38,19 @@ public class DataSeeder implements CommandLineRunner {
             superAdmin.setCity("master");
             superAdmin.setStatus("ACTIVE");
             userRepository.save(superAdmin);
+            return;
+        }
+
+        // O e-mail reservado pro super admin ja existe (por exemplo, foi
+        // cadastrado sem querer como usuario comum pelo /register antes do
+        // seeder rodar). Promove essa conta em vez de desistir silenciosamente
+        // - mantem a senha que a pessoa ja definiu, so ajusta cargo/status.
+        User user = existing.get();
+        if (!"SUPER_ADMIN".equals(user.getRole())) {
+            user.setRole("SUPER_ADMIN");
+            user.setStatus("ACTIVE");
+            user.setCity("master");
+            userRepository.save(user);
         }
     }
 }
