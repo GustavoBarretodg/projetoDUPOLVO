@@ -168,13 +168,13 @@
               <td>{{ r.loteria }}</td>
               <td>{{ r.data }}</td>
               <td>{{ r.premio }}</td>
-              <td><span class="lp-table-link" (click)="comingSoon()">Ver resultado</span></td>
+              <td><span class="lp-table-link" (click)="onVerResultado(r)">Ver resultado</span></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <p class="lp-fine-print">*Resultados ilustrativos — integração com os resultados oficiais em breve.</p>
+      <p class="lp-fine-print">*Lotofácil com dados reais do último concurso. Demais loterias ilustrativas — integração em breve.</p>
 
       <div class="lp-section-cta">
         <button class="lp-btn lp-btn-outline" (click)="comingSoon()">Ver todos os resultados</button>

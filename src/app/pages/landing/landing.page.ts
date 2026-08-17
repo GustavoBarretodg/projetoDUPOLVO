@@ -3,12 +3,14 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { CartService } from '../../services/cart.service';
+import { ResultadoService, LotofacilResultado } from '../../services/resultado.service';
 import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
 
 interface ResultRow {
   loteria: string;
   data: string;
   premio: string;
+  dezenas?: string[];
 }
 
 // Resultados ilustrativos ate a integracao com a API oficial.
@@ -124,7 +126,8 @@ export class LandingPage implements OnInit {
     private router: Router,
     private storage: StorageService,
     private toastCtrl: ToastController,
-    private cart: CartService
+    private cart: CartService,
+    private resultadoService: ResultadoService
   ) {}
 
   get cartCount$() {
@@ -139,6 +142,39 @@ export class LandingPage implements OnInit {
     this.storage.get('user').then((res) => {
       this.user = res || {};
     }).catch(() => {});
+
+    this.resultadoService.getLotofacilLatest().subscribe({
+      next: (r: LotofacilResultado) => this.applyLotofacilResultado(r),
+      error: () => {},
+    });
+  }
+
+  private applyLotofacilResultado(r: LotofacilResultado) {
+    if (!r || !r.dezenas) return;
+    const premio = r.acumulou
+      ? `Acumulou! Estimativa: ${this.formatCurrency(r.valorEstimadoProximoConcurso)}`
+      : `Concurso ${r.concurso} encerrado`;
+
+    this.resultRows = this.resultRows.map(row =>
+      row.loteria === 'Lotofácil'
+        ? { ...row, data: r.data, premio, dezenas: r.dezenas }
+        : row
+    );
+  }
+
+  private formatCurrency(value: number): string {
+    return (value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  }
+
+  onVerResultado(r: ResultRow) {
+    if (r.dezenas && r.dezenas.length) {
+      this.toastCtrl.create({
+        message: `Dezenas sorteadas: ${r.dezenas.join(' - ')}`,
+        duration: 4000,
+      }).then(t => t.present());
+      return;
+    }
+    this.comingSoon();
   }
 
   getGameColor(key: string): string {
