@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { CartService } from '../../services/cart.service';
-import { ResultadoService, LotofacilResultado } from '../../services/resultado.service';
+import { ResultadoService, LoteriaResultado } from '../../services/resultado.service';
 import { GAME_CONFIGS, GameConfig } from 'src/app/shared/game-config';
 
 interface ResultRow {
@@ -143,27 +143,61 @@ export class LandingPage implements OnInit {
       this.user = res || {};
     }).catch(() => {});
 
-    this.resultadoService.getLotofacilLatest().subscribe({
-      next: (r: LotofacilResultado) => this.applyLotofacilResultado(r),
-      error: () => {},
+    this.featuredLotteries.forEach(lottery => {
+      this.resultadoService.getResultado(lottery.key).subscribe({
+        next: (r: LoteriaResultado) => this.applyResultado(lottery.key, r),
+        error: () => {},
+      });
     });
   }
 
-  private applyLotofacilResultado(r: LotofacilResultado) {
-    if (!r || !r.dezenas) return;
-    const premio = r.acumulou
-      ? `Acumulou! Estimativa: ${this.formatCurrency(r.valorEstimadoProximoConcurso)}`
-      : `Concurso ${r.concurso} encerrado`;
+  private applyResultado(gameKey: string, r: LoteriaResultado) {
+    if (!r) return;
 
-    this.resultRows = this.resultRows.map(row =>
-      row.loteria === 'Lotofácil'
-        ? { ...row, data: r.data, premio, dezenas: r.dezenas }
-        : row
+    this.featuredLotteries = this.featuredLotteries.map(lottery =>
+      lottery.key === gameKey
+        ? {
+          ...lottery,
+          concurso: `nº ${r.proximoConcurso}`,
+          prize: this.formatCurrency(r.valorEstimadoProximoConcurso),
+          sorteio: this.formatSorteioLabel(r.dataProximoConcurso),
+        }
+        : lottery
     );
+
+    if (gameKey === 'LOTOFACIL' && r.dezenas) {
+      const premio = r.acumulou
+        ? `Acumulou! Estimativa: ${this.formatCurrency(r.valorEstimadoProximoConcurso)}`
+        : `Concurso ${r.concurso} encerrado`;
+
+      this.resultRows = this.resultRows.map(row =>
+        row.loteria === 'Lotofácil'
+          ? { ...row, data: r.data, premio, dezenas: r.dezenas }
+          : row
+      );
+    }
   }
 
   private formatCurrency(value: number): string {
     return (value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  }
+
+  // Converte "dd/MM/yyyy" no mesmo rotulo usado nos dados ilustrativos
+  // (Hoje / Amanha / dia da semana), pra manter a badge com a mesma cara.
+  private formatSorteioLabel(dateStr: string): string {
+    const [d, m, y] = (dateStr || '').split('/').map(Number);
+    if (!d || !m || !y) return dateStr || '';
+
+    const target = new Date(y, m - 1, d);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diffDays = Math.round((target.getTime() - today.getTime()) / 86400000);
+
+    if (diffDays === 0) return 'Hoje';
+    if (diffDays === 1) return 'Amanhã';
+
+    const weekdays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    return weekdays[target.getDay()];
   }
 
   onVerResultado(r: ResultRow) {

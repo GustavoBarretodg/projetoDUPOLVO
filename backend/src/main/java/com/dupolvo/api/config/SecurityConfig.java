@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/login", "/api/register").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/bolaos").permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/lotofacil/resultado").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/loterias/*/resultado").permitAll()
                 .requestMatchers("/api/superadmin/**").hasRole("SUPER_ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

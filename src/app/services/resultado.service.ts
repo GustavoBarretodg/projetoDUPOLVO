@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../environments/environment';
 
-export interface LotofacilResultado {
+export interface LoteriaResultado {
   concurso: number;
   data: string;
   dezenas: string[];
@@ -16,7 +16,7 @@ export interface LotofacilResultado {
 export class ResultadoService {
   constructor(private http: HttpClient) {}
 
-  getLotofacilLatest() {
-    return this.http.get<LotofacilResultado>(`${API_URL}/lotofacil/resultado`);
+  getResultado(gameKey: string) {
+    return this.http.get<LoteriaResultado>(`${API_URL}/loterias/${gameKey}/resultado`);
   }
 }

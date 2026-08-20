@@ -7,37 +7,49 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class LotofacilResultadoService {
+public class LoteriaResultadoService {
 
-    private static final String LATEST_URL = "https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest";
+    private static final Map<String, String> API_SLUGS = Map.of(
+            "LOTOFACIL", "lotofacil",
+            "MEGA_SENA", "megasena",
+            "QUINA", "quina",
+            "LOTOMANIA", "lotomania",
+            "TIMEMANIA", "timemania",
+            "DUPLA_SENA", "duplasena",
+            "MILIONARIA", "maismilionaria",
+            "DIA_DE_SORTE", "diadesorte"
+    );
+
     private static final long CACHE_TTL_HOURS = 3;
 
     private final RestClient restClient = RestClient.create();
+    private final Map<String, CacheEntry> cache = new ConcurrentHashMap<>();
 
-    private Map<String, Object> cached;
-    private Instant cachedAt;
+    public Map<String, Object> getLatest(String gameKey) {
+        String slug = API_SLUGS.get(gameKey);
+        if (slug == null) return null;
 
-    public Map<String, Object> getLatest() {
-        if (cached != null && cachedAt != null
-                && cachedAt.isAfter(Instant.now().minus(CACHE_TTL_HOURS, ChronoUnit.HOURS))) {
-            return cached;
+        CacheEntry entry = cache.get(gameKey);
+        if (entry != null && entry.cachedAt.isAfter(Instant.now().minus(CACHE_TTL_HOURS, ChronoUnit.HOURS))) {
+            return entry.data;
         }
 
         try {
             RawResultado raw = restClient.get()
-                    .uri(LATEST_URL)
+                    .uri("https://loteriascaixa-api.herokuapp.com/api/" + slug + "/latest")
                     .retrieve()
                     .body(RawResultado.class);
 
             if (raw == null || raw.dezenas == null) {
-                return cached;
+                return entry != null ? entry.data : null;
             }
 
             List<String> dezenas = raw.dezenas.stream().sorted().toList();
 
-            cached = Map.of(
+            Map<String, Object> data = Map.of(
                     "concurso", raw.concurso,
                     "data", raw.data,
                     "dezenas", dezenas,
@@ -46,11 +58,21 @@ public class LotofacilResultadoService {
                     "dataProximoConcurso", raw.dataProximoConcurso,
                     "valorEstimadoProximoConcurso", raw.valorEstimadoProximoConcurso
             );
-            cachedAt = Instant.now();
-            return cached;
+            cache.put(gameKey, new CacheEntry(data, Instant.now()));
+            return data;
         } catch (Exception e) {
             // API externa fora do ar - devolve o ultimo cache valido (pode ser null).
-            return cached;
+            return entry != null ? entry.data : null;
+        }
+    }
+
+    private static class CacheEntry {
+        final Map<String, Object> data;
+        final Instant cachedAt;
+
+        CacheEntry(Map<String, Object> data, Instant cachedAt) {
+            this.data = data;
+            this.cachedAt = cachedAt;
         }
     }
 

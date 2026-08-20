@@ -2,9 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { CartService } from '../../services/cart.service';
+import { ResultadoService, LoteriaResultado } from '../../services/resultado.service';
 import { GAME_CONFIGS, GameConfig, getBetPrice, formatBRL } from 'src/app/shared/game-config';
 
-// Dados ilustrativos do concurso ate a integracao com resultados oficiais.
+// Dados ilustrativos do concurso, usados ate o resultado real chegar
+// (ou como fallback se a API externa estiver fora do ar).
 const FICTITIOUS_CONTEST: { [key: string]: { concurso: string; prize: string } } = {
   LOTOFACIL: { concurso: '3187', prize: 'R$ 2 Milhões' },
 };
@@ -38,11 +40,14 @@ export class JogoPage implements OnInit, OnDestroy {
 
   public cartCount$ = this.cart.count$;
 
+  private drawTarget: Date | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private toastCtrl: ToastController,
-    private cart: CartService
+    private cart: CartService,
+    private resultadoService: ResultadoService
   ) {}
 
   ngOnInit() {
@@ -71,21 +76,44 @@ export class JogoPage implements OnInit, OnDestroy {
     this.surpresinhaQty = this.gameConfig.minPick;
 
     this.startCountdown();
+
+    this.resultadoService.getResultado(gameKey).subscribe({
+      next: (r: LoteriaResultado) => this.applyResultado(r),
+      error: () => {},
+    });
+  }
+
+  private applyResultado(r: LoteriaResultado) {
+    if (!r || !r.proximoConcurso) return;
+
+    this.concurso = String(r.proximoConcurso);
+    this.contestDate = r.dataProximoConcurso || this.contestDate;
+    this.prize = (r.valorEstimadoProximoConcurso || 0)
+      .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+
+    const [d, m, y] = (r.dataProximoConcurso || '').split('/').map(Number);
+    if (d && m && y) {
+      this.drawTarget = new Date(y, m - 1, d, 20, 0, 0, 0);
+    }
   }
 
   ngOnDestroy() {
     if (this.countdownTimer) clearInterval(this.countdownTimer);
   }
 
-  // Contador ilustrativo ate as 20h de hoje (ou de amanha, se ja passou).
+  // Conta ate o proximo sorteio real (20h da data vinda da API); enquanto
+  // essa data nao chega, usa um alvo ilustrativo (hoje ou amanha as 20h).
   private startCountdown() {
     const update = () => {
       const now = new Date();
-      const target = new Date();
-      target.setHours(20, 0, 0, 0);
-      if (target <= now) target.setDate(target.getDate() + 1);
+      let target = this.drawTarget;
+      if (!target) {
+        target = new Date();
+        target.setHours(20, 0, 0, 0);
+        if (target <= now) target.setDate(target.getDate() + 1);
+      }
 
-      const diff = target.getTime() - now.getTime();
+      const diff = Math.max(0, target.getTime() - now.getTime());
       const d = Math.floor(diff / 86400000);
       const h = Math.floor((diff % 86400000) / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
