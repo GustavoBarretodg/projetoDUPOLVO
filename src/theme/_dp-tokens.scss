@@ -148,3 +148,139 @@ $dp-radius-card: 16px;
     font-weight: 600;
   }
 }
+
+// Card de bolao no mesmo padrao visual dos cards de loteria da landing
+// (.lp-lottery-card): fundo claro, borda fina, sombra suave, radius grande.
+// A cor do jogo (var(--accent)) entra só como detalhe (badge, preço, footer),
+// nunca como fundo do card inteiro.
+@mixin dp-bolao-listing-card() {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+  @include dp-border(1.5px, rgba(0, 0, 0, 0.08));
+
+  .card_top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+
+    .game_badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--accent-soft, #EAF2F8);
+
+      ion-icon {
+        font-size: 18px;
+        color: var(--accent, var(--dp-blue-500, #2F89C5));
+      }
+    }
+
+    .quota_badge {
+      font-family: $dp-font-bold;
+      font-size: 11px;
+      color: var(--dp-blue-gray, #6B8299);
+      background: #F0F4F8;
+      border-radius: $dp-radius-pill;
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+  }
+
+  .game_name {
+    font-family: $dp-font-semibold;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--accent, var(--dp-blue-500, #2F89C5));
+  }
+
+  .price_row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin-top: 2px;
+
+    .currency {
+      font-family: $dp-font-semibold;
+      font-size: 13px;
+    }
+
+    .price {
+      font-family: $dp-font-bold;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .per_quota {
+      font-family: $dp-font-regular;
+      font-size: 11px;
+      color: var(--dp-blue-gray, #6B8299);
+    }
+  }
+
+  .bolao_name {
+    font-family: $dp-font-regular;
+    font-size: 12px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin-bottom: 10px;
+  }
+
+  .quota_footer {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    background: #F0F4F8;
+    border-radius: 10px;
+    padding: 6px;
+    margin-bottom: 10px;
+
+    .quota_seg {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+
+      .seg_value {
+        font-family: $dp-font-bold;
+        font-size: 13px;
+        color: var(--dp-blue-900, #1A3D5C);
+        line-height: 1.2;
+      }
+
+      .seg_label {
+        font-family: $dp-font-regular;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: var(--dp-blue-gray, #6B8299);
+      }
+
+      &:not(:last-child) {
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
+
+  .join_btn {
+    --border-radius: #{$dp-radius-pill};
+    --background: var(--dp-orange, #F7941D);
+    --color: #FFFFFF;
+    font-family: $dp-font-bold;
+    font-weight: 700;
+    margin: 0;
+  }
+}

@@ -60,11 +60,51 @@ ion-content {
       }
     }
 
-    // Card branco no estilo do dashboard novo (bandeirinha + faixa de tinta
-    // na cor do jogo), flutuando sobre o fundo azul do app-page-header.
+    .filter_chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+
+      .filter_chip {
+        flex-shrink: 0;
+        font-family: $dp-font-semibold;
+        font-size: 12px;
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: $dp-radius-pill;
+        padding: 7px 14px;
+        white-space: nowrap;
+        cursor: pointer;
+        @include dp-border(1.5px, rgba(255, 255, 255, 0.4));
+
+        &.active {
+          background: #FFFFFF;
+          color: var(--dp-blue-500, #2F89C5);
+          border-color: $dp-border-color;
+        }
+      }
+    }
+
+    // Grid de cards brancos (mesmo padrao dos cards de loteria da landing),
+    // flutuando sobre o fundo azul do app-page-header.
+    .bolao_grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+
+      @media (min-width: 640px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (min-width: 1024px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     .bolao_card {
-      @include dp-bolao-card();
-      margin-bottom: 12px;
+      @include dp-bolao-listing-card();
     }
   }
 }

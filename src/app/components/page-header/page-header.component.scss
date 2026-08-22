@@ -2,9 +2,17 @@
 
 .back_image {
   width: 100%;
-  height: 45vh;
+  height: 130px;
   position: relative;
   top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    max-height: 90px;
+    width: auto;
+  }
 }
 
 .blue_back_div {
@@ -35,10 +43,9 @@
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
   margin-top: -30px;
-  position: fixed;
-  overflow-y: auto;
+  position: relative;
   background: var(--dp-blue-500, #2F89C5);
-  height: 60vh;
+  min-height: 60vh;
   border-top: $dp-border-width solid $dp-border-color;
 
   .head_lbl {

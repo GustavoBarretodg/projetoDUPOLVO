@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { BolaoService } from '../../services/bolao.service';
 import { CartService } from '../../services/cart.service';
-import { GAME_CONFIGS } from '../../shared/game-config';
+import { GAME_CONFIGS, GAME_LIST } from '../../shared/game-config';
 import { FAKE_BOLOES } from '../../shared/bolao-mock';
 
 @Component({
@@ -16,6 +16,7 @@ export class BolaoPage implements OnInit {
   bolaos: any[] = [];
   loading = true;
   gameFilter: string | null = null;
+  gameList = GAME_LIST;
 
   constructor(
     private bolaoSvc: BolaoService,
@@ -31,6 +32,7 @@ export class BolaoPage implements OnInit {
   }
 
   get displayBolaos(): any[] {
+    if (this.loading) return [];
     const list = this.bolaos.length ? this.bolaos : FAKE_BOLOES;
     return this.gameFilter ? list.filter(b => b.gameType === this.gameFilter) : list;
   }
@@ -82,8 +84,22 @@ export class BolaoPage implements OnInit {
     return (GAME_CONFIGS as any)[key]?.color || '#2F89C5';
   }
 
+  // Cor de destaque com baixa opacidade (hex + alfa), usada como fundo do
+  // badge circular no card - mantém o card branco/claro do resto do app.
+  getGameColorSoft(key: string): string {
+    return this.getGameColor(key) + '1F';
+  }
+
   getGameName(key: string): string {
     return (GAME_CONFIGS as any)[key]?.name || key;
+  }
+
+  getGameIcon(key: string): string {
+    return (GAME_CONFIGS as any)[key]?.icon || 'ticket-outline';
+  }
+
+  setFilter(key: string | null) {
+    this.gameFilter = key;
   }
 
   goBack() {
