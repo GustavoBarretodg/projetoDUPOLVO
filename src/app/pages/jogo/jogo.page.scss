@@ -413,6 +413,11 @@ ion-content {
       background: transparent;
       border: 1.5px dashed #C3CFDA;
     }
+
+    &.extra {
+      background: #EB445A;
+      border-color: #EB445A;
+    }
   }
 
   .jg-minmax {

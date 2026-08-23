@@ -85,6 +85,18 @@ export class AdminPage implements OnInit {
     });
   }
 
+  downloadAllPendingPdf() {
+    this.adminSvc.getAllPendingBetsPdf().subscribe((blob: Blob) => {
+      downloadBlob(blob, 'jogos-pendentes.pdf');
+    }, (err) => {
+      if (err.status === 404) {
+        this.showToast('Nenhum jogo pendente pra imprimir.');
+      } else {
+        this.showToast('Erro ao gerar PDF dos jogos pendentes');
+      }
+    });
+  }
+
   getGameConfig(key: string) {
     return GAME_CONFIGS[key] || { name: key, color: '#2F89C5', icon: 'ticket-outline' };
   }

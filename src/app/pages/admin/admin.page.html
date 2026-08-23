@@ -81,6 +81,11 @@
       <button class="filter-btn dp-pill-btn" [class.active]="filter === 'marked'" (click)="filter = 'marked'">Marcados</button>
     </div>
 
+    <button class="print-all-btn dp-pill-btn" (click)="downloadAllPendingPdf()">
+      <ion-icon name="print-outline"></ion-icon>
+      Imprimir tudo (jogos não marcados)
+    </button>
+
     <div class="loading-wrap" *ngIf="loading">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
       <p>Carregando cartões...</p>
@@ -121,7 +126,7 @@
             <ion-icon [name]="bet.marked ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
             {{ bet.marked ? 'Jogo Marcado' : 'Marcar Jogo' }}
           </button>
-          <button class="action-btn action-btn-print dp-pill-btn" *ngIf="bet.marked" (click)="downloadBetPdf(bet)">
+          <button class="action-btn action-btn-print dp-pill-btn" (click)="downloadBetPdf(bet)">
             <ion-icon name="print-outline"></ion-icon>
             Imprimir PDF
           </button>

@@ -296,6 +296,27 @@ ion-content {
   @include dp-offset-shadow(3px, 3px);
 }
 
+.mc-print-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 12px;
+  background: #FFFFFF;
+  color: var(--dp-blue-500, #2F89C5);
+  font-family: $dp-font-semibold;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: $dp-radius-card;
+  @include dp-border(1.5px, var(--dp-blue-500, #2F89C5));
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
 .mc-empty {
   text-align: center;
   padding: 36px 20px;

@@ -57,6 +57,11 @@
             <button class="mc-btn-primary" (click)="goToGame()">Fazer um jogo</button>
           </div>
 
+          <button class="mc-print-all" *ngIf="!loadingBets && hasPendingBets" (click)="downloadAllPendingPdf()">
+            <ion-icon name="print-outline"></ion-icon>
+            Imprimir tudo (jogos não marcados)
+          </button>
+
           <div class="mc-card mc-bet" *ngFor="let bet of bets" [style.--accent]="getGameColor(bet.gameType)">
             <div class="mc-bet-head">
               <span class="mc-bet-game" [style.color]="getGameColor(bet.gameType)">{{ getGameName(bet.gameType) }}</span>

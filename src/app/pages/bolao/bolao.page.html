@@ -10,6 +10,17 @@
         <span class="filter_chip" *ngFor="let g of gameList" [class.active]="gameFilter === g.key" (click)="setFilter(g.key)">{{ g.name }}</span>
       </div>
 
+      <div class="cambista_card" (click)="goToCambista()">
+        <div class="cambista_icon">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <div class="cambista_text">
+          <span class="cambista_title">Se tornar um cambista</span>
+          <span class="cambista_subtitle">Venda jogos e bolões na sua cidade e ganhe em cima de cada aposta confirmada.</span>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="cambista_arrow"></ion-icon>
+      </div>
+
       <div *ngIf="loading" class="loading_wrap">
         <ion-spinner name="crescent" color="light"></ion-spinner>
         <p>Carregando bolões...</p>

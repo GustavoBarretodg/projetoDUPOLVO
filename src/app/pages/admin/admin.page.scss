@@ -66,6 +66,26 @@ ion-content {
   }
 }
 
+.print-all-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 32px);
+  margin: 0 16px 16px;
+  padding: 11px;
+  background: #FFFFFF;
+  color: #2F89C5;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  @include dp-border(1.5px, #2F89C5);
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
 .loading-wrap, .empty-wrap {
   display: flex;
   flex-direction: column;

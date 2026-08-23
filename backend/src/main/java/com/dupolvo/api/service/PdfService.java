@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class PdfService {
@@ -80,6 +81,94 @@ public class PdfService {
             throw new RuntimeException("Erro ao gerar PDF do cartão", e);
         }
         return out.toByteArray();
+    }
+
+    // Um unico PDF consolidado, com uma linha de tabela por jogo pendente -
+    // usado pelo "Imprimir tudo" (usuario e admin), em vez de um PDF por
+    // cartao. showBettor liga a coluna de apostador (usada so pelo admin,
+    // que ve jogos de varios usuarios).
+    public byte[] generatePendingSummaryPdf(List<Bet> bets, Map<Long, User> usersByUserId, boolean showBettor) {
+        Document document = new Document(PageSize.A4, 24, 24, 36, 36);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD, BRAND_COLOR);
+            Font headFont = new Font(Font.HELVETICA, 10, Font.BOLD, Color.WHITE);
+            Font cellFont = new Font(Font.HELVETICA, 9, Font.NORMAL);
+            Font smallFont = new Font(Font.HELVETICA, 8, Font.ITALIC, Color.GRAY);
+
+            Paragraph title = new Paragraph("DuPolvo - Jogos Pendentes", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            Paragraph subtitle = new Paragraph(
+                    bets.size() + (bets.size() == 1 ? " jogo aguardando confirmação" : " jogos aguardando confirmação")
+                            + " · gerado em " + LocalDateTime.now().format(DATE_FMT),
+                    smallFont);
+            subtitle.setAlignment(Element.ALIGN_CENTER);
+            subtitle.setSpacingAfter(16);
+            document.add(subtitle);
+
+            PdfPTable table = new PdfPTable(showBettor ? 4 : 3);
+            table.setWidthPercentage(100);
+            table.setWidths(showBettor ? new float[]{12, 18, 42, 28} : new float[]{15, 25, 60});
+
+            addHeaderCell(table, "Cartão", headFont);
+            addHeaderCell(table, "Jogo", headFont);
+            addHeaderCell(table, "Dezenas / Bolão", headFont);
+            if (showBettor) addHeaderCell(table, "Apostador", headFont);
+
+            for (Bet bet : bets) {
+                GameConfig config = GameConfig.fromString(bet.getGameType());
+
+                table.addCell(dataCell("#" + bet.getId(), cellFont));
+                table.addCell(dataCell(config.displayName, cellFont));
+
+                String numbersOrBolao;
+                if (bet.getBolaoId() != null) {
+                    numbersOrBolao = "Cota do bolão " + bet.getBolaoName();
+                } else if (bet.getBet() != null && !bet.getBet().isEmpty()) {
+                    StringBuilder sb = new StringBuilder();
+                    for (Integer n : bet.getBet()) {
+                        if (sb.length() > 0) sb.append(", ");
+                        sb.append(String.format("%02d", n));
+                    }
+                    numbersOrBolao = sb.toString();
+                } else {
+                    numbersOrBolao = "-";
+                }
+                table.addCell(dataCell(numbersOrBolao, cellFont));
+
+                if (showBettor) {
+                    User user = usersByUserId.get(bet.getIdUser());
+                    String bettor = user != null ? user.getName() + "\n" + user.getEmail() : "-";
+                    table.addCell(dataCell(bettor, cellFont));
+                }
+            }
+
+            document.add(table);
+            document.close();
+        } catch (DocumentException e) {
+            throw new RuntimeException("Erro ao gerar PDF dos jogos pendentes", e);
+        }
+        return out.toByteArray();
+    }
+
+    private PdfPCell dataCell(String text, Font font) {
+        PdfPCell cell = new PdfPCell(new Phrase(text, font));
+        cell.setPadding(6);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        return cell;
+    }
+
+    private void addHeaderCell(PdfPTable table, String text, Font font) {
+        PdfPCell cell = new PdfPCell(new Phrase(text, font));
+        cell.setBackgroundColor(BRAND_COLOR);
+        cell.setPadding(6);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
     }
 
     private PdfPTable buildNumberGrid(GameConfig config, List<Integer> marked) {

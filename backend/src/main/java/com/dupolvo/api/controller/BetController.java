@@ -58,6 +58,15 @@ public class BetController {
                 .body(pdf);
     }
 
+    @GetMapping("/get-bets-pdf")
+    public ResponseEntity<byte[]> getAllPendingBetsPdf() {
+        byte[] pdf = betService.generateAllPendingBetsPdf(extractUserId());
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=jogos-pendentes.pdf")
+                .body(pdf);
+    }
+
     private Long extractUserId() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {

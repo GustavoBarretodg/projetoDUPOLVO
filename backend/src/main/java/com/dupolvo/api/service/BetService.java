@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BetService {
@@ -196,6 +197,19 @@ public class BetService {
 
         User user = userRepository.findById(requesterId).orElse(null);
         return pdfService.generateBetCardPdf(bet, user);
+    }
+
+    public byte[] generateAllPendingBetsPdf(Long idUser) {
+        List<Bet> pending = betRepository.findByIdUser(idUser).stream()
+                .filter(b -> !Boolean.TRUE.equals(b.getMarked()))
+                .collect(Collectors.toList());
+
+        if (pending.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no_pending_bets");
+        }
+
+        User user = userRepository.findById(idUser).orElse(null);
+        return pdfService.generatePendingSummaryPdf(pending, Collections.singletonMap(idUser, user), false);
     }
 
     private List<Integer> generateRandomNumbers(int min, int max, int count) {

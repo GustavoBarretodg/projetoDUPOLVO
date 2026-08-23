@@ -143,6 +143,22 @@ export class ContaPage implements OnInit {
     });
   }
 
+  get hasPendingBets(): boolean {
+    return this.bets.some(b => !b.marked);
+  }
+
+  downloadAllPendingPdf() {
+    this.betSvc.getAllPendingBetsPdf().subscribe((blob: Blob) => {
+      downloadBlob(blob, 'jogos-pendentes.pdf');
+    }, (err) => {
+      if (err.status === 404) {
+        this.showToast('Nenhum jogo pendente pra imprimir.');
+      } else {
+        this.showToast('Erro ao gerar PDF dos jogos pendentes.');
+      }
+    });
+  }
+
   // ==== Meus dados ====
 
   toggleEditData() {

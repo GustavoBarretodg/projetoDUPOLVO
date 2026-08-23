@@ -93,7 +93,9 @@
         </div>
 
         <div class="jg-selected-balls">
-          <span class="jg-mini-ball" *ngFor="let n of selected" [style.background]="gameConfig.color">{{ n < 10 ? '0' + n : n }}</span>
+          <span class="jg-mini-ball" *ngFor="let n of selected; let i = index"
+                [class.extra]="isExtraPick(i)"
+                [style.background]="isExtraPick(i) ? null : gameConfig.color">{{ n < 10 ? '0' + n : n }}</span>
           <span class="jg-mini-ball empty" *ngFor="let slot of emptySlots"></span>
         </div>
 

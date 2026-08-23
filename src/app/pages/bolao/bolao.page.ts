@@ -106,6 +106,10 @@ export class BolaoPage implements OnInit {
     this.router.navigate(['/']);
   }
 
+  goToCambista() {
+    this.router.navigate(['/register'], { queryParams: { role: 'ADMIN' } });
+  }
+
   showToast(msg: string) {
     this.toastCtrl.create({ message: msg, duration: 2500 }).then(t => t.present());
   }

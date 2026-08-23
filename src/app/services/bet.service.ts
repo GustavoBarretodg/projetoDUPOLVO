@@ -47,4 +47,8 @@ export class BetService {
             responseType: 'blob',
         });
     }
+
+    public getAllPendingBetsPdf() {
+        return this.httpClient.get(`${API_URL}/get-bets-pdf`, { responseType: 'blob' });
+    }
 }

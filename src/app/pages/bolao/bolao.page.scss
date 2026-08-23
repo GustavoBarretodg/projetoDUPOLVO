@@ -106,5 +106,60 @@ ion-content {
     .bolao_card {
       @include dp-bolao-listing-card();
     }
+
+    .cambista_card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #FFFFFF;
+      border-radius: $dp-radius-card;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+      @include dp-border(1.5px, rgba(0, 0, 0, 0.08));
+
+      .cambista_icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #FFF3E0;
+
+        ion-icon {
+          font-size: 22px;
+          color: #F78B00;
+        }
+      }
+
+      .cambista_text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .cambista_title {
+        font-family: $dp-font-bold;
+        font-size: 14px;
+        color: #16324F;
+      }
+
+      .cambista_subtitle {
+        font-size: 12px;
+        color: #6B8299;
+        line-height: 1.35;
+      }
+
+      .cambista_arrow {
+        font-size: 18px;
+        color: #6B8299;
+        flex-shrink: 0;
+      }
+    }
   }
 }

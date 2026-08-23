@@ -43,6 +43,15 @@ public class AdminController {
                 .body(pdf);
     }
 
+    @GetMapping("/bets/pdf")
+    public ResponseEntity<byte[]> getAllPendingBetsPdf() {
+        byte[] pdf = adminService.generateAllPendingBetsPdf(extractCity());
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=jogos-pendentes.pdf")
+                .body(pdf);
+    }
+
     @PatchMapping("/users/{id}/premium")
     public ResponseEntity<Map<String, Object>> updateUserPremium(@PathVariable Long id, @RequestBody Map<String, Object> body) {
         Boolean premium = (Boolean) body.get("premium");

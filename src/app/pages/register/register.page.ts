@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
@@ -14,11 +14,15 @@ export class RegisterPage implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private authSvc: AuthService
 ) { }
 
   ngOnInit() {
+    if (this.route.snapshot.queryParams['role'] === 'ADMIN') {
+      this.selectedRole = 'ADMIN';
+    }
   }
 
   goToLogin() {

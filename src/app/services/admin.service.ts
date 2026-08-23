@@ -20,4 +20,8 @@ export class AdminService {
   getBetPdf(betId: number) {
     return this.http.get(`${API_URL}/admin/bet/${betId}/pdf`, { responseType: 'blob' });
   }
+
+  getAllPendingBetsPdf() {
+    return this.http.get(`${API_URL}/admin/bets/pdf`, { responseType: 'blob' });
+  }
 }

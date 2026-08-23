@@ -123,6 +123,26 @@ public class AdminService {
         return pdfService.generateBetCardPdf(bet, user);
     }
 
+    // Mesmo escopo (por cidade) que getAllBets ja usa no painel do admin,
+    // so que filtrado pros jogos ainda nao marcados e consolidado num unico
+    // PDF em vez de um por cartao.
+    public byte[] generateAllPendingBetsPdf(String adminCity) {
+        List<User> cityUsers = userRepository.findByCity(adminCity);
+        Set<Long> cityUserIds = cityUsers.stream().map(User::getId).collect(Collectors.toSet());
+        Map<Long, User> userCache = cityUsers.stream().collect(Collectors.toMap(User::getId, u -> u));
+
+        List<Bet> pending = betRepository.findAll().stream()
+                .filter(b -> cityUserIds.contains(b.getIdUser()))
+                .filter(b -> !Boolean.TRUE.equals(b.getMarked()))
+                .collect(Collectors.toList());
+
+        if (pending.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no_pending_bets");
+        }
+
+        return pdfService.generatePendingSummaryPdf(pending, userCache, true);
+    }
+
     // Aposta de bolao pertence ao admin que criou o bolao (mesmo se o
     // apostador for de outra cidade); aposta avulsa pertence ao admin da
     // cidade do apostador. So vale pra role ADMIN - SUPER_ADMIN nao chama

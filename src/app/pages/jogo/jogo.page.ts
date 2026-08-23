@@ -186,8 +186,12 @@ export class JogoPage implements OnInit, OnDestroy {
   }
 
   get emptySlots(): number[] {
-    const missing = this.gameConfig.minPick - this.selected.length;
+    const missing = this.gameConfig.maxPick - this.selected.length;
     return missing > 0 ? Array(missing).fill(0) : [];
+  }
+
+  isExtraPick(index: number): boolean {
+    return index >= this.gameConfig.minPick;
   }
 
   get subtotal(): number {
