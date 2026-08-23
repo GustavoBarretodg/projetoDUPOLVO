@@ -121,6 +121,10 @@
             <ion-icon [name]="bet.marked ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
             {{ bet.marked ? 'Jogo Marcado' : 'Marcar Jogo' }}
           </button>
+          <button class="action-btn action-btn-print dp-pill-btn" *ngIf="bet.marked" (click)="downloadBetPdf(bet)">
+            <ion-icon name="print-outline"></ion-icon>
+            Imprimir PDF
+          </button>
         </div>
 
       </div>

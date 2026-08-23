@@ -6,7 +6,9 @@ import com.dupolvo.api.model.User;
 import com.dupolvo.api.repository.BetRepository;
 import com.dupolvo.api.repository.BolaoRepository;
 import com.dupolvo.api.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,11 +20,14 @@ public class AdminService {
     private final BetRepository betRepository;
     private final UserRepository userRepository;
     private final BolaoRepository bolaoRepository;
+    private final PdfService pdfService;
 
-    public AdminService(BetRepository betRepository, UserRepository userRepository, BolaoRepository bolaoRepository) {
+    public AdminService(BetRepository betRepository, UserRepository userRepository,
+                         BolaoRepository bolaoRepository, PdfService pdfService) {
         this.betRepository = betRepository;
         this.userRepository = userRepository;
         this.bolaoRepository = bolaoRepository;
+        this.pdfService = pdfService;
     }
 
     public Map<String, Object> getAllBets(String adminCity) {
@@ -104,6 +109,18 @@ public class AdminService {
 
         response.put("message", "bet_updated");
         return response;
+    }
+
+    public byte[] generateBetPdf(Long betId, Long adminId, String adminCity) {
+        Bet bet = betRepository.findById(betId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "bet_not_found"));
+
+        if (!ownsBet(bet, adminId, adminCity)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "forbidden");
+        }
+
+        User user = userRepository.findById(bet.getIdUser()).orElse(null);
+        return pdfService.generateBetCardPdf(bet, user);
     }
 
     // Aposta de bolao pertence ao admin que criou o bolao (mesmo se o

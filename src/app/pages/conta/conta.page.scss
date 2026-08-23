@@ -429,6 +429,31 @@ ion-content {
     @include dp-border(1.5px, $dp-border-color);
   }
 
+  .mc-bet-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+  }
+
+  .mc-bet-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: #6B8299;
+    margin-left: auto;
+
+    ion-icon {
+      font-size: 14px;
+    }
+
+    &.hits {
+      color: #209869;
+    }
+  }
+
   .mc-bet-remove {
     display: inline-flex;
     align-items: center;
@@ -438,6 +463,23 @@ ion-content {
     font-family: $dp-font-semibold;
     font-size: 12px;
     color: var(--ion-color-danger, #EB445A);
+    cursor: pointer;
+    padding: 0;
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+
+  .mc-bet-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--ion-color-primary, #2F89C5);
     cursor: pointer;
     padding: 0;
 

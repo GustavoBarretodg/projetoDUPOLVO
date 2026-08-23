@@ -41,6 +41,9 @@ public class Bet {
     @Column(name = "paid_at")
     private LocalDateTime markedAt;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -70,4 +73,7 @@ public class Bet {
 
     public LocalDateTime getMarkedAt() { return markedAt; }
     public void setMarkedAt(LocalDateTime markedAt) { this.markedAt = markedAt; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

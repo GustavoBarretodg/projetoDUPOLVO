@@ -198,6 +198,11 @@ ion-content {
         background: #209869;
         color: #FFFFFF;
       }
+
+      &.action-btn-print {
+        color: #2F89C5;
+        border: 1px solid #2F89C5;
+      }
     }
   }
 }

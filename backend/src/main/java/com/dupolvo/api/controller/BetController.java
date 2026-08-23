@@ -1,7 +1,10 @@
 package com.dupolvo.api.controller;
 
 import com.dupolvo.api.service.BetService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,5 +47,26 @@ public class BetController {
     public ResponseEntity<Map<String, Object>> removeBet(@RequestBody Map<String, Object> body) {
         Long idBet = Long.valueOf(body.get("id_bet").toString());
         return ResponseEntity.ok(betService.removeBet(idBet));
+    }
+
+    @GetMapping("/get-bet-pdf")
+    public ResponseEntity<byte[]> getBetPdf(@RequestParam("id_bet") Long idBet) {
+        byte[] pdf = betService.generateBetPdf(idBet, extractUserId());
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cartao-" + idBet + ".pdf")
+                .body(pdf);
+    }
+
+    private Long extractUserId() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            try {
+                return Long.valueOf(auth.getName());
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

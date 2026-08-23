@@ -16,4 +16,8 @@ export class AdminService {
   updateBetStatus(betId: number, marked: boolean) {
     return this.http.post<any>(`${API_URL}/admin/bet/status`, { bet_id: betId, marked });
   }
+
+  getBetPdf(betId: number) {
+    return this.http.get(`${API_URL}/admin/bet/${betId}/pdf`, { responseType: 'blob' });
+  }
 }

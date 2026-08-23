@@ -38,6 +38,13 @@ export class BetService {
 
     public removeBet(params) {
         return this.httpClient.post<any>(`${API_URL}/remove-bet`, params);
-        
+
+    }
+
+    public getBetPdf(idBet: number) {
+        return this.httpClient.get(`${API_URL}/get-bet-pdf`, {
+            params: { id_bet: idBet },
+            responseType: 'blob',
+        });
     }
 }

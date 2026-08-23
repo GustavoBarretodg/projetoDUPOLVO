@@ -4,6 +4,7 @@ import { ToastController, AlertController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { BetService } from '../../services/bet.service';
 import { GAME_CONFIGS, getBetPrice, formatBRL } from 'src/app/shared/game-config';
+import { downloadBlob } from 'src/app/shared/download';
 
 interface MenuItem {
   key: string;
@@ -132,6 +133,14 @@ export class ContaPage implements OnInit {
 
   goToGame() {
     this.router.navigate(['/jogar'], { queryParams: { game: 'LOTOFACIL' } });
+  }
+
+  downloadBetPdf(bet: any) {
+    this.betSvc.getBetPdf(bet.id).subscribe((blob: Blob) => {
+      downloadBlob(blob, `cartao-${bet.id}.pdf`);
+    }, () => {
+      this.showToast('Erro ao gerar PDF do cartão.');
+    });
   }
 
   // ==== Meus dados ====

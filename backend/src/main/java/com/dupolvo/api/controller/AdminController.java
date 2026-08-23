@@ -2,6 +2,8 @@ package com.dupolvo.api.controller;
 
 import com.dupolvo.api.service.AdminService;
 import io.jsonwebtoken.Claims;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +32,15 @@ public class AdminController {
         Long betId = Long.valueOf(body.get("bet_id").toString());
         Boolean marked = (Boolean) body.get("marked");
         return ResponseEntity.ok(adminService.updateBetStatus(betId, marked, extractUserId(), extractCity()));
+    }
+
+    @GetMapping("/bet/{id}/pdf")
+    public ResponseEntity<byte[]> getBetPdf(@PathVariable Long id) {
+        byte[] pdf = adminService.generateBetPdf(id, extractUserId(), extractCity());
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cartao-" + id + ".pdf")
+                .body(pdf);
     }
 
     @PatchMapping("/users/{id}/premium")

@@ -5,6 +5,7 @@ import { AdminService } from '../../services/admin.service';
 import { BolaoService } from '../../services/bolao.service';
 import { StorageService } from '../../services/storage.service';
 import { GAME_CONFIGS, GAME_LIST } from 'src/app/shared/game-config';
+import { downloadBlob } from 'src/app/shared/download';
 
 @Component({
   selector: 'app-admin',
@@ -73,6 +74,14 @@ export class AdminPage implements OnInit {
       }
     }, () => {
       this.showToast('Erro ao atualizar');
+    });
+  }
+
+  downloadBetPdf(bet: any) {
+    this.adminSvc.getBetPdf(bet.id).subscribe((blob: Blob) => {
+      downloadBlob(blob, `cartao-${bet.id}.pdf`);
+    }, () => {
+      this.showToast('Erro ao gerar PDF do cartão');
     });
   }
 

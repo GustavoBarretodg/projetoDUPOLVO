@@ -75,9 +75,23 @@
               <span class="mc-ball" *ngFor="let n of bet.bet" [style.background]="getGameColor(bet.gameType)">{{ n < 10 ? '0' + n : n }}</span>
             </div>
 
-            <button class="mc-bet-remove" *ngIf="!bet.marked" (click)="removeBet(bet)">
-              <ion-icon name="trash-outline"></ion-icon> Remover
-            </button>
+            <div class="mc-bet-actions">
+              <button class="mc-bet-remove" *ngIf="!bet.marked" (click)="removeBet(bet)">
+                <ion-icon name="trash-outline"></ion-icon> Remover
+              </button>
+
+              <button class="mc-bet-print" (click)="downloadBetPdf(bet)">
+                <ion-icon name="print-outline"></ion-icon> Imprimir cartão (PDF)
+              </button>
+
+              <span class="mc-bet-result" *ngIf="bet.resultStatus === 'PENDING'">
+                <ion-icon name="calendar-outline"></ion-icon> Resultado sai em {{ bet.nextDrawDate }}
+              </span>
+
+              <span class="mc-bet-result hits" *ngIf="bet.resultStatus === 'AVAILABLE'">
+                <ion-icon name="trophy-outline"></ion-icon> Você fez {{ bet.hits }} {{ bet.hits === 1 ? 'ponto' : 'pontos' }}
+              </span>
+            </div>
           </div>
         </ng-container>
 
