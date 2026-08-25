@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class BetService {
 
     private static final DateTimeFormatter BR_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final int MAX_RANDOM_ATTEMPTS = 30;
 
     private final BetRepository betRepository;
     private final UserRepository userRepository;
@@ -54,15 +55,12 @@ public class BetService {
         List<Integer> sorted = new ArrayList<>(numbers);
         Collections.sort(sorted);
 
-        List<Bet> userBets = betRepository.findByIdUser(idUser);
-        for (Bet existing : userBets) {
-            if (!config.name().equals(existing.getGameType())) continue;
-            List<Integer> existingSorted = new ArrayList<>(existing.getBet());
-            Collections.sort(existingSorted);
-            if (existingSorted.equals(sorted)) {
-                response.put("message", "bet_exists");
-                return response;
-            }
+        // Checagem global: nenhum usuario (de nenhum admin/cidade) pode ter o mesmo
+        // jogo com as mesmas dezenas, nao so o usuario que esta apostando agora.
+        List<List<Integer>> existingCombos = existingCombosFor(config.name());
+        if (isDuplicateCombo(sorted, existingCombos)) {
+            response.put("message", "bet_exists");
+            return response;
         }
 
         Bet bet = new Bet();
@@ -80,8 +78,19 @@ public class BetService {
         Map<String, Object> response = new HashMap<>();
         GameConfig config = GameConfig.fromString(gameType);
 
+        List<List<Integer>> existingCombos = existingCombosFor(config.name());
+        int created = 0;
+
         for (int i = 0; i < qtdCard; i++) {
-            List<Integer> numbers = generateRandomNumbers(config.min, config.max, config.minPick);
+            List<Integer> numbers = null;
+            for (int attempt = 0; attempt < MAX_RANDOM_ATTEMPTS; attempt++) {
+                List<Integer> candidate = generateRandomNumbers(config.min, config.max, config.minPick);
+                if (!isDuplicateCombo(candidate, existingCombos)) {
+                    numbers = candidate;
+                    break;
+                }
+            }
+            if (numbers == null) continue; // nao conseguiu uma combinacao inedita, pula essa
 
             Bet bet = new Bet();
             bet.setIdBet(idBet);
@@ -89,12 +98,33 @@ public class BetService {
             bet.setBet(numbers);
             bet.setGameType(config.name());
             betRepository.save(bet);
+
+            existingCombos.add(numbers);
+            created++;
         }
 
         response.put("message", "bets_created");
-        response.put("quantity", qtdCard);
+        response.put("quantity", created);
         response.put("game", config.displayName);
         return response;
+    }
+
+    // Todas as combinacoes ja em uso pro jogo (fora cotas de bolao, que nao tem dezenas escolhidas pelo usuario).
+    private List<List<Integer>> existingCombosFor(String gameType) {
+        List<List<Integer>> combos = new ArrayList<>();
+        for (Bet existing : betRepository.findByGameType(gameType)) {
+            if (existing.getBolaoId() != null || existing.getBet() == null || existing.getBet().isEmpty()) continue;
+            List<Integer> sorted = new ArrayList<>(existing.getBet());
+            Collections.sort(sorted);
+            combos.add(sorted);
+        }
+        return combos;
+    }
+
+    private boolean isDuplicateCombo(List<Integer> numbers, List<List<Integer>> existingCombos) {
+        List<Integer> sorted = new ArrayList<>(numbers);
+        Collections.sort(sorted);
+        return existingCombos.contains(sorted);
     }
 
     public Map<String, Object> getBet(Long idUser) {

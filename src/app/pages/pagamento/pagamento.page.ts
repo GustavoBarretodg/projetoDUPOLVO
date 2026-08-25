@@ -104,7 +104,7 @@ export class PagamentoPage implements OnInit {
     this.cart.clear();
 
     let msg = `${sent} ${sent === 1 ? 'item enviado' : 'itens enviados'}!`;
-    if (duplicates) msg += ` ${duplicates} já existia(m).`;
+    if (duplicates) msg += ` ${duplicates} ${duplicates === 1 ? 'repetido' : 'repetidos'} (dezenas já marcadas em outro cartão).`;
     if (failures) msg += ` ${failures} falhou(aram).`;
     msg += ' Aguarde a confirmação do pagamento.';
     this.showToast(msg, 3500);

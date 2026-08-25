@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface BetRepository extends JpaRepository<Bet, Long> {
     List<Bet> findByIdUser(Long idUser);
+    List<Bet> findByGameType(String gameType);
 }
