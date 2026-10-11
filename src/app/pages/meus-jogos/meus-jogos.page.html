@@ -1,0 +1,70 @@
+<ion-content>
+  <div class="mj">
+
+    <div class="mj-topbar">
+      <button class="mj-back" (click)="goHome()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <div class="mj-brand" (click)="goHome()">
+        <img src="assets/imgs/dupolvo-logo.png" alt="DuPolvo" />
+        <span>DuPolvo</span>
+      </div>
+      <span class="mj-spacer"></span>
+    </div>
+
+    <h1 class="mj-title">Meus jogos</h1>
+    <p class="mj-subtitle">Acompanhe todos os seus cartões, pagos ou não, e veja o que já saiu no sorteio.</p>
+
+    <div class="mj-tabs">
+      <button class="mj-tab" [class.active]="filter === 'pendentes'" (click)="setFilter('pendentes')">
+        Aguardando sorteio
+        <span class="mj-tab-count">{{ pendentesCount }}</span>
+      </button>
+      <button class="mj-tab" [class.active]="filter === 'conferidos'" (click)="setFilter('conferidos')">
+        Já conferidos
+        <span class="mj-tab-count">{{ conferidosCount }}</span>
+      </button>
+    </div>
+
+    <div class="mj-card mj-empty" *ngIf="!loading && filteredBets.length === 0">
+      <ion-icon name="ticket-outline" class="mj-empty-icon"></ion-icon>
+      <p *ngIf="filter === 'pendentes'">Nenhum jogo aguardando sorteio no momento.</p>
+      <p *ngIf="filter === 'conferidos'">Nenhum jogo conferido ainda.</p>
+      <button class="mj-btn-primary" (click)="goToGame()">Fazer um jogo</button>
+    </div>
+
+    <div class="mj-card mj-bet" *ngFor="let bet of filteredBets" [style.--accent]="getGameColor(bet.gameType)">
+      <div class="mj-bet-head">
+        <span class="mj-bet-game" [style.color]="getGameColor(bet.gameType)">{{ getGameName(bet.gameType) }}</span>
+        <span class="mj-bet-status" [class.paid]="bet.marked">
+          <ion-icon [name]="bet.marked ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+          {{ bet.marked ? 'Pago' : 'Pagamento pendente' }}
+        </span>
+        <span class="mj-bet-price">{{ getBetPriceLabel(bet) }}</span>
+      </div>
+
+      <div class="mj-bet-tag" *ngIf="bet.bolaoId">
+        <ion-icon name="people-outline"></ion-icon> Cota do bolão {{ bet.bolaoName }}
+      </div>
+
+      <div class="mj-bet-balls" *ngIf="!bet.bolaoId">
+        <span class="mj-ball" *ngFor="let n of bet.bet" [style.background]="getGameColor(bet.gameType)">{{ n < 10 ? '0' + n : n }}</span>
+      </div>
+
+      <div class="mj-bet-footer">
+        <span class="mj-bet-result" *ngIf="bet.resultStatus === 'PENDING'">
+          <ion-icon name="calendar-outline"></ion-icon> Sorteio em {{ bet.nextDrawDate }}
+        </span>
+
+        <span class="mj-bet-result" *ngIf="bet.resultStatus === 'UNKNOWN'">
+          <ion-icon name="hourglass-outline"></ion-icon> Aguardando próximo concurso
+        </span>
+
+        <span class="mj-bet-result hits" *ngIf="bet.resultStatus === 'AVAILABLE'">
+          <ion-icon name="trophy-outline"></ion-icon> Você fez {{ bet.hits }} {{ bet.hits === 1 ? 'ponto' : 'pontos' }} — concurso {{ bet.concurso }}
+        </span>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

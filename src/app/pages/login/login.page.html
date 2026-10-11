@@ -1,49 +1,37 @@
-<ion-content>
-  <div class="main_content_div">
+<ion-content [fullscreen]="true">
+  <div class="auth-page">
 
-    <!-- Tela de boas-vindas -->
-    <div class="welcome_screen" *ngIf="!showForm">
-
-      <div class="logo_area">
-        <img src="assets/imgs/dupolvo-logo.png" class="logo_img">
+    <header class="auth-header">
+      <div class="auth-brand" (click)="goHome()">
+        <img src="assets/imgs/dupolvo-logo.png" class="auth-brand-logo" alt="DuPolvo" />
+        <span class="auth-brand-name">DuPolvo</span>
       </div>
+    </header>
 
-      <div class="text_area">
-        <h1 class="tagline">Aposte com segurança e praticidade</h1>
-        <p class="description">Faça suas apostas de forma simples e acompanhe os resultados em tempo real.</p>
-      </div>
+    <div class="auth-hero">
+      <ion-icon name="trophy" class="auth-deco auth-deco-1"></ion-icon>
+      <ion-icon name="sparkles" class="auth-deco auth-deco-2"></ion-icon>
 
-      <div class="actions_area">
-        <ion-button expand="block" class="btn_primary dp-pill-btn" (click)="showForm = true">
-          Entrar
-        </ion-button>
-        <ion-button expand="block" fill="outline" class="btn_outline dp-pill-btn" (click)="goToRegister()">
-          Criar conta
-        </ion-button>
-      </div>
+      <div class="auth-card">
+        <h1 class="auth-title">Entre na sua conta</h1>
+        <p class="auth-subtitle">Acompanhe suas apostas e aproveite a sorte sem sair de casa.</p>
 
-    </div>
-
-    <!-- Formulário de login -->
-    <div class="login_screen" *ngIf="showForm">
-
-      <app-page-header [showBack]="false">
-
-        <ion-label class="head_lbl">Entre com a sua conta</ion-label>
-
-        <ion-input type="text" placeholder="E-mail" #email></ion-input>
-        <ion-input type="password" placeholder="Senha" #password></ion-input>
-
-        <div class="btn_div">
-          <ion-button class="dp-pill-btn" (click)="onLogin(email, password)" expand="block">
-            Entrar
-          </ion-button>
+        <div class="auth-field">
+          <label>E-mail</label>
+          <ion-input type="email" placeholder="seuemail@exemplo.com" #email></ion-input>
         </div>
 
-        <ion-label class="head_lbl_bottom" (click)="goToRegister()">Ainda não possui cadastro, clique aqui</ion-label>
-        <ion-label class="back_lbl" (click)="showForm = false">← Voltar</ion-label>
+        <div class="auth-field">
+          <label>Senha</label>
+          <ion-input type="password" placeholder="••••••••" #password></ion-input>
+        </div>
 
-      </app-page-header>
+        <span class="auth-forgot" (click)="goToForgot()">Esqueci minha senha</span>
+
+        <button class="auth-submit" (click)="onLogin(email, password)">Entrar</button>
+
+        <p class="auth-switch">Ainda não tem conta? <span (click)="goToRegister()">Cadastre-se grátis</span></p>
+      </div>
     </div>
 
   </div>

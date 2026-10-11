@@ -1,0 +1,290 @@
+@import '../../../theme/dp-tokens';
+
+ion-content {
+  --background: #F0F4F8;
+}
+
+.mj {
+  min-height: 100%;
+  padding: 0 16px 40px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.mj-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+
+  .mj-back {
+    background: #FFFFFF;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    @include dp-border(1.5px);
+
+    ion-icon {
+      font-size: 20px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .mj-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    span {
+      font-family: $dp-font-bold;
+      font-size: 16px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .mj-spacer {
+    width: 38px;
+  }
+}
+
+.mj-title {
+  font-family: $dp-font-bold;
+  font-size: 22px;
+  color: var(--dp-blue-900, #1A3D5C);
+  margin: 4px 0 4px;
+}
+
+.mj-subtitle {
+  font-family: $dp-font-regular;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dp-blue-gray, #6B8299);
+  margin: 0 0 18px;
+}
+
+// ==== Seletor: conferidos x pendentes ====
+.mj-tabs {
+  display: flex;
+  gap: 8px;
+  background: #FFFFFF;
+  border-radius: $dp-radius-pill;
+  padding: 5px;
+  margin-bottom: 18px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    border-radius: 14px;
+  }
+}
+
+.mj-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-radius: $dp-radius-pill;
+  padding: 10px 14px;
+  font-family: $dp-font-semibold;
+  font-size: 13px;
+  color: var(--dp-blue-gray, #6B8299);
+  cursor: pointer;
+  white-space: nowrap;
+
+  .mj-tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: $dp-radius-pill;
+    background: #F0F4F8;
+    color: var(--dp-blue-gray, #6B8299);
+    font-family: $dp-font-bold;
+    font-size: 11px;
+  }
+
+  &.active {
+    background: var(--dp-blue-900, #1A3D5C);
+    color: #FFFFFF;
+
+    .mj-tab-count {
+      background: rgba(255, 255, 255, 0.18);
+      color: #FFFFFF;
+    }
+  }
+}
+
+// ==== Cards ====
+.mj-card {
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 18px;
+  margin-bottom: 12px;
+  @include dp-border();
+  @include dp-offset-shadow(3px, 3px);
+}
+
+.mj-empty {
+  text-align: center;
+  padding: 36px 20px;
+
+  .mj-empty-icon {
+    font-size: 40px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-family: $dp-font-medium;
+    font-size: 14px;
+    color: var(--dp-blue-gray, #6B8299);
+    margin: 0 0 16px;
+  }
+}
+
+.mj-btn-primary {
+  background: var(--dp-orange, #F7941D);
+  color: #FFFFFF;
+  font-family: $dp-font-bold;
+  font-size: 14px;
+  border: none;
+  border-radius: $dp-radius-pill;
+  padding: 11px 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--dp-orange-dark, #D97A0A);
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--dp-orange-dark, #D97A0A);
+  }
+}
+
+.mj-bet {
+  position: relative;
+  @include dp-accent-tint(34%, 0.07);
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mj-bet-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+
+    .mj-bet-game {
+      font-family: $dp-font-bold;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .mj-bet-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: $dp-font-semibold;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #B7791F;
+      background: rgba(255, 196, 9, 0.18);
+      border-radius: $dp-radius-pill;
+      padding: 3px 10px;
+
+      ion-icon {
+        font-size: 12px;
+      }
+
+      &.paid {
+        color: var(--ion-color-success-shade, #28BA62);
+        background: rgba(45, 211, 111, 0.14);
+      }
+    }
+
+    .mj-bet-price {
+      margin-left: auto;
+      font-family: $dp-font-bold;
+      font-size: 16px;
+      color: var(--dp-blue-900, #1A3D5C);
+    }
+  }
+
+  .mj-bet-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--dp-blue-500, #2F89C5);
+    margin-bottom: 8px;
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+
+  .mj-bet-balls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .mj-ball {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $dp-font-bold;
+    font-size: 11px;
+    color: #FFFFFF;
+    @include dp-border(1.5px, $dp-border-color);
+  }
+
+  .mj-bet-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .mj-bet-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--dp-blue-gray, #6B8299);
+
+    ion-icon {
+      font-size: 14px;
+    }
+
+    &.hits {
+      color: #209869;
+    }
+  }
+}

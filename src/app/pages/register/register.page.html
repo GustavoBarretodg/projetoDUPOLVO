@@ -1,85 +1,63 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>search-property</ion-title>
-  </ion-toolbar>
-</ion-header> -->
+<ion-content [fullscreen]="true">
+  <div class="auth-page">
 
-<ion-content>
-  <div class="main_content_div">
-
-    <app-page-header [showBack]="false">
-
-      <ion-label class="head_lbl">Crie a sua conta</ion-label>
-
-      <ion-input type="text" placeholder="Nome" #name clearInput></ion-input>
-      <ion-input type="text" placeholder="E-mail" #email clearInput></ion-input>
-      <ion-input type="text" placeholder="Telefone" #phone clearInput></ion-input>
-      <ion-input type="password" placeholder="Senha" #password clearInput></ion-input>
-      <ion-input type="text" placeholder="Cidade" #city clearInput></ion-input>
-
-      <div class="role_div">
-        <ion-label class="role_lbl">Tipo de conta</ion-label>
-        <ion-segment [(ngModel)]="selectedRole" color="primary">
-          <ion-segment-button value="USER">
-            <ion-label>Usuário</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="ADMIN">
-            <ion-label>Admin</ion-label>
-          </ion-segment-button>
-        </ion-segment>
+    <header class="auth-header">
+      <div class="auth-brand" (click)="goHome()">
+        <img src="assets/imgs/dupolvo-logo.png" class="auth-brand-logo" alt="DuPolvo" />
+        <span class="auth-brand-name">DuPolvo</span>
       </div>
+    </header>
 
-      <div class="btn_div">
-        <ion-button class="dp-pill-btn" (click)="onRegister(name, email, phone, password, city)" expand="block">
-          Salvar
-        </ion-button>
+    <div class="auth-hero">
+      <ion-icon name="trophy" class="auth-deco auth-deco-1"></ion-icon>
+      <ion-icon name="sparkles" class="auth-deco auth-deco-2"></ion-icon>
+
+      <div class="auth-card">
+        <h1 class="auth-title">Crie a sua conta</h1>
+        <p class="auth-subtitle">Leva menos de um minuto — e você já pode fazer sua primeira aposta.</p>
+
+        <div class="auth-field">
+          <label>Nome</label>
+          <ion-input type="text" placeholder="Seu nome completo" #name clearInput></ion-input>
+        </div>
+
+        <div class="auth-field">
+          <label>E-mail</label>
+          <ion-input type="email" placeholder="seuemail@exemplo.com" #email clearInput></ion-input>
+        </div>
+
+        <div class="auth-field">
+          <label>Telefone</label>
+          <ion-input type="tel" placeholder="(00) 00000-0000" #phone clearInput></ion-input>
+        </div>
+
+        <div class="auth-field">
+          <label>Senha</label>
+          <ion-input type="password" placeholder="••••••••" #password clearInput></ion-input>
+        </div>
+
+        <div class="auth-field">
+          <label>Cidade</label>
+          <ion-input type="text" placeholder="Sua cidade" #city clearInput></ion-input>
+        </div>
+
+        <div class="auth-field">
+          <label>Tipo de conta</label>
+          <ion-segment [(ngModel)]="selectedRole" class="auth-segment">
+            <ion-segment-button value="USER">
+              <ion-label>Usuário</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="ADMIN">
+              <ion-label>Admin</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+
+        <button class="auth-submit" (click)="onRegister(name, email, phone, password, city)">Criar conta</button>
+
+        <p class="auth-switch">Já tem conta? <span (click)="goToLogin()">Entrar</span></p>
       </div>
+    </div>
 
-      <ion-label class="head_lbl_bottom" (click)="goToLogin()">
-        Já possui cadastro, clique aqui para acessar sua conta
-      </ion-label>
-
-    </app-page-header>
   </div>
 </ion-content>
-
-
-<!-- <ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-title></ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <div class="main_content_div">
-    
-    <div class="form_div">
-      <ion-label class="head_lbl">Create Account</ion-label>
-
-      <ion-label class="small_lbl">First Name</ion-label>
-      <ion-input type="text" placeholder="First Name"></ion-input>
-
-      <ion-label class="small_lbl">Last Name</ion-label>
-      <ion-input type="text" placeholder="Last Name"></ion-input>
-
-      <ion-label class="small_lbl">Mobile</ion-label>
-      <ion-input type="text" placeholder="Mobile"></ion-input>
-
-      <ion-label class="small_lbl">Email ID</ion-label>
-      <ion-input type="text" placeholder="Email ID"></ion-input>
-
-      <ion-label class="small_lbl">Passsword</ion-label>
-      <ion-input type="text" placeholder="Password"></ion-input>
-
-      <ion-button (click)="goToHome()" expand="block">
-        Create Account
-      </ion-button>
-
-    </div>
-
-    <div class="bottom_div">
-      <ion-label (click)="goToLogin()">Alreadu have an acconut ? Sign In.</ion-label>
-    </div>
-
-  </div>
-</ion-content> -->

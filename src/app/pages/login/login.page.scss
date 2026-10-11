@@ -4,126 +4,149 @@ ion-content {
   --background: #FFFFFF;
 }
 
-.main_content_div {
+.auth-page {
+  min-height: 100%;
+}
+
+// ==== Header ====
+.auth-header {
+  padding: 14px 20px;
+  border-bottom: $dp-border-width solid $dp-border-color;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  width: fit-content;
+
+  .auth-brand-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+
+  .auth-brand-name {
+    font-family: $dp-font-bold;
+    font-size: 17px;
+    color: var(--dp-blue-900, #1A3D5C);
+  }
+}
+
+// ==== Area com gradiente + card ====
+.auth-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 62px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  background: var(--dp-gradient-main, linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%));
+
+  @media (max-width: 700px) {
+    padding: 32px 16px;
+  }
+
+  .auth-deco {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.14);
+    pointer-events: none;
+  }
+
+  .auth-deco-1 { font-size: 160px; top: -30px; left: -30px; transform: rotate(-15deg); }
+  .auth-deco-2 { font-size: 110px; bottom: -30px; right: -20px; transform: rotate(18deg); }
+}
+
+.auth-card {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  height: 100%;
+  max-width: 400px;
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 32px 28px;
+  @include dp-border();
+  @include dp-offset-shadow();
+}
 
-  ion-label {
+.auth-title {
+  font-family: $dp-font-bold;
+  font-size: 22px;
+  color: var(--dp-blue-900, #1A3D5C);
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.auth-subtitle {
+  font-family: $dp-font-regular;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dp-blue-gray, #6B8299);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.auth-field {
+  margin-bottom: 14px;
+
+  label {
     display: block;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin-bottom: 6px;
   }
 
-  // ---- TELA DE BOAS-VINDAS ----
-  .welcome_screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: 100vh;
-    padding: 40px 24px 48px;
-    background: #FFFFFF;
-
-    .logo_area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .logo_img {
-        max-width: 220px;
-        width: 70%;
-        object-fit: contain;
-      }
-    }
-
-    .text_area {
-      text-align: center;
-      padding: 0 8px;
-      margin-bottom: 40px;
-
-      .tagline {
-        font-size: 22px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin: 0 0 12px;
-        line-height: 1.3;
-      }
-
-      .description {
-        font-size: 14px;
-        color: #666666;
-        margin: 0;
-        line-height: 1.6;
-      }
-    }
-
-    .actions_area {
-      width: 100%;
-
-      .btn_primary {
-        --background: var(--dp-blue-500, #2F89C5);
-        --color: #FFFFFF;
-        height: 52px;
-        font-size: 16px;
-        margin-bottom: 12px;
-      }
-
-      .btn_outline {
-        --color: var(--dp-blue-500, #2F89C5);
-        height: 52px;
-        font-size: 16px;
-      }
-    }
+  ion-input {
+    --padding-start: 14px;
+    --padding-end: 14px;
+    --placeholder-color: #9BB0C2;
+    height: 46px;
+    border-radius: 12px;
+    font-family: $dp-font-medium;
+    font-size: 14px;
+    color: var(--dp-blue-900, #1A3D5C);
+    @include dp-border(1.5px, #D7E1EA);
   }
+}
 
-  // ---- TELA DE LOGIN ----
-  // .back_image / .blue_div (com o header + logo) agora vêm de app-page-header
-  // (ver page-header.component.scss). Aqui ficam só os estilos do conteúdo
-  // projetado via ng-content dentro do componente.
-  .login_screen {
-    width: 100%;
-    height: 100%;
+.auth-forgot {
+  display: block;
+  text-align: right;
+  font-family: $dp-font-medium;
+  font-size: 12.5px;
+  color: var(--dp-blue-500, #2F89C5);
+  cursor: pointer;
+  margin: -4px 0 20px;
+}
 
-    .head_lbl {
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      color: #FFFFFF;
-      margin-bottom: 20px;
-    }
+.auth-submit {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: $dp-font-bold;
+  font-size: 15px;
+  padding: 13px 24px;
+  border-radius: $dp-radius-pill;
+  background: var(--dp-blue-500, #2F89C5);
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-bottom: 18px;
+  @include dp-border(1.5px, $dp-border-color);
+}
 
-    ion-input {
-      color: #FFFFFF;
-      border-radius: 8px;
-      height: 48px;
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      --padding-start: 12px;
-      margin-bottom: 12px;
-    }
+.auth-switch {
+  font-family: $dp-font-regular;
+  font-size: 13px;
+  color: var(--dp-blue-gray, #6B8299);
+  text-align: center;
+  margin: 0;
 
-    .btn_div {
-      margin-top: 24px;
-
-      ion-button {
-        --background: #FFFFFF;
-        --color: var(--dp-blue-500, #2F89C5);
-        height: 48px;
-      }
-    }
-
-    .head_lbl_bottom {
-      font-size: 14px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.85);
-      margin-top: 20px;
-      cursor: pointer;
-    }
-
-    .back_lbl {
-      font-size: 14px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: 10px;
-      cursor: pointer;
-    }
+  span {
+    font-family: $dp-font-semibold;
+    color: var(--dp-blue-500, #2F89C5);
+    cursor: pointer;
   }
 }

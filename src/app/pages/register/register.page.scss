@@ -1,122 +1,159 @@
 @import '../../../theme/dp-tokens';
 
-ion-content{
-    --background: #FFFFFF;
+ion-content {
+  --background: #FFFFFF;
 }
-.main_content_div{
-    width: 100%;
-    ion-label {
-        display: block;
+
+.auth-page {
+  min-height: 100%;
+}
+
+// ==== Header ====
+.auth-header {
+  padding: 14px 20px;
+  border-bottom: $dp-border-width solid $dp-border-color;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  width: fit-content;
+
+  .auth-brand-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+
+  .auth-brand-name {
+    font-family: $dp-font-bold;
+    font-size: 17px;
+    color: var(--dp-blue-900, #1A3D5C);
+  }
+}
+
+// ==== Area com gradiente + card ====
+.auth-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100vh - 62px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  background: var(--dp-gradient-main, linear-gradient(135deg, #1A5F8A 0%, #2F89C5 60%, #0DADEE 100%));
+
+  @media (max-width: 700px) {
+    padding: 32px 16px;
+  }
+
+  .auth-deco {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.14);
+    pointer-events: none;
+  }
+
+  .auth-deco-1 { font-size: 160px; top: -30px; left: -30px; transform: rotate(-15deg); }
+  .auth-deco-2 { font-size: 110px; bottom: -30px; right: -20px; transform: rotate(18deg); }
+}
+
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: #FFFFFF;
+  border-radius: $dp-radius-card;
+  padding: 32px 28px;
+  @include dp-border();
+  @include dp-offset-shadow();
+}
+
+.auth-title {
+  font-family: $dp-font-bold;
+  font-size: 22px;
+  color: var(--dp-blue-900, #1A3D5C);
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.auth-subtitle {
+  font-family: $dp-font-regular;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dp-blue-gray, #6B8299);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.auth-field {
+  margin-bottom: 14px;
+
+  label {
+    display: block;
+    font-family: $dp-font-semibold;
+    font-size: 12px;
+    color: var(--dp-blue-900, #1A3D5C);
+    margin-bottom: 6px;
+  }
+
+  ion-input {
+    --padding-start: 14px;
+    --padding-end: 14px;
+    --placeholder-color: #9BB0C2;
+    height: 46px;
+    border-radius: 12px;
+    font-family: $dp-font-medium;
+    font-size: 14px;
+    color: var(--dp-blue-900, #1A3D5C);
+    @include dp-border(1.5px, #D7E1EA);
+  }
+
+  .auth-segment {
+    --background: #F0F4F8;
+    border-radius: $dp-radius-pill;
+    padding: 4px;
+
+    ion-segment-button {
+      --color: var(--dp-blue-gray, #6B8299);
+      --color-checked: var(--dp-blue-900, #1A3D5C);
+      --indicator-color: #FFFFFF;
+      --border-radius: #{$dp-radius-pill};
+      min-height: 38px;
+      font-family: $dp-font-semibold;
+      font-size: 13px;
+      text-transform: none;
     }
+  }
+}
 
-    // .back_image / .blue_div (com o header + logo) agora vêm de app-page-header
-    // (ver page-header.component.scss). Aqui ficam só os estilos do conteúdo
-    // projetado via ng-content dentro do componente.
+.auth-submit {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: $dp-font-bold;
+  font-size: 15px;
+  padding: 13px 24px;
+  border-radius: $dp-radius-pill;
+  background: var(--dp-blue-500, #2F89C5);
+  color: #FFFFFF;
+  cursor: pointer;
+  margin: 6px 0 18px;
+  @include dp-border(1.5px, $dp-border-color);
+}
 
-    .head_lbl{
-        font-family: 'Poppins-SemiBold';
-        font-size: 18px;
-        margin-top: 15px;
-        text-align: center;
-        padding-bottom: 30px;
-        position: relative;
-        color: #FFFFFF;
-    }
+.auth-switch {
+  font-family: $dp-font-regular;
+  font-size: 13px;
+  color: var(--dp-blue-gray, #6B8299);
+  text-align: center;
+  margin: 0;
 
-    .head_lbl_bottom {
-        font-family: 'Poppins-SemiBold';
-        font-size: 15px;
-        margin-top: 15px;
-        text-align: center;
-        padding-bottom: 10px;
-        position: relative;
-        color: #FFFFFF;
-    }
-
-    .detail_lbl{
-        font-size: 15px;
-    }
-
-    ion-grid{
-        padding: 0;
-        ion-col{
-
-            .col_div{
-                background: white;
-                display: block;
-                margin: auto;
-                height: 70px;
-                width: 80px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                border-radius: 15px;
-            }
-            ion-icon{
-                font-size: 25px;
-                // color: #707070;
-            }
-            ion-label {
-                font-size: 14px;
-                // color: gray;
-            }
-            .active{
-                background: var(--ion-color-primary);
-                ion-icon{
-                    font-size: 25px;
-                    color: white;
-                }
-                ion-label {
-                    font-size: 14px;
-                    color: white;
-                }
-            }
-        }
-    }
-
-    ion-input{
-        color: #FFFFFF;
-        border-radius: 5px;
-        height: 45px;
-        border: 1px solid #FFFFFF;
-        --padding-start: 8px;
-        margin-bottom: 10px;
-
-        ion-icon{
-            font-size: 20px;
-            margin-left: 10px;
-            color: gray;
-        }
-    }
-
-    .role_div {
-        margin-bottom: 14px;
-
-        .role_lbl {
-            color: #FFFFFF;
-            font-size: 13px;
-            margin-bottom: 6px;
-        }
-
-        ion-segment {
-            --background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-
-            ion-segment-button {
-                --color: rgba(255,255,255,0.7);
-                --color-checked: var(--dp-blue-500, #2F89C5);
-                --indicator-color: #FFFFFF;
-            }
-        }
-    }
-
-    .btn_div{
-        margin-top: 30px;
-        text-align: right;
-        ion-button{
-            --background: #FFFFFF;
-            color: var(--dp-blue-500, #2F89C5);
-        }
-    }
+  span {
+    font-family: $dp-font-semibold;
+    color: var(--dp-blue-500, #2F89C5);
+    cursor: pointer;
+  }
 }

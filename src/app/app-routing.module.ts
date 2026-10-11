@@ -62,6 +62,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/conta/conta.module').then(m => m.ContaPageModule)
   },
   {
+    path: 'meus-jogos',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/meus-jogos/meus-jogos.module').then(m => m.MeusJogosPageModule)
+  },
+  {
     path: 'admin',
     canActivate: [AdminGuard],
     loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminPageModule)

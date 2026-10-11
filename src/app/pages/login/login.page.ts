@@ -11,7 +11,6 @@ import { StorageService } from '../../services/storage.service';
 })
 export class LoginPage implements OnInit {
 
-  showForm = false;
   private returnUrl: string | null = null;
 
   constructor(
@@ -32,6 +31,10 @@ export class LoginPage implements OnInit {
 
   goToForgot() {
     this.router.navigate(['/forgot']);
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
   }
 
   onLogin(email: any, password: any) {

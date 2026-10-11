@@ -29,6 +29,10 @@ export class RegisterPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  goHome() {
+    this.router.navigate(['/']);
+  }
+
   async onRegister(name: any, email: any, phone: any, password: any, city: any) {
     if (!name.value.trim() || !email.value.trim() || !phone.value.trim() || !password.value.trim() || !city.value.trim()) {
       this.showToast('Favor preencher todos os campos!');

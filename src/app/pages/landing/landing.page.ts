@@ -246,6 +246,10 @@ export class LandingPage implements OnInit {
     this.router.navigate(['/conta']);
   }
 
+  goToMeusJogos() {
+    this.router.navigate(['/meus-jogos']);
+  }
+
   goToBolaoList() {
     this.router.navigate(['/bolao']);
   }
