@@ -81,17 +81,18 @@ export class PropertyDetailPage implements OnInit {
     await alert.present();
   }
 
-  private saveBet() {
+  private saveBet(force: boolean = false) {
     const params: any = {
       id_bet: 1020,
       id_user: this.user.id,
       bet: this.numbers.sort((a: number, b: number) => a - b),
-      game_type: this.gameKey
+      game_type: this.gameKey,
+      force
     };
 
     this.betSvc.addBet(params).subscribe((res) => {
-      if (res.message === 'bet_exists') {
-        this.showToast('Esse cartão já existe, escolha outros números!');
+      if (res.message === 'bet_exists' && !force) {
+        this.confirmDuplicateBet();
         return;
       }
       this.cartCount++;
@@ -101,6 +102,18 @@ export class PropertyDetailPage implements OnInit {
     }, () => {
       this.showToast('Falha ao criar cartão');
     });
+  }
+
+  private async confirmDuplicateBet() {
+    const alert = await this.alertCtrl.create({
+      header: 'Cartão já marcado',
+      message: 'Essas dezenas já foram marcadas por outro jogador neste jogo. Deseja marcar mesmo assim?',
+      buttons: [
+        { text: 'Escolher outros números', role: 'cancel' },
+        { text: 'Marcar mesmo assim', handler: () => this.saveBet(true) }
+      ]
+    });
+    await alert.present();
   }
 
   highlightItem(index: number) {

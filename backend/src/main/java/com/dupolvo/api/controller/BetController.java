@@ -26,7 +26,8 @@ public class BetController {
         Long idUser = Long.valueOf(body.get("id_user").toString());
         List<Integer> numbers = (List<Integer>) body.get("bet");
         String gameType = body.containsKey("game_type") ? body.get("game_type").toString() : "LOTOFACIL";
-        return ResponseEntity.ok(betService.addBet(idBet, idUser, numbers, gameType));
+        boolean force = body.containsKey("force") && Boolean.parseBoolean(body.get("force").toString());
+        return ResponseEntity.ok(betService.addBet(idBet, idUser, numbers, gameType, force));
     }
 
     @PostMapping("/add-bet-random")

@@ -35,6 +35,10 @@ public class BetService {
     }
 
     public Map<String, Object> addBet(Long idBet, Long idUser, List<Integer> numbers, String gameType) {
+        return addBet(idBet, idUser, numbers, gameType, false);
+    }
+
+    public Map<String, Object> addBet(Long idBet, Long idUser, List<Integer> numbers, String gameType, boolean force) {
         Map<String, Object> response = new HashMap<>();
         GameConfig config = GameConfig.fromString(gameType);
 
@@ -57,10 +61,14 @@ public class BetService {
 
         // Checagem global: nenhum usuario (de nenhum admin/cidade) pode ter o mesmo
         // jogo com as mesmas dezenas, nao so o usuario que esta apostando agora.
-        List<List<Integer>> existingCombos = existingCombosFor(config.name());
-        if (isDuplicateCombo(sorted, existingCombos)) {
-            response.put("message", "bet_exists");
-            return response;
+        // Se "force" vier true, o usuario ja foi avisado pelo front e decidiu marcar
+        // mesmo assim, entao nao bloqueia aqui.
+        if (!force) {
+            List<List<Integer>> existingCombos = existingCombosFor(config.name());
+            if (isDuplicateCombo(sorted, existingCombos)) {
+                response.put("message", "bet_exists");
+                return response;
+            }
         }
 
         Bet bet = new Bet();
