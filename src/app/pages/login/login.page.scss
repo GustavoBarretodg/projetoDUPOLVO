@@ -95,19 +95,22 @@ ion-content {
     display: block;
     font-family: $dp-font-semibold;
     font-size: 12px;
-    color: var(--dp-blue-900, #1A3D5C);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--dp-blue-gray, #6B8299);
     margin-bottom: 6px;
   }
 
   ion-input {
-    --padding-start: 14px;
-    --padding-end: 14px;
+    --padding-start: 18px;
+    --padding-end: 18px;
     --placeholder-color: #9BB0C2;
     height: 46px;
-    border-radius: 12px;
+    border-radius: $dp-radius-pill;
     font-family: $dp-font-medium;
     font-size: 14px;
     color: var(--dp-blue-900, #1A3D5C);
+    background: #F0F4F8;
     @include dp-border(1.5px, #D7E1EA);
   }
 }
