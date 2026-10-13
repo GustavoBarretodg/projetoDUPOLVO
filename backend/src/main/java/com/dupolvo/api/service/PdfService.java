@@ -171,17 +171,26 @@ public class PdfService {
         table.addCell(cell);
     }
 
+    // Reproduz as proporcoes do volante oficial da Caixa (colunas por jogo em
+    // GameConfig.gridColumns), com celulas quadradas pretas/brancas iguais ao
+    // cartao fisico - pra dar pra usar como referencia direta na hora de
+    // marcar o jogo de verdade na lotérica.
     private PdfPTable buildNumberGrid(GameConfig config, List<Integer> marked) {
-        PdfPTable table = new PdfPTable(10);
-        table.setWidthPercentage(100);
+        int columns = config.gridColumns;
+        PdfPTable table = new PdfPTable(columns);
+        table.setWidthPercentage(columns * 9f);
+        table.setHorizontalAlignment(Element.ALIGN_CENTER);
+
         for (int n = config.min; n <= config.max; n++) {
             boolean isMarked = marked.contains(n);
             PdfPCell cell = new PdfPCell(new Phrase(String.format("%02d", n),
-                    new Font(Font.HELVETICA, 10, isMarked ? Font.BOLD : Font.NORMAL,
+                    new Font(Font.HELVETICA, 11, Font.BOLD,
                             isMarked ? Color.WHITE : Color.BLACK)));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            cell.setFixedHeight(24);
+            cell.setFixedHeight(26);
+            cell.setBorderWidth(0.75f);
+            cell.setBorderColor(Color.BLACK);
             cell.setBackgroundColor(isMarked ? BRAND_COLOR : Color.WHITE);
             table.addCell(cell);
         }
