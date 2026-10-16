@@ -12,6 +12,7 @@ export interface CartItem {
   bolaoName?: string;        // so pra type 'bolao'
   price: number;
   createdAt: string;
+  force?: boolean;           // usuario foi avisado das dezenas repetidas e quis marcar mesmo assim
 }
 
 const CART_KEY = 'cart';
@@ -46,16 +47,21 @@ export class CartService {
     return this.items.reduce((sum, item) => sum + item.price, 0);
   }
 
-  /** Adiciona uma aposta ao carrinho. Retorna false se ja existe jogo identico (mesmo tipo + mesmas dezenas). */
-  add(gameType: string, numbers: number[], price: number): boolean {
+  /** True se ja existe no carrinho um jogo identico (mesmo tipo + mesmas dezenas). */
+  has(gameType: string, numbers: number[]): boolean {
     const sorted = [...numbers].sort((a, b) => a - b);
-    const duplicate = this.items.some(item =>
+    return this.items.some(item =>
       item.type === 'bet' &&
       item.gameType === gameType &&
       item.numbers && item.numbers.length === sorted.length &&
       item.numbers.every((n, i) => n === sorted[i])
     );
-    if (duplicate) return false;
+  }
+
+  /** Adiciona uma aposta ao carrinho. Retorna false se ja existe jogo identico (mesmo tipo + mesmas dezenas). */
+  add(gameType: string, numbers: number[], price: number, force = false): boolean {
+    if (this.has(gameType, numbers)) return false;
+    const sorted = [...numbers].sort((a, b) => a - b);
 
     const item: CartItem = {
       id: `${Date.now()}-${Math.floor(Math.random() * 10000)}`,
@@ -64,6 +70,7 @@ export class CartService {
       numbers: sorted,
       price,
       createdAt: new Date().toISOString(),
+      ...(force ? { force: true } : {}),
     };
     this.persist([...this.items, item]);
     return true;

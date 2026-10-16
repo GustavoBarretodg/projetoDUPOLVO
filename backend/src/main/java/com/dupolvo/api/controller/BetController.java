@@ -30,6 +30,13 @@ public class BetController {
         return ResponseEntity.ok(betService.addBet(idBet, idUser, numbers, gameType, force));
     }
 
+    @PostMapping("/check-bets")
+    public ResponseEntity<Map<String, Object>> checkBets(@RequestBody Map<String, Object> body) {
+        String gameType = body.containsKey("game_type") ? body.get("game_type").toString() : "LOTOFACIL";
+        List<List<Integer>> bets = (List<List<Integer>>) body.get("bets");
+        return ResponseEntity.ok(betService.checkBets(gameType, bets));
+    }
+
     @PostMapping("/add-bet-random")
     public ResponseEntity<Map<String, Object>> addBetRandom(@RequestBody Map<String, Object> body) {
         Long idBet = Long.valueOf(body.get("id_bet").toString());

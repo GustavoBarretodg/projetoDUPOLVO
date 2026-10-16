@@ -82,6 +82,20 @@ public class BetService {
         return response;
     }
 
+    // Diz, pra cada combinacao enviada, se outra aposta ja usa essas dezenas
+    // (mesma regra do addBet). Usado pelo front pra avisar antes de ir pro carrinho.
+    public Map<String, Object> checkBets(String gameType, List<List<Integer>> bets) {
+        GameConfig config = GameConfig.fromString(gameType);
+        List<List<Integer>> existingCombos = existingCombosFor(config.name());
+        List<Boolean> duplicates = new ArrayList<>();
+        for (List<Integer> combo : bets) {
+            duplicates.add(isDuplicateCombo(combo, existingCombos));
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("duplicates", duplicates);
+        return response;
+    }
+
     public Map<String, Object> addBetRandom(Long idBet, Long idUser, int qtdCard, String gameType) {
         Map<String, Object> response = new HashMap<>();
         GameConfig config = GameConfig.fromString(gameType);

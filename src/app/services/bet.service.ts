@@ -28,6 +28,11 @@ export class BetService {
         return this.httpClient.post<any>(`${API_URL}/add-bet`, params);
     }
 
+    /** Pra cada combinacao, diz se outro jogador ja marcou essas dezenas. */
+    public checkBets(gameType: string, bets: number[][]) {
+        return this.httpClient.post<{ duplicates: boolean[] }>(`${API_URL}/check-bets`, { game_type: gameType, bets });
+    }
+
     public getBet(params) {
         return this.httpClient.get<any>(`${API_URL}/get-bet`, { params: params });
     }

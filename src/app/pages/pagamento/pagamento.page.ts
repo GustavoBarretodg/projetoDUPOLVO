@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { CartService, CartItem } from '../../services/cart.service';
 import { StorageService } from '../../services/storage.service';
 import { BetService } from '../../services/bet.service';
@@ -23,6 +23,7 @@ export class PagamentoPage implements OnInit {
   constructor(
     private router: Router,
     private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
     private cart: CartService,
     private storage: StorageService,
     private betSvc: BetService,
@@ -112,12 +113,22 @@ export class PagamentoPage implements OnInit {
     this.router.navigate(['/conta']);
   }
 
-  private sendBet(item: CartItem): Promise<'ok' | 'dup' | 'fail'> {
+  // Se as dezenas ja foram marcadas por outro jogador e o usuario ainda nao
+  // tinha confirmado isso na tela do jogo, pergunta aqui antes de descartar.
+  private async sendBet(item: CartItem): Promise<'ok' | 'dup' | 'fail'> {
+    const outcome = await this.postBet(item, !!item.force);
+    if (outcome !== 'dup' || item.force) return outcome;
+    const confirmed = await this.askMarkAnyway(item);
+    return confirmed ? this.postBet(item, true) : 'dup';
+  }
+
+  private postBet(item: CartItem, force: boolean): Promise<'ok' | 'dup' | 'fail'> {
     const params = {
       id_bet: 1020,
       id_user: this.user.id,
       bet: item.numbers,
       game_type: item.gameType,
+      force,
     };
     return new Promise((resolve) => {
       this.betSvc.addBet(params as any).subscribe(
@@ -125,6 +136,22 @@ export class PagamentoPage implements OnInit {
         () => resolve('fail')
       );
     });
+  }
+
+  private async askMarkAnyway(item: CartItem): Promise<boolean> {
+    const numbers = (item.numbers || []).map(n => String(n).padStart(2, '0')).join(' ');
+    const alert = await this.alertCtrl.create({
+      header: 'Cartão já marcado',
+      message: `As dezenas <strong>${numbers}</strong> já foram marcadas por outro jogador neste jogo. Deseja marcar mesmo assim?`,
+      buttons: [
+        { text: 'Não enviar', role: 'cancel' },
+        { text: 'Marcar mesmo assim', role: 'confirm' },
+      ],
+      backdropDismiss: false,
+    });
+    await alert.present();
+    const { role } = await alert.onDidDismiss();
+    return role === 'confirm';
   }
 
   private sendBolao(item: CartItem): Promise<'ok' | 'dup' | 'fail'> {

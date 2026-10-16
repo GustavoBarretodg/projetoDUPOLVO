@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { CartService } from '../../services/cart.service';
+import { BetService } from '../../services/bet.service';
+import { StorageService } from '../../services/storage.service';
 import { ResultadoService, LoteriaResultado } from '../../services/resultado.service';
 import { GAME_CONFIGS, GameConfig, getBetPrice, formatBRL } from 'src/app/shared/game-config';
 
@@ -42,11 +44,17 @@ export class JogoPage implements OnInit, OnDestroy {
 
   private drawTarget: Date | null = null;
 
+  // Evita clique duplo enquanto consulta o servidor por dezenas repetidas.
+  public checking = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
     private cart: CartService,
+    private betSvc: BetService,
+    private storage: StorageService,
     private resultadoService: ResultadoService
   ) {}
 
@@ -154,31 +162,60 @@ export class JogoPage implements OnInit, OnDestroy {
     return picked.sort((a, b) => a - b);
   }
 
+  // Pergunta ao servidor se outro jogador ja marcou essas dezenas. So da
+  // pra checar logado (endpoint autenticado); sem login, ou se a consulta
+  // falhar, devolve null e a checagem fica pro pagamento.
+  private async checkDuplicates(combos: number[][]): Promise<boolean[] | null> {
+    const user = await this.storage.get('user').catch(() => null);
+    if (!user || !user.id) return null;
+    try {
+      const res = await this.betSvc.checkBets(this.gameConfig.key, combos).toPromise();
+      return res && Array.isArray(res.duplicates) ? res.duplicates : null;
+    } catch {
+      return null;
+    }
+  }
+
   // Gera N cartoes aleatorios de uma vez e manda todos pro carrinho -
   // equivalente a tela "Aleatorio" do layout antigo, mas gerado no
-  // cliente (o antigo gerava no servidor, o que exigia login).
-  generateBulk() {
-    const price = getBetPrice(this.gameConfig.key, this.gameConfig.minPick);
-    let added = 0;
-    let skipped = 0;
+  // cliente (o antigo gerava no servidor, o que exigia login). Como sao
+  // aleatorios, combinacoes ja marcadas por outro jogador sao descartadas.
+  async generateBulk() {
+    if (this.checking) return;
+    this.checking = true;
 
+    const price = getBetPrice(this.gameConfig.key, this.gameConfig.minPick);
+    const combos: number[][] = [];
     for (let i = 0; i < this.bulkQty; i++) {
-      const combo = this.randomCombo(this.gameConfig.minPick);
-      if (this.cart.add(this.gameConfig.key, combo, price)) {
-        added++;
-      } else {
-        skipped++;
-      }
+      combos.push(this.randomCombo(this.gameConfig.minPick));
     }
 
+    const duplicates = await this.checkDuplicates(combos);
+    this.checking = false;
+
+    let added = 0;
+    let inCart = 0;
+    let marked = 0;
+
+    combos.forEach((combo, i) => {
+      if (duplicates && duplicates[i]) {
+        marked++;
+      } else if (this.cart.add(this.gameConfig.key, combo, price)) {
+        added++;
+      } else {
+        inCart++;
+      }
+    });
+
     if (added === 0) {
-      this.showToast('Não foi possível gerar novos cartões (todos já estavam no carrinho).', 2200);
+      this.showToast('Não foi possível gerar novos cartões (todos repetidos). Tente de novo.', 2500);
       return;
     }
 
     let msg = `${added} ${added === 1 ? 'cartão adicionado' : 'cartões adicionados'} ao carrinho!`;
-    if (skipped) msg += ` (${skipped} repetido${skipped > 1 ? 's' : ''} ignorado${skipped > 1 ? 's' : ''})`;
-    this.showToast(msg, 2500);
+    if (inCart) msg += ` ${inCart} já estava${inCart > 1 ? 'm' : ''} no carrinho.`;
+    if (marked) msg += ` ${marked} descartado${marked > 1 ? 's' : ''} (dezenas já marcadas por outro jogador).`;
+    this.showToast(msg, 3000);
   }
 
   clearSelection() {
@@ -207,12 +244,48 @@ export class JogoPage implements OnInit, OnDestroy {
     return this.selected.length >= this.gameConfig.minPick && this.selected.length <= this.gameConfig.maxPick;
   }
 
-  addToCart() {
+  async addToCart() {
     if (!this.canAdd) {
       this.showToast(`Escolha de ${this.gameConfig.minPick} a ${this.gameConfig.maxPick} dezenas.`);
       return;
     }
-    const added = this.cart.add(this.gameConfig.key, this.selected, this.subtotal);
+    if (this.checking) return;
+    if (this.cart.has(this.gameConfig.key, this.selected)) {
+      this.showToast('Esse jogo já está no seu carrinho.');
+      return;
+    }
+
+    // Copia a selecao: o usuario pode mexer nas dezenas durante a consulta.
+    const numbers = [...this.selected];
+    const price = this.subtotal;
+
+    this.checking = true;
+    const duplicates = await this.checkDuplicates([numbers]);
+    this.checking = false;
+
+    if (duplicates && duplicates[0]) {
+      this.confirmDuplicate(numbers, price);
+      return;
+    }
+    this.commitSelection(numbers, price, false);
+  }
+
+  private async confirmDuplicate(numbers: number[], price: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Cartão já marcado',
+      message: 'Essas dezenas já foram marcadas por outro jogador neste jogo. Deseja marcar mesmo assim?',
+      buttons: [
+        { text: 'Escolher outros números', role: 'cancel' },
+        { text: 'Marcar mesmo assim', handler: () => this.commitSelection(numbers, price, true) },
+      ],
+    });
+    await alert.present();
+  }
+
+  // force = usuario ja viu o aviso de repetido e confirmou; o pagamento
+  // envia com force pra API nao barrar de novo.
+  private commitSelection(numbers: number[], price: number, force: boolean) {
+    const added = this.cart.add(this.gameConfig.key, numbers, price, force);
     if (!added) {
       this.showToast('Esse jogo já está no seu carrinho.');
       return;
@@ -222,15 +295,6 @@ export class JogoPage implements OnInit, OnDestroy {
   }
 
   goToCart() {
-    this.router.navigate(['/carrinho']);
-  }
-
-  goToPayment() {
-    if (!this.cart.items.length && !this.canAdd) {
-      this.showToast('Adicione uma aposta primeiro.');
-      return;
-    }
-    if (this.canAdd) this.addToCart();
     this.router.navigate(['/carrinho']);
   }
 
