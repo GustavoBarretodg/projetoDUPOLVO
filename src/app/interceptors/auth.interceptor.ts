@@ -19,9 +19,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return next.handle(authReq).pipe(
           catchError((error: HttpErrorResponse) => {
+            // Sessao expirada: remove so o login (o carrinho fica salvo) e
+            // volta pra tela atual depois de entrar de novo.
             if (error.status === 401) {
-              this.storage.clear();
-              this.router.navigate(['/login']);
+              this.storage.removeItem('token');
+              this.storage.removeItem('user');
+              const returnUrl = this.router.url;
+              this.router.navigate(['/login'], {
+                queryParams: returnUrl && !returnUrl.startsWith('/login') ? { returnUrl } : {},
+              });
             }
             return throwError(error);
           })
