@@ -4,6 +4,7 @@ import com.dupolvo.api.model.Bet;
 import com.dupolvo.api.model.GameConfig;
 import com.dupolvo.api.model.User;
 import com.lowagie.text.*;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -36,6 +37,16 @@ public class PdfService {
     private static final float CARD_HEIGHT = 140 * MM;
 
     public byte[] generateBetCardPdf(Bet bet, User user) {
+        GameConfig config = GameConfig.fromString(bet.getGameType());
+        if (config == GameConfig.LOTOFACIL && bet.getBet() != null && !bet.getBet().isEmpty()) {
+            return generateLotofacilVolantePdf(bet, user);
+        }
+        return generateReferenceCardPdf(bet, user);
+    }
+
+    // Cartao de referencia antigo - so pros jogos que ainda nao tem layout de
+    // impressao no volante (ou cota de bolao sem dezenas).
+    private byte[] generateReferenceCardPdf(Bet bet, User user) {
         Document document = new Document(new Rectangle(CARD_WIDTH, CARD_HEIGHT), 14, 14, 10, 10);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
@@ -101,6 +112,233 @@ public class PdfService {
             throw new RuntimeException("Erro ao gerar PDF do cartão", e);
         }
         return out.toByteArray();
+    }
+
+    // ---------------------------------------------------------------------
+    // Impressao direto no volante da Lotofacil (folha A4, volante encaixado
+    // no tracejado). Todas as medidas abaixo estao em px CSS, copiadas do
+    // layout "lotofacil normal" do modelo de impressao-previa-a4.css - no
+    // navegador 1px impresso a 100% = 0,75pt, entao convertendo assim o PDF
+    // sai na mesma posicao que o modelo. Nao mexer nos numeros sem testar
+    // num volante de verdade: a maquina da loterica le pelas marcas.
+    // ---------------------------------------------------------------------
+    private static final float PX = 0.75f;
+    private static final float A4_HEIGHT_PX = PageSize.A4.getHeight() / PX;
+
+    // .entorno: margin 15/11, borda tracejada de 2px, conteudo 325px.
+    private static final float ENTORNO_X = 15, ENTORNO_Y = 11, ENTORNO_BORDER = 2;
+    private static final float ENTORNO_W = 325, ENTORNO_H = 680;
+    private static final float CONTENT_X = ENTORNO_X + ENTORNO_BORDER;
+    private static final float CONTENT_Y = ENTORNO_Y + ENTORNO_BORDER;
+
+    // .cabecalho: margin-left 3, top 11 (relativo), padding-top 4, largura 317.
+    private static final float HEADER_X = CONTENT_X + 3;
+    private static final float HEADER_TOP = CONTENT_Y + 11 + 4;
+    private static final float HEADER_W = 317;
+
+    // .volante comeca depois dos 144px do cabecalho + os 30px de margin-top
+    // de .apostas (que colapsa pra fora do volante).
+    private static final float VOLANTE_X = CONTENT_X + 3;
+    private static final float VOLANTE_Y = CONTENT_Y + 144 + 30;
+
+    // Marcas de sincronismo de cima (.codigos top -18, .horizontal top -1 e
+    // margin-left 8; blocos 15x10 com 8.6 de espaco). Padrao fixo do volante.
+    private static final boolean[] TOP_MARKS = {false, false, true, true, true, true, false, false, false, false};
+    private static final float TOP_MARK_Y = VOLANTE_Y - 18 - 1;
+    private static final float TOP_MARK_X = VOLANTE_X + 8 + 8.6f;
+    private static final float TOP_MARK_STEP = 15 + 8.6f;
+
+    // Marcas da lateral esquerda (.vertical top -8): {y relativo, altura} ja
+    // com as margens colapsadas de cada .area. Blocos 11px de largura,
+    // impressos duas vezes (o original e uma copia 4px pra esquerda).
+    private static final float SIDE_MARK_Y = VOLANTE_Y - 18 - 8;
+    private static final float[][] SIDE_MARKS = {
+            {7, 10},
+            {26, 10}, {43, 10}, {60, 10}, {77, 10}, {94, 10},
+            {121, 10}, {138, 10}, {155, 10}, {172, 10}, {189, 10},
+            {217, 10}, {234, 10}, {251, 10}, {268, 10}, {285, 10},
+            {313, 10},
+            {343, 10},
+            {374, 10},
+            {397, 7}, {412, 7}, {427, 7},
+    };
+
+    // .aposta: margin-left 42.5; linha a cada 17px; quadradinho 10x5 (top 2)
+    // a cada 47.2px. As 3 apostas comecam em 0, 95 e 191 dentro do volante.
+    private static final float BET_X = VOLANTE_X + 42.5f;
+    private static final float BET_ROW_STEP = 17, BET_COL_STEP = 10 + 37.2f;
+    private static final float MARK_W = 10, MARK_H = 5, MARK_TOP = 2;
+
+    // .linha_quantos_numeros: 15..20 dezenas, quadradinho a cada 23.6px.
+    private static final float COUNT_Y = VOLANTE_Y + 288;
+    private static final float COUNT_COL_STEP = 10 + 13.6f;
+
+    private static final Color GUIDE_BORDER = new Color(0xFF, 0xCC, 0xCC);
+    private static final Color GUIDE_TEXT = new Color(0xD1, 0x96, 0x96);
+
+    private byte[] generateLotofacilVolantePdf(Bet bet, User user) {
+        Document document = new Document(PageSize.A4, 0, 0, 0, 0);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            PdfWriter writer = PdfWriter.getInstance(document, out);
+            document.open();
+            PdfContentByte cb = writer.getDirectContent();
+            BaseFont regular = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+            BaseFont bold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+
+            drawVolanteGuide(cb, regular);
+            drawVolanteHeader(cb, regular, bold, bet, user);
+
+            cb.setColorFill(Color.BLACK);
+            for (int i = 0; i < TOP_MARKS.length; i++) {
+                if (TOP_MARKS[i]) fillPx(cb, TOP_MARK_X + i * TOP_MARK_STEP, TOP_MARK_Y, 15, 10);
+            }
+            for (float[] mark : SIDE_MARKS) {
+                fillPx(cb, VOLANTE_X, SIDE_MARK_Y + mark[0], 11, mark[1]);
+                fillPx(cb, VOLANTE_X - 4, SIDE_MARK_Y + mark[0], 11, mark[1]);
+            }
+
+            // Na grade do volante cada linha impressa e uma coluna de dezenas,
+            // de baixo pra cima: linha r, coluna c = dezena (4 - c) * 5 + r + 1.
+            // (Conferido com os 3 jogos de exemplo do modelo.)
+            List<Integer> numbers = bet.getBet();
+            for (int r = 0; r < 5; r++) {
+                for (int c = 0; c < 5; c++) {
+                    if (numbers.contains((4 - c) * 5 + r + 1)) {
+                        roundMarkPx(cb, BET_X + c * BET_COL_STEP, VOLANTE_Y + r * BET_ROW_STEP + MARK_TOP);
+                    }
+                }
+            }
+
+            int countIndex = numbers.size() - GameConfig.LOTOFACIL.minPick;
+            if (countIndex >= 0 && countIndex < 6) {
+                roundMarkPx(cb, BET_X + countIndex * COUNT_COL_STEP, COUNT_Y + MARK_TOP);
+            }
+
+            document.close();
+        } catch (DocumentException | java.io.IOException e) {
+            throw new RuntimeException("Erro ao gerar PDF do volante", e);
+        }
+        return out.toByteArray();
+    }
+
+    // Tracejado vermelho claro em volta do volante + aviso na vertical, igual
+    // ao modelo (cor clara pra nao ser lida pela maquina).
+    private void drawVolanteGuide(PdfContentByte cb, BaseFont font) {
+        cb.saveState();
+        cb.setColorStroke(GUIDE_BORDER);
+        cb.setLineWidth(ENTORNO_BORDER * PX);
+        cb.setLineDash(6 * PX, 6 * PX, 0);
+        float half = ENTORNO_BORDER / 2;
+        float w = ENTORNO_W + ENTORNO_BORDER, h = ENTORNO_H + ENTORNO_BORDER;
+        cb.rectangle(px(ENTORNO_X + half), py(ENTORNO_Y + half + h), w * PX, h * PX);
+        cb.stroke();
+        cb.restoreState();
+
+        String aviso = "O tracejado não deve aparecer no volante";
+        float spacing = 2;
+        float textW = font.getWidthPoint(aviso, 10) + spacing * aviso.length();
+        // .aviso: left -143 e bottom 144 relativos a caixa interna, girado
+        // 270deg em volta do proprio centro.
+        float centerX = CONTENT_X - 143 + textW / 2;
+        float centerY = CONTENT_Y + ENTORNO_H - 144 - 11.5f / 2;
+        cb.saveState();
+        cb.beginText();
+        cb.setFontAndSize(font, 10 * PX);
+        cb.setCharacterSpacing(spacing * PX);
+        cb.setColorFill(GUIDE_TEXT);
+        // +3.5: o ponto de ancora e a linha de base, nao o meio da letra.
+        cb.showTextAligned(Element.ALIGN_CENTER, aviso, px(centerX + 3.5f), py(centerY), 90);
+        cb.endText();
+        cb.restoreState();
+    }
+
+    private void drawVolanteHeader(PdfContentByte cb, BaseFont regular, BaseFont bold, Bet bet, User user) {
+        float centerX = HEADER_X + HEADER_W / 2;
+        float y = HEADER_TOP;
+
+        StringBuilder jogo = new StringBuilder("Jogo 1: ");
+        for (int i = 0; i < bet.getBet().size(); i++) {
+            if (i > 0) jogo.append(", ");
+            jogo.append(String.format("%02d", bet.getBet().get(i)));
+        }
+
+        String subtitle;
+        if (bet.getBolaoId() != null) {
+            subtitle = "Bolão: " + bet.getBolaoName();
+        } else if (user != null) {
+            subtitle = user.getName();
+        } else {
+            subtitle = "Jogo 1";
+        }
+
+        y = headerLine(cb, bold, 12, "Lotofácil", centerX, y, 2, false);
+        y = headerLine(cb, regular, 10, "Cartão nº " + bet.getId(), centerX, y, 2, true);
+        y = headerLine(cb, regular, 10, "Volante 1 de 1", centerX, y, 2, false);
+        y = headerLine(cb, regular, 10, subtitle, centerX, y, 2, false);
+        y += 2;
+        for (String line : wrapPx(regular, 8, jogo.toString(), HEADER_W)) {
+            y = headerLine(cb, regular, 8, line, centerX, y, 0, false);
+        }
+        y += 2;
+        headerLine(cb, regular, 10, "DuPolvo", centerX, y, 0.5f, true);
+    }
+
+    // Uma <div> do cabecalho: padding em cima/embaixo e line-height 1.15.
+    // Devolve o y (px) onde a proxima comeca.
+    private float headerLine(PdfContentByte cb, BaseFont font, float sizePx, String text,
+                             float centerX, float topPx, float paddingPx, boolean underline) {
+        float lineH = sizePx * 1.15f;
+        float baseline = topPx + paddingPx + sizePx * 0.92f;
+        cb.beginText();
+        cb.setFontAndSize(font, sizePx * PX);
+        cb.setColorFill(Color.BLACK);
+        cb.showTextAligned(Element.ALIGN_CENTER, text, px(centerX), py(baseline), 0);
+        cb.endText();
+        if (underline) {
+            float w = font.getWidthPoint(text, sizePx);
+            cb.setColorFill(Color.BLACK);
+            fillPx(cb, centerX - w / 2, baseline + sizePx * 0.1f, w, Math.max(0.7f, sizePx * 0.07f));
+        }
+        return topPx + paddingPx * 2 + lineH;
+    }
+
+    private List<String> wrapPx(BaseFont font, float sizePx, String text, float maxWidthPx) {
+        List<String> lines = new java.util.ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        for (String word : text.split(" ")) {
+            String candidate = current.length() == 0 ? word : current + " " + word;
+            if (current.length() > 0 && font.getWidthPoint(candidate, sizePx) > maxWidthPx) {
+                lines.add(current.toString());
+                current = new StringBuilder(word);
+            } else {
+                current = new StringBuilder(candidate);
+            }
+        }
+        if (current.length() > 0) lines.add(current.toString());
+        return lines;
+    }
+
+    // Quadradinho marcado (.qd.ch): 10x5 com cantos de 2px.
+    private void roundMarkPx(PdfContentByte cb, float xPx, float yPx) {
+        cb.setColorFill(Color.BLACK);
+        cb.roundRectangle(px(xPx), py(yPx + MARK_H), MARK_W * PX, MARK_H * PX, 2 * PX);
+        cb.fill();
+    }
+
+    // Retangulo em px, com (x, y) no canto de cima-esquerda como no CSS.
+    private void fillPx(PdfContentByte cb, float xPx, float yPx, float wPx, float hPx) {
+        cb.rectangle(px(xPx), py(yPx + hPx), wPx * PX, hPx * PX);
+        cb.fill();
+    }
+
+    private float px(float xPx) {
+        return xPx * PX;
+    }
+
+    // y do CSS (cresce pra baixo) -> y do PDF (cresce pra cima).
+    private float py(float yPx) {
+        return (A4_HEIGHT_PX - yPx) * PX;
     }
 
     // Quadradinhos genericos nas duas margens, so pra lembrar visualmente
