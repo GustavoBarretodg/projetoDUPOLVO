@@ -32,7 +32,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/login", "/api/register").permitAll()
+                .requestMatchers("/api/login", "/api/register",
+                        "/api/forgot-password", "/api/verify-otp", "/api/reset-password").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/bolaos").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/loterias/*/resultado").permitAll()
                 .requestMatchers("/api/superadmin/**").hasRole("SUPER_ADMIN")

@@ -1,6 +1,7 @@
 package com.dupolvo.api.controller;
 
 import com.dupolvo.api.service.AuthService;
+import com.dupolvo.api.service.PasswordResetService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +12,11 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final PasswordResetService passwordResetService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, PasswordResetService passwordResetService) {
         this.authService = authService;
+        this.passwordResetService = passwordResetService;
     }
 
     @PostMapping("/login")
@@ -32,5 +35,21 @@ public class AuthController {
         String role = body.get("role");
         String city = body.get("city");
         return ResponseEntity.ok(authService.register(name, email, phone, password, role, city));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, Object>> forgotPassword(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(passwordResetService.forgotPassword(body.get("email")));
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<Map<String, Object>> verifyOtp(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(passwordResetService.verifyOtp(body.get("email"), body.get("otp")));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(passwordResetService.resetPassword(
+                body.get("email"), body.get("resetToken"), body.get("newPassword")));
     }
 }

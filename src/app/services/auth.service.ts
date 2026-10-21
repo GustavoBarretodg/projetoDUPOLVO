@@ -32,6 +32,20 @@ export class AuthService {
         return this.httpClient.post<any>(`${API_URL}/register`, params);
     }
 
+    // Fluxo de "esqueci minha senha": email -> codigo por email -> resetToken
+    // de uso unico -> nova senha (ver PasswordResetService no backend).
+    public forgotPassword(params: { email: string }) {
+        return this.httpClient.post<any>(`${API_URL}/forgot-password`, params);
+    }
+
+    public verifyOtp(params: { email: string, otp: string }) {
+        return this.httpClient.post<any>(`${API_URL}/verify-otp`, params);
+    }
+
+    public resetPassword(params: { email: string, resetToken: string, newPassword: string }) {
+        return this.httpClient.post<any>(`${API_URL}/reset-password`, params);
+    }
+
 
 //   async logout(): Promise<void> {
 //     try {

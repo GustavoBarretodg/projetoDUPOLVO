@@ -1,32 +1,56 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button mode="md"></ion-back-button>
-    </ion-buttons>
-    <ion-title></ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="auth-page">
 
-<ion-content>
-  <div class="main_content_div">
-    
-    <div class="form_div">
-      <ion-label class="head_lbl">Forgot Password ?</ion-label>
+    <header class="auth-header">
+      <div class="auth-brand" (click)="goToLogin()">
+        <img src="assets/imgs/dupolvo-logo.png" class="auth-brand-logo" alt="DuPolvo" />
+        <span class="auth-brand-name">DuPolvo</span>
+      </div>
+    </header>
 
-      <ion-label class="small_lbl">Email ID</ion-label>
-      <ion-input type="text" placeholder="Email ID"></ion-input>
+    <div class="auth-hero">
+      <ion-icon name="trophy" class="auth-deco auth-deco-1"></ion-icon>
+      <ion-icon name="sparkles" class="auth-deco auth-deco-2"></ion-icon>
 
-      <ion-label class="small_lbl" *ngIf="otp == true">Email OTP</ion-label>
-      <ion-input type="text" *ngIf="otp == true" placeholder="Email OTP"></ion-input>
+      <div class="auth-card">
 
-      <ion-button class="dp-pill-btn" (click)="SendOtp()" *ngIf="otp == false" expand="block">
-        Send OTP
-      </ion-button>
+        <ng-container *ngIf="step === 'email'">
+          <h1 class="auth-title">Esqueci minha senha</h1>
+          <p class="auth-subtitle">Informe o e-mail do seu cadastro e mandamos um código de verificação.</p>
 
-      <ion-button class="dp-pill-btn" (click)="verify()" *ngIf="otp == true" expand="block">
-        Verify
-      </ion-button>
+          <div class="auth-field">
+            <label>E-mail</label>
+            <ion-input type="email" placeholder="seuemail@exemplo.com" #email></ion-input>
+          </div>
 
+          <button class="auth-submit" [class.auth-submit-loading]="loading" [disabled]="loading" (click)="sendOtp(email)">
+            {{ loading ? 'Enviando...' : 'Enviar código' }}
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="step === 'otp'">
+          <h1 class="auth-title">Digite o código</h1>
+          <p class="auth-subtitle">Enviamos um código de 6 dígitos pra <strong>{{ email }}</strong>, se esse e-mail tiver cadastro.</p>
+
+          <div class="auth-field">
+            <label>Código</label>
+            <ion-input type="text" inputmode="numeric" maxlength="6" placeholder="000000" #otp></ion-input>
+          </div>
+
+          <button class="auth-submit" [class.auth-submit-loading]="loading" [disabled]="loading" (click)="verify(otp)">
+            {{ loading ? 'Verificando...' : 'Verificar código' }}
+          </button>
+
+          <p class="auth-switch">
+            <span [class.auth-switch-disabled]="resendCooldown > 0" (click)="resendOtp()">{{ resendCooldown > 0 ? ('Reenviar em ' + resendCooldown + 's') : 'Reenviar código' }}</span>
+            &nbsp;·&nbsp;
+            <span (click)="changeEmail()">Trocar e-mail</span>
+          </p>
+        </ng-container>
+
+        <p class="auth-switch">Lembrou a senha? <span (click)="goToLogin()">Voltar pro login</span></p>
+      </div>
     </div>
+
   </div>
 </ion-content>
