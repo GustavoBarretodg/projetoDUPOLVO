@@ -48,10 +48,12 @@ export class LoginPage implements OnInit {
       password: password.value.trim()
     };
 
-    this.authSvc.login(params).subscribe((res) => {
+    this.authSvc.login(params).subscribe(async (res) => {
       if(res.message === 'authenticated_user') {
-        this.storage.set('user', res.data);
-        this.storage.set('token', res.token);
+        // Grava os dois antes de navegar: os guards conferem user + token e
+        // deslogariam se pegassem so um deles salvo.
+        await this.storage.set('token', res.token);
+        await this.storage.set('user', res.data);
 
         this.showToast('Usuário autenticado com sucesso');
 

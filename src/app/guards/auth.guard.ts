@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { StorageService } from '../services/storage.service';
+import { SessionService } from '../services/session.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private storage: StorageService, private router: Router) {}
+  constructor(private storage: StorageService, private router: Router, private session: SessionService) {}
 
-  async canActivate(): Promise<boolean> {
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    // Login vencido: desloga e volta pra essa tela depois de entrar de novo.
+    if (await this.session.getStatus() === 'expired') {
+      await this.session.expireSession(state.url);
+      return false;
+    }
     const user = await this.storage.get('user');
     if (user && user.id) {
       return true;
