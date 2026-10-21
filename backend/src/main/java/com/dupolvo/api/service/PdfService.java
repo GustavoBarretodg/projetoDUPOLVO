@@ -166,15 +166,38 @@ public class PdfService {
     // .aposta: margin-left 42.5; linha a cada 17px; quadradinho 10x5 (top 2)
     // a cada 47.2px. As 3 apostas comecam em 0, 95 e 191 dentro do volante.
     private static final float BET_X = VOLANTE_X + 42.5f;
+    private static final float[] BET_BLOCK_Y = {0, 95, 191};
     private static final float BET_ROW_STEP = 17, BET_COL_STEP = 10 + 37.2f;
     private static final float MARK_W = 10, MARK_H = 5, MARK_TOP = 2;
+    public static final int GAMES_PER_VOLANTE = BET_BLOCK_Y.length;
 
     // .linha_quantos_numeros: 15..20 dezenas, quadradinho a cada 23.6px.
+    // Vale pro volante inteiro, entao as apostas de um mesmo volante precisam
+    // ter a mesma quantidade de dezenas.
     private static final float COUNT_Y = VOLANTE_Y + 288;
     private static final float COUNT_COL_STEP = 10 + 13.6f;
+    private static final int COUNT_OPTIONS = 6;
 
     private static final Color GUIDE_BORDER = new Color(0xFF, 0xCC, 0xCC);
     private static final Color GUIDE_TEXT = new Color(0xD1, 0x96, 0x96);
+
+    // Dois volantes cabem lado a lado numa A4 (cada um com ~87mm de largura
+    // ja com a borda tracejada) - e como o proprio modelo da loterica monta
+    // pagina com varios volantes, com .entorno flutuando pra esquerda. O
+    // segundo comeca depois da largura toda do primeiro (margem + borda +
+    // conteudo), porque margens nao colapsam entre floats.
+    private static final float SECOND_VOLANTE_OFFSET_PX = ENTORNO_X + ENTORNO_BORDER * 2 + ENTORNO_W;
+    public static final int VOLANTES_PER_PAGE = 2;
+
+    // Jogo que da pra imprimir no volante da Lotofacil (tem dezenas e a
+    // quantidade cabe no campo "quantos numeros").
+    private boolean fitsLotofacilVolante(Bet bet) {
+        if (GameConfig.fromString(bet.getGameType()) != GameConfig.LOTOFACIL) return false;
+        List<Integer> numbers = bet.getBet();
+        if (numbers == null) return false;
+        int countIndex = numbers.size() - GameConfig.LOTOFACIL.minPick;
+        return countIndex >= 0 && countIndex < COUNT_OPTIONS;
+    }
 
     private byte[] generateLotofacilVolantePdf(Bet bet, User user) {
         Document document = new Document(PageSize.A4, 0, 0, 0, 0);
@@ -182,38 +205,17 @@ public class PdfService {
         try {
             PdfWriter writer = PdfWriter.getInstance(document, out);
             document.open();
-            PdfContentByte cb = writer.getDirectContent();
-            BaseFont regular = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
-            BaseFont bold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
 
-            drawVolanteGuide(cb, regular);
-            drawVolanteHeader(cb, regular, bold, bet, user);
-
-            cb.setColorFill(Color.BLACK);
-            for (int i = 0; i < TOP_MARKS.length; i++) {
-                if (TOP_MARKS[i]) fillPx(cb, TOP_MARK_X + i * TOP_MARK_STEP, TOP_MARK_Y, 15, 10);
+            String subtitle;
+            if (bet.getBolaoId() != null) {
+                subtitle = "Bolão: " + bet.getBolaoName();
+            } else if (user != null) {
+                subtitle = user.getName();
+            } else {
+                subtitle = "Jogo 1";
             }
-            for (float[] mark : SIDE_MARKS) {
-                fillPx(cb, VOLANTE_X, SIDE_MARK_Y + mark[0], 11, mark[1]);
-                fillPx(cb, VOLANTE_X - 4, SIDE_MARK_Y + mark[0], 11, mark[1]);
-            }
-
-            // Na grade do volante cada linha impressa e uma coluna de dezenas,
-            // de baixo pra cima: linha r, coluna c = dezena (4 - c) * 5 + r + 1.
-            // (Conferido com os 3 jogos de exemplo do modelo.)
-            List<Integer> numbers = bet.getBet();
-            for (int r = 0; r < 5; r++) {
-                for (int c = 0; c < 5; c++) {
-                    if (numbers.contains((4 - c) * 5 + r + 1)) {
-                        roundMarkPx(cb, BET_X + c * BET_COL_STEP, VOLANTE_Y + r * BET_ROW_STEP + MARK_TOP);
-                    }
-                }
-            }
-
-            int countIndex = numbers.size() - GameConfig.LOTOFACIL.minPick;
-            if (countIndex >= 0 && countIndex < 6) {
-                roundMarkPx(cb, BET_X + countIndex * COUNT_COL_STEP, COUNT_Y + MARK_TOP);
-            }
+            drawLotofacilVolante(writer.getDirectContent(), 0, List.of(bet), 1,
+                    "Cartão nº " + bet.getId(), "Volante 1 de 1", subtitle);
 
             document.close();
         } catch (DocumentException | java.io.IOException e) {
@@ -222,16 +224,59 @@ public class PdfService {
         return out.toByteArray();
     }
 
+    // Desenha um volante na pagina atual com ate 3 jogos (todos com a mesma
+    // quantidade de dezenas). originX desloca o volante inteiro pra direita
+    // (segundo volante da mesma folha). firstGameNumber so muda a numeracao
+    // "Jogo N" do cabecalho, pra continuar a contagem entre volantes.
+    private void drawLotofacilVolante(PdfContentByte cb, float originX, List<Bet> games, int firstGameNumber,
+                                      String composition, String title, String subtitle)
+            throws DocumentException, java.io.IOException {
+        BaseFont regular = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+        BaseFont bold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+
+        drawVolanteGuide(cb, originX, regular);
+        drawVolanteHeader(cb, originX, regular, bold, games, firstGameNumber, composition, title, subtitle);
+
+        cb.setColorFill(Color.BLACK);
+        for (int i = 0; i < TOP_MARKS.length; i++) {
+            if (TOP_MARKS[i]) fillPx(cb, originX, TOP_MARK_X + i * TOP_MARK_STEP, TOP_MARK_Y, 15, 10);
+        }
+        for (float[] mark : SIDE_MARKS) {
+            fillPx(cb, originX, VOLANTE_X, SIDE_MARK_Y + mark[0], 11, mark[1]);
+            fillPx(cb, originX, VOLANTE_X - 4, SIDE_MARK_Y + mark[0], 11, mark[1]);
+        }
+
+        // Na grade do volante cada linha impressa e uma coluna de dezenas,
+        // de baixo pra cima: linha r, coluna c = dezena (4 - c) * 5 + r + 1.
+        // (Conferido com os 3 jogos de exemplo do modelo.)
+        for (int g = 0; g < games.size(); g++) {
+            List<Integer> numbers = games.get(g).getBet();
+            float blockY = VOLANTE_Y + BET_BLOCK_Y[g];
+            for (int r = 0; r < 5; r++) {
+                for (int c = 0; c < 5; c++) {
+                    if (numbers.contains((4 - c) * 5 + r + 1)) {
+                        roundMarkPx(cb, originX, BET_X + c * BET_COL_STEP, blockY + r * BET_ROW_STEP + MARK_TOP);
+                    }
+                }
+            }
+        }
+
+        int countIndex = games.get(0).getBet().size() - GameConfig.LOTOFACIL.minPick;
+        if (countIndex >= 0 && countIndex < COUNT_OPTIONS) {
+            roundMarkPx(cb, originX, BET_X + countIndex * COUNT_COL_STEP, COUNT_Y + MARK_TOP);
+        }
+    }
+
     // Tracejado vermelho claro em volta do volante + aviso na vertical, igual
     // ao modelo (cor clara pra nao ser lida pela maquina).
-    private void drawVolanteGuide(PdfContentByte cb, BaseFont font) {
+    private void drawVolanteGuide(PdfContentByte cb, float originX, BaseFont font) {
         cb.saveState();
         cb.setColorStroke(GUIDE_BORDER);
         cb.setLineWidth(ENTORNO_BORDER * PX);
         cb.setLineDash(6 * PX, 6 * PX, 0);
         float half = ENTORNO_BORDER / 2;
         float w = ENTORNO_W + ENTORNO_BORDER, h = ENTORNO_H + ENTORNO_BORDER;
-        cb.rectangle(px(ENTORNO_X + half), py(ENTORNO_Y + half + h), w * PX, h * PX);
+        cb.rectangle(px(originX, ENTORNO_X + half), py(ENTORNO_Y + half + h), w * PX, h * PX);
         cb.stroke();
         cb.restoreState();
 
@@ -248,57 +293,52 @@ public class PdfService {
         cb.setCharacterSpacing(spacing * PX);
         cb.setColorFill(GUIDE_TEXT);
         // +3.5: o ponto de ancora e a linha de base, nao o meio da letra.
-        cb.showTextAligned(Element.ALIGN_CENTER, aviso, px(centerX + 3.5f), py(centerY), 90);
+        cb.showTextAligned(Element.ALIGN_CENTER, aviso, px(originX, centerX + 3.5f), py(centerY), 90);
         cb.endText();
         cb.restoreState();
     }
 
-    private void drawVolanteHeader(PdfContentByte cb, BaseFont regular, BaseFont bold, Bet bet, User user) {
+    private void drawVolanteHeader(PdfContentByte cb, float originX, BaseFont regular, BaseFont bold, List<Bet> games,
+                                   int firstGameNumber, String composition, String title, String subtitle) {
         float centerX = HEADER_X + HEADER_W / 2;
         float y = HEADER_TOP;
 
-        StringBuilder jogo = new StringBuilder("Jogo 1: ");
-        for (int i = 0; i < bet.getBet().size(); i++) {
-            if (i > 0) jogo.append(", ");
-            jogo.append(String.format("%02d", bet.getBet().get(i)));
-        }
-
-        String subtitle;
-        if (bet.getBolaoId() != null) {
-            subtitle = "Bolão: " + bet.getBolaoName();
-        } else if (user != null) {
-            subtitle = user.getName();
-        } else {
-            subtitle = "Jogo 1";
-        }
-
-        y = headerLine(cb, bold, 12, "Lotofácil", centerX, y, 2, false);
-        y = headerLine(cb, regular, 10, "Cartão nº " + bet.getId(), centerX, y, 2, true);
-        y = headerLine(cb, regular, 10, "Volante 1 de 1", centerX, y, 2, false);
-        y = headerLine(cb, regular, 10, subtitle, centerX, y, 2, false);
+        y = headerLine(cb, originX, bold, 12, "Lotofácil", centerX, y, 2, false);
+        y = headerLine(cb, originX, regular, 10, composition, centerX, y, 2, true);
+        y = headerLine(cb, originX, regular, 10, title, centerX, y, 2, false);
+        y = headerLine(cb, originX, regular, 10, subtitle, centerX, y, 2, false);
         y += 2;
-        for (String line : wrapPx(regular, 8, jogo.toString(), HEADER_W)) {
-            y = headerLine(cb, regular, 8, line, centerX, y, 0, false);
+        for (int g = 0; g < games.size(); g++) {
+            StringBuilder jogo = new StringBuilder("Jogo " + (firstGameNumber + g) + ": ");
+            List<Integer> numbers = new java.util.ArrayList<>(games.get(g).getBet());
+            java.util.Collections.sort(numbers);
+            for (int i = 0; i < numbers.size(); i++) {
+                if (i > 0) jogo.append(", ");
+                jogo.append(String.format("%02d", numbers.get(i)));
+            }
+            for (String line : wrapPx(regular, 8, jogo.toString(), HEADER_W)) {
+                y = headerLine(cb, originX, regular, 8, line, centerX, y, 0, false);
+            }
         }
         y += 2;
-        headerLine(cb, regular, 10, "DuPolvo", centerX, y, 0.5f, true);
+        headerLine(cb, originX, regular, 10, "DuPolvo", centerX, y, 0.5f, true);
     }
 
     // Uma <div> do cabecalho: padding em cima/embaixo e line-height 1.15.
     // Devolve o y (px) onde a proxima comeca.
-    private float headerLine(PdfContentByte cb, BaseFont font, float sizePx, String text,
+    private float headerLine(PdfContentByte cb, float originX, BaseFont font, float sizePx, String text,
                              float centerX, float topPx, float paddingPx, boolean underline) {
         float lineH = sizePx * 1.15f;
         float baseline = topPx + paddingPx + sizePx * 0.92f;
         cb.beginText();
         cb.setFontAndSize(font, sizePx * PX);
         cb.setColorFill(Color.BLACK);
-        cb.showTextAligned(Element.ALIGN_CENTER, text, px(centerX), py(baseline), 0);
+        cb.showTextAligned(Element.ALIGN_CENTER, text, px(originX, centerX), py(baseline), 0);
         cb.endText();
         if (underline) {
             float w = font.getWidthPoint(text, sizePx);
             cb.setColorFill(Color.BLACK);
-            fillPx(cb, centerX - w / 2, baseline + sizePx * 0.1f, w, Math.max(0.7f, sizePx * 0.07f));
+            fillPx(cb, originX, centerX - w / 2, baseline + sizePx * 0.1f, w, Math.max(0.7f, sizePx * 0.07f));
         }
         return topPx + paddingPx * 2 + lineH;
     }
@@ -320,20 +360,21 @@ public class PdfService {
     }
 
     // Quadradinho marcado (.qd.ch): 10x5 com cantos de 2px.
-    private void roundMarkPx(PdfContentByte cb, float xPx, float yPx) {
+    private void roundMarkPx(PdfContentByte cb, float originX, float xPx, float yPx) {
         cb.setColorFill(Color.BLACK);
-        cb.roundRectangle(px(xPx), py(yPx + MARK_H), MARK_W * PX, MARK_H * PX, 2 * PX);
+        cb.roundRectangle(px(originX, xPx), py(yPx + MARK_H), MARK_W * PX, MARK_H * PX, 2 * PX);
         cb.fill();
     }
 
     // Retangulo em px, com (x, y) no canto de cima-esquerda como no CSS.
-    private void fillPx(PdfContentByte cb, float xPx, float yPx, float wPx, float hPx) {
-        cb.rectangle(px(xPx), py(yPx + hPx), wPx * PX, hPx * PX);
+    private void fillPx(PdfContentByte cb, float originX, float xPx, float yPx, float wPx, float hPx) {
+        cb.rectangle(px(originX, xPx), py(yPx + hPx), wPx * PX, hPx * PX);
         cb.fill();
     }
 
-    private float px(float xPx) {
-        return xPx * PX;
+    // originX desloca o volante inteiro (segundo volante da mesma folha).
+    private float px(float originX, float xPx) {
+        return (originX + xPx) * PX;
     }
 
     // y do CSS (cresce pra baixo) -> y do PDF (cresce pra cima).
@@ -360,77 +401,135 @@ public class PdfService {
         }
     }
 
-    // Um unico PDF consolidado, com uma linha de tabela por jogo pendente -
-    // usado pelo "Imprimir tudo" (usuario e admin), em vez de um PDF por
-    // cartao. showBettor liga a coluna de apostador (usada so pelo admin,
-    // que ve jogos de varios usuarios).
+    // "Imprimir tudo" (usuario e admin): paginas no modelo de impressao da
+    // Lotofacil, com ate 2 volantes lado a lado por folha (o maximo que cabe
+    // em tamanho real numa A4) e ate 3 jogos por volante - ou seja, ate 6
+    // jogos por folha, 15 jogos saem em 3 paginas. Como o campo "quantos
+    // numeros" vale pro volante inteiro, os jogos sao agrupados pela
+    // quantidade de dezenas antes de dividir em volantes/paginas. O que nao
+    // cabe num volante (cota de bolao, outros jogos) vai numa lista no final.
+    // showBettor liga a coluna de apostador nessa lista (so o admin, que ve
+    // jogos de varios usuarios).
     public byte[] generatePendingSummaryPdf(List<Bet> bets, Map<Long, User> usersByUserId, boolean showBettor) {
-        Document document = new Document(PageSize.A4, 24, 24, 36, 36);
+        Map<Integer, List<Bet>> bySize = new java.util.TreeMap<>();
+        List<Bet> others = new java.util.ArrayList<>();
+        for (Bet bet : bets) {
+            if (fitsLotofacilVolante(bet)) {
+                bySize.computeIfAbsent(bet.getBet().size(), k -> new java.util.ArrayList<>()).add(bet);
+            } else {
+                others.add(bet);
+            }
+        }
+
+        List<List<Bet>> volantes = new java.util.ArrayList<>();
+        for (List<Bet> group : bySize.values()) {
+            group.sort(java.util.Comparator.comparing(Bet::getId));
+            for (int i = 0; i < group.size(); i += GAMES_PER_VOLANTE) {
+                volantes.add(group.subList(i, Math.min(i + GAMES_PER_VOLANTE, group.size())));
+            }
+        }
+
+        // Margem so vale pra pagina da lista; o volante desenha em posicao fixa.
+        Document document = volantes.isEmpty()
+                ? new Document(PageSize.A4, 24, 24, 36, 36)
+                : new Document(PageSize.A4, 0, 0, 0, 0);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            PdfWriter.getInstance(document, out);
+            PdfWriter writer = PdfWriter.getInstance(document, out);
             document.open();
 
-            Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD, BRAND_COLOR);
-            Font headFont = new Font(Font.HELVETICA, 10, Font.BOLD, Color.WHITE);
-            Font cellFont = new Font(Font.HELVETICA, 9, Font.NORMAL);
-            Font smallFont = new Font(Font.HELVETICA, 8, Font.ITALIC, Color.GRAY);
+            int gameNumber = 1;
+            for (int v = 0; v < volantes.size(); v++) {
+                boolean secondOfPage = v % VOLANTES_PER_PAGE == 1;
+                if (v > 0 && !secondOfPage) document.newPage();
+                float originX = secondOfPage ? SECOND_VOLANTE_OFFSET_PX : 0;
 
-            Paragraph title = new Paragraph("DuPolvo - Jogos Pendentes", titleFont);
-            title.setAlignment(Element.ALIGN_CENTER);
-            document.add(title);
+                List<Bet> games = volantes.get(v);
+                int last = gameNumber + games.size() - 1;
 
-            Paragraph subtitle = new Paragraph(
-                    bets.size() + (bets.size() == 1 ? " jogo aguardando confirmação" : " jogos aguardando confirmação")
-                            + " · gerado em " + LocalDateTime.now().format(DATE_FMT),
-                    smallFont);
-            subtitle.setAlignment(Element.ALIGN_CENTER);
-            subtitle.setSpacingAfter(16);
-            document.add(subtitle);
-
-            PdfPTable table = new PdfPTable(showBettor ? 4 : 3);
-            table.setWidthPercentage(100);
-            table.setWidths(showBettor ? new float[]{12, 18, 42, 28} : new float[]{15, 25, 60});
-
-            addHeaderCell(table, "Cartão", headFont);
-            addHeaderCell(table, "Jogo", headFont);
-            addHeaderCell(table, "Dezenas / Bolão", headFont);
-            if (showBettor) addHeaderCell(table, "Apostador", headFont);
-
-            for (Bet bet : bets) {
-                GameConfig config = GameConfig.fromString(bet.getGameType());
-
-                table.addCell(dataCell("#" + bet.getId(), cellFont));
-                table.addCell(dataCell(config.displayName, cellFont));
-
-                String numbersOrBolao;
-                if (bet.getBolaoId() != null) {
-                    numbersOrBolao = "Cota do bolão " + bet.getBolaoName();
-                } else if (bet.getBet() != null && !bet.getBet().isEmpty()) {
-                    StringBuilder sb = new StringBuilder();
-                    for (Integer n : bet.getBet()) {
-                        if (sb.length() > 0) sb.append(", ");
-                        sb.append(String.format("%02d", n));
-                    }
-                    numbersOrBolao = sb.toString();
-                } else {
-                    numbersOrBolao = "-";
+                StringBuilder ids = new StringBuilder(games.size() == 1 ? "Cartão nº " : "Cartões nº ");
+                for (int i = 0; i < games.size(); i++) {
+                    if (i > 0) ids.append(", ");
+                    ids.append(games.get(i).getId());
                 }
-                table.addCell(dataCell(numbersOrBolao, cellFont));
+                String subtitle = games.size() == 1 ? "Jogo " + gameNumber : "Jogos " + gameNumber + " a " + last;
 
-                if (showBettor) {
-                    User user = usersByUserId.get(bet.getIdUser());
-                    String bettor = user != null ? user.getName() + "\n" + user.getEmail() : "-";
-                    table.addCell(dataCell(bettor, cellFont));
-                }
+                drawLotofacilVolante(writer.getDirectContent(), originX, games, gameNumber, ids.toString(),
+                        "Volante " + (v + 1) + " de " + volantes.size(), subtitle);
+                gameNumber = last + 1;
             }
 
-            document.add(table);
+            if (!others.isEmpty()) {
+                document.setMargins(24, 24, 36, 36);
+                if (!volantes.isEmpty()) document.newPage();
+                addPendingListPage(document, others, usersByUserId, showBettor, !volantes.isEmpty());
+            }
+
             document.close();
-        } catch (DocumentException e) {
+        } catch (DocumentException | java.io.IOException e) {
             throw new RuntimeException("Erro ao gerar PDF dos jogos pendentes", e);
         }
         return out.toByteArray();
+    }
+
+    private void addPendingListPage(Document document, List<Bet> bets, Map<Long, User> usersByUserId,
+                                    boolean showBettor, boolean afterVolantes) throws DocumentException {
+        Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD, BRAND_COLOR);
+        Font headFont = new Font(Font.HELVETICA, 10, Font.BOLD, Color.WHITE);
+        Font cellFont = new Font(Font.HELVETICA, 9, Font.NORMAL);
+        Font smallFont = new Font(Font.HELVETICA, 8, Font.ITALIC, Color.GRAY);
+
+        Paragraph title = new Paragraph(afterVolantes ? "DuPolvo - Outros Jogos Pendentes" : "DuPolvo - Jogos Pendentes", titleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        document.add(title);
+
+        Paragraph subtitle = new Paragraph(
+                bets.size() + (bets.size() == 1 ? " jogo aguardando confirmação" : " jogos aguardando confirmação")
+                        + (afterVolantes ? (bets.size() == 1 ? " que não vai no volante" : " que não vão no volante") : "")
+                        + " · gerado em " + LocalDateTime.now().format(DATE_FMT),
+                smallFont);
+        subtitle.setAlignment(Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(16);
+        document.add(subtitle);
+
+        PdfPTable table = new PdfPTable(showBettor ? 4 : 3);
+        table.setWidthPercentage(100);
+        table.setWidths(showBettor ? new float[]{12, 18, 42, 28} : new float[]{15, 25, 60});
+
+        addHeaderCell(table, "Cartão", headFont);
+        addHeaderCell(table, "Jogo", headFont);
+        addHeaderCell(table, "Dezenas / Bolão", headFont);
+        if (showBettor) addHeaderCell(table, "Apostador", headFont);
+
+        for (Bet bet : bets) {
+            GameConfig config = GameConfig.fromString(bet.getGameType());
+
+            table.addCell(dataCell("#" + bet.getId(), cellFont));
+            table.addCell(dataCell(config.displayName, cellFont));
+
+            String numbersOrBolao;
+            if (bet.getBolaoId() != null) {
+                numbersOrBolao = "Cota do bolão " + bet.getBolaoName();
+            } else if (bet.getBet() != null && !bet.getBet().isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (Integer n : bet.getBet()) {
+                    if (sb.length() > 0) sb.append(", ");
+                    sb.append(String.format("%02d", n));
+                }
+                numbersOrBolao = sb.toString();
+            } else {
+                numbersOrBolao = "-";
+            }
+            table.addCell(dataCell(numbersOrBolao, cellFont));
+
+            if (showBettor) {
+                User user = usersByUserId.get(bet.getIdUser());
+                String bettor = user != null ? user.getName() + "\n" + user.getEmail() : "-";
+                table.addCell(dataCell(bettor, cellFont));
+            }
+        }
+
+        document.add(table);
     }
 
     private PdfPCell dataCell(String text, Font font) {
