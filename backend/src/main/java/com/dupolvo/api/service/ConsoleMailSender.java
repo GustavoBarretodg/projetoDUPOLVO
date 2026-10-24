@@ -2,15 +2,16 @@ package com.dupolvo.api.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 // ATENCAO: nao manda email nenhum de verdade - so registra o codigo no log
-// do servidor (visivel no Render em Logs), pra dar pra testar o fluxo de
-// "esqueci minha senha" de ponta a ponta antes de escolher um provedor de
-// email de verdade (Gmail/SMTP, Resend, SES...). Troque essa classe por uma
-// implementacao real de MailSender - e registre so ela como @Service - antes
-// de liberar essa tela pros usuarios, senao ninguem recebe o codigo.
+// do servidor (visivel no Render em Logs). Fica ativo enquanto MAIL_ENABLED
+// nao for "true" (ver SmtpMailSender) - ou seja, antes de configurar
+// MAIL_USERNAME/MAIL_PASSWORD e virar a chave, ninguem recebe o codigo por
+// email de verdade, so dá pra ver no log.
 @Service
+@ConditionalOnProperty(name = "app.mail.enabled", havingValue = "false", matchIfMissing = true)
 public class ConsoleMailSender implements MailSender {
 
     private static final Logger log = LoggerFactory.getLogger(ConsoleMailSender.class);
