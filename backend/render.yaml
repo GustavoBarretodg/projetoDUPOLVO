@@ -26,13 +26,15 @@ services:
         fromDatabase:
           name: dupolvo-db
           property: password
-      - key: MAIL_ENABLED
-        value: "false"
+      - key: MAIL_PROVIDER
+        value: "console"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAIL_FROM
+        sync: false
       - key: MAIL_USERNAME
         sync: false
       - key: MAIL_PASSWORD
-        sync: false
-      - key: MAIL_FROM
         sync: false
 
 databases:

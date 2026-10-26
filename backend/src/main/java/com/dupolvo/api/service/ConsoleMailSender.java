@@ -6,12 +6,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 // ATENCAO: nao manda email nenhum de verdade - so registra o codigo no log
-// do servidor (visivel no Render em Logs). Fica ativo enquanto MAIL_ENABLED
-// nao for "true" (ver SmtpMailSender) - ou seja, antes de configurar
-// MAIL_USERNAME/MAIL_PASSWORD e virar a chave, ninguem recebe o codigo por
-// email de verdade, so dá pra ver no log.
+// do servidor (visivel no Render em Logs). E o padrao (app.mail.provider
+// nao configurado ou "console") - ver ResendMailSender pro envio de verdade.
 @Service
-@ConditionalOnProperty(name = "app.mail.enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(name = "app.mail.provider", havingValue = "console", matchIfMissing = true)
 public class ConsoleMailSender implements MailSender {
 
     private static final Logger log = LoggerFactory.getLogger(ConsoleMailSender.class);
